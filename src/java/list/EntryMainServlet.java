@@ -5,7 +5,6 @@
 package list;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import place.Place;
 import place.PlaceDAO;
 
 /**
@@ -85,21 +83,73 @@ public class EntryMainServlet extends HttpServlet {
                         String btnDelRow = request.getParameter("btnDelRow");
                         String btnDelCol = request.getParameter("btnDelCol");
 
+                        String sidPlace = request.getParameter("idPlace");
+                        String sidEvent = request.getParameter("idEvent");
+                        String srut = request.getParameter("rut");
+                        String sBarCode = request.getParameter("barCode");
+
                         List entry = new List();
+
+                        boolean error = false;
 
                         //////////////////////////////////////////
                         // ELIMINAR POR REGISTRO
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
-                            /* recibir parametros */
-                            try {
-                                entry.setIdList(Integer.parseInt(request.getParameter("idList")));
+                            /* comprobar idPlace */
+                            int idPlace = 0;
+                            if (sidPlace == null || sidPlace.trim().equals("")) {
+                                error = true;
+                            } else {
+                                try {
+                                    entry.setIdPlace(Integer.parseInt(sidPlace));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            /* comprobar id event */
+                            int idEvent = 0;
+                            if (sidEvent == null || sidEvent.trim().equals("")) {
+                                error = true;
+                            } else {
+                                try {
+                                    entry.setIdEvent(Integer.parseInt(sidEvent));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            /* comprobar rut */
+                            int rut = 0;
+                            if (srut == null || srut.trim().equals("")) {
+                                error = true;
+                            } else {
+                                try {
+                                    entry.setRut(Integer.parseInt(srut));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            /* comprobar bar code */
+                            int barCode = 0;
+                            if (sBarCode == null || sBarCode.trim().equals("")) {
+                                error = true;
+                            } else {
+                                try {
+                                    entry.setBarCode(Integer.parseInt(sBarCode));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            if (!error) {
                                 try {
                                     entryDAO.delete(entry);
                                     request.setAttribute("msgDel", "Un Registro ha sido eliminado.");
                                 } catch (Exception deleteException) {
                                 }
-                            } catch (Exception parameterException) {
                             }
                         }
                         //////////////////////////////////////////

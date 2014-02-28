@@ -51,6 +51,12 @@
                         <li><a href="EntryMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                         <li class="active"><i class="fa fa-edit"></i> Agregar</li>
                     </ol>
+                    <c:if test="${msg != null}" >
+                        <div class="alert alert-dismissable alert-info">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong><c:out value="${msg}" /></strong>
+                        </div>
+                    </c:if>
                     <c:if test="${msgOk != null}" >
                         <div class="alert alert-dismissable alert-success">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -99,7 +105,18 @@
                             <strong><c:out value="${msgErrorGuestNotFound}" /></strong></br>
                         </div>
                     </c:if>
-                    
+                    <c:if test="${msgErrorEvent != null }" >
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong><c:out value="${msgErrorEvent}" /></strong></br>
+                        </div>
+                    </c:if>
+                    <c:if test="${msgErrorIdEvent != null }" >
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong><c:out value="${msgErrorIdEvent}" /></strong></br>
+                        </div>
+                    </c:if>
                     <c:if test="${msgErrorFound != null }" >
                         <div class="alert alert-dismissable alert-danger">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -119,24 +136,17 @@
                         </div>   
                         <p><label>Ingresar Evento:</label></p>
                         <div class="form-group">
-                            <input type="radio" name="optionEvent" value="0"/> <label>Actual</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="optionEvent" value="1"/> 
-                            <label>Por ID Evento</label>
-                            <input class="form-control" type="number" required="true" maxlength="8" name="idEvent" />
-                        </div>
-                        <p><label>Ingresar Usuario Por</label></p>
-                        <div class="form-group">
-                            <input type="radio" name="optionser" value="0"/>
+                            <input type="radio" name="optionEvent" value="1" <c:if test="${optionEvent == 1 || optionEvent == null}">checked</c:if> <label>Actual</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" name="optionEvent" value="2" <c:if test="${optionEvent == 2}">checked</c:if> /> 
+                                <label>Por ID Evento</label>
+                                <input class="form-control" type="number" maxlength="8" name="idEvent" value="<c:out value="${reg.idEvent}" />" />
+                        </div>                        
+                        <div class="form-group">                            
                             <label>Código de Barras</label>
-                            <input class="form-control" type="number" required="true" maxlength="8" name="barCode" value="<c:out value="${reg.barCode}" />">
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="optionser" value="1"/>
-                            <label>Rut</label>
-                            <input class="form-control" type="text" required="true" maxlength="12" name="rut" />
-                        </div> 
+                            <input class="form-control" type="number" maxlength="8" name="barCode" value="<c:out value="${reg.barCode}" />">
+                        </div>                        
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>

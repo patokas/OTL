@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import list.List;
 
 /**
  *
@@ -188,6 +189,33 @@ public class PointDAO {
             // todo Gestionar mejor esta exception
             ex.printStackTrace();
             throw new RuntimeException("RegDAO.update: " + point, ex);
+        } finally {
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
+    public void updatePointUp(List reg, int points) {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "update point set points = points + ? where id_place = ? and rut = ? ";
+
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.setInt(1, points);
+            sentence.setInt(2, reg.getIdPlace());
+            sentence.setInt(3, reg.getRut());
+
+            sentence.executeUpdate();
+
+        } catch (SQLException ex) {
+            // todo Gestionar mejor esta exception
+            ex.printStackTrace();
+            throw new RuntimeException("RegDAO.update: " + reg, ex);
         } finally {
             try {
                 sentence.close();

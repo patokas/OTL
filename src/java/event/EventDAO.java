@@ -183,7 +183,7 @@ public class EventDAO {
     }
 
     public void update(Event event) {
-        
+
         PreparedStatement sentence = null;
 
         try {
@@ -241,12 +241,12 @@ public class EventDAO {
     }
 
     public Collection<Event> findByPlaceEvent(Event event) {
-        
+
         Statement sentence = null;
         ResultSet result = null;
-        
+
         Event reg = new Event();
-        
+
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
@@ -366,6 +366,7 @@ public class EventDAO {
     }
 
     public Collection<Event> findbyRangeDatePlace(String date1, int idPlace) {
+
         Statement sentence = null;
         ResultSet result = null;
 
@@ -459,5 +460,47 @@ public class EventDAO {
             }
         }
 
+    }
+
+    public Collection<Event> findByPlaceEvent(int idPlace, int idEvent) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Collection<Event> list = new ArrayList<Event>();
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from event e, place pl where e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                Event reg = new Event();
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setIdEvent(result.getInt("id_event"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setDetails(result.getString("details"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
+                reg.setUrlImage(result.getString("url_image"));
+                reg.setPoints(result.getInt("points"));
+
+                list.add(reg);
+            }
+
+        } catch (SQLException ex) {
+            // Gestionar mejor esta exception
+            ex.printStackTrace();
+        } finally {
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return list;
     }
 }

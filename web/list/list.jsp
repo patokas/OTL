@@ -135,7 +135,7 @@
                                                     <tbody>
                                                         <c:forEach var="list" items="${list}"> 
                                                             <tr>
-                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idList}" />"/></td>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idEvent}" />-<c:out value="${list.rut}" />-<c:out value="${list.barCode}" />"/></td>
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>
                                                                 <td class="center"><c:out value="${list.idEvent}" /></td>
                                                                 <td class="center"><c:out value="${list.nameEvent}" /></td>
@@ -146,7 +146,10 @@
                                                                 <td class="center"><c:out value="${list.createTime}" /></td>
                                                                 <td class="center">
                                                                     <form action="EntryMainServlet" method="post">
-                                                                        <input type="hidden" name="idList" value="<c:out value="${list.idList}" />" />
+                                                                        <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />" />
+                                                                        <input type="hidden" name="idEvent" value="<c:out value="${list.idEvent}" />" />
+                                                                        <input type="hidden" name="rut" value="<c:out value="${list.rut}" />" />
+                                                                        <input type="hidden" name="barCode" value="<c:out value="${list.barCode}" />" />
                                                                         <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button>
                                                                     </form>
                                                                 </td>

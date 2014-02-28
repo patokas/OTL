@@ -5,7 +5,6 @@
 package event;
 
 import Helpers.Format;
-import guest.GuestDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -63,10 +62,7 @@ public class EventAddServlet extends HttpServlet {
             placeDAO.setConexion(conexion);
 
             UserCardDAO usercardDAO = new UserCardDAO();
-            usercardDAO.setConexion(conexion);
-
-            GuestDAO guestDAO = new GuestDAO();
-            guestDAO.setConexion(conexion);
+            usercardDAO.setConexion(conexion);          
 
             //////////////////////////////////////////
             // COMPROBAR SESSION

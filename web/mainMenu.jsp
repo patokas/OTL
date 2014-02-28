@@ -31,8 +31,7 @@
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PromoGiftMainServlet">Promociones</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="ClientPromoGiftMainServlet">Promociones Cliente</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="ExchangeableMainServlet">Productos Canjebles</a></li></c:if>
-                    <c:if test="${access == 777 || access == 555 }" ><li><a href="EventMainServlet">Eventos</a></li></c:if>
-                    <c:if test="${access == 777 || access == 555 }" ><li><a href="GuestMainServlet">Invitados Evento</a></li></c:if>
+                    <c:if test="${access == 777 || access == 555 }" ><li><a href="EventMainServlet">Eventos</a></li></c:if>                    
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="EntryMainServlet">Registro Entradas</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="CategoryMainServlet">Categorías</a></li></c:if>
                         <li><a href="CityMainServlet">Ciudad</a></li>
@@ -48,7 +47,7 @@
                 <li class="dropdown user-dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <c:if test="${userJsp != null}" ><c:out value="${userJsp}" /></c:if> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-user"></i> Perfil</a></li>
+                    <li><a href="AdminGetServlet"><i class="fa fa-user"></i> Perfil</a></li>
                     <li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li>
                     <li><a href="#"><i class="fa fa-gear"></i> Configuración</a></li>
                     <li class="divider"></li>

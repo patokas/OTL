@@ -9,10 +9,9 @@ import card.Card;
 import card.CardDAO;
 import event.Event;
 import event.EventDAO;
-import guest.Guest;
-import guest.GuestDAO;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -24,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import place.Place;
 import place.PlaceDAO;
+import point.PointDAO;
 import userCard.UserCard;
 import userCard.UserCardDAO;
 
@@ -76,8 +76,8 @@ public class ListAddServlet extends HttpServlet {
             CardDAO cardDAO = new CardDAO();
             cardDAO.setConexion(conexion);
 
-            GuestDAO guestDAO = new GuestDAO();
-            guestDAO.setConexion(conexion);
+            PointDAO pointDAO = new PointDAO();
+            pointDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -98,41 +98,25 @@ public class ListAddServlet extends HttpServlet {
                     request.setAttribute("userJsp", username);
                     request.setAttribute("access", access);
 
-                    //////////////////////////////////////////
-                    // DECLARAR VARIABLES DE INSTANCIA
-                    /////////////////////////////////////////                
-
-                    List entry = new List();
-
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
                         ////////////////////////////////////////   
 
                         String btnAdd = request.getParameter("add");
+                        String soptionEvent = request.getParameter("optionEvent");
                         String sidPlace = request.getParameter("idPlace");
                         String sidEvent = request.getParameter("idEvent");
                         String sBarCode = request.getParameter("barCode");
 
+                        List entry = new List();
 
                         boolean error = false;
 
-                        if (btnAdd != null) {
-
-                            /* comprobar id place */
-                            if (sidPlace == null || sidPlace.trim().equals("")) {
-                                request.setAttribute("msgErroridPlace", "Error al recibir id de Plaza. ");
-                                error = true;
-                            } else {
-                                try {
-                                    entry.setIdPlace(Integer.parseInt(sidPlace));
-                                } catch (NumberFormatException n) {
-                                    error = true;
-                                    request.setAttribute("msgErroridPlace", "Error: El id de Plaza deber ser numerico. ");
-                                }
-                            }
-
-                            /* comprobar bar code*/
+                        if (btnAdd == null) {
+                            request.setAttribute("msg", "Ingrese un nuevo cliente a la lista.");
+                        } else {
+                            /* comprobar bar code */
                             if (sBarCode == null || sBarCode.trim().equals("")) {
                                 error = true;
                             } else {
@@ -147,6 +131,62 @@ public class ListAddServlet extends HttpServlet {
                                     request.setAttribute("msgErrorBarCode", "Error: El Código de Barras debe ser numérico. ");
                                 }
                             }
+
+                            /* comprobar id place */
+                            if (sidPlace == null || sidPlace.trim().equals("")) {
+                                request.setAttribute("msgErroridPlace", "Error al recibir id de Plaza. ");
+                                error = true;
+                            } else {
+                                try {
+                                    entry.setIdPlace(Integer.parseInt(sidPlace));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                    request.setAttribute("msgErroridPlace", "Error: El id de Plaza deber ser numerico. ");
+                                }
+                            }
+
+                            /* comprobar optionEvent */
+                            int optionEvent = 0;
+                            if (soptionEvent == null || soptionEvent.trim().equals("")) {
+                                error = true;
+                            } else {
+                                try {
+                                    optionEvent = Integer.parseInt(soptionEvent);
+                                    request.setAttribute("optionEvent", soptionEvent);
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            /* declarar evento a buscar */
+                            Collection<Event> listEvent = new ArrayList<Event>();
+
+                            /* buscar el evento por fecha actual */
+                            if (optionEvent == 1) {
+                                listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
+                                for (Event aux : listEvent) {
+                                    entry.setIdEvent(aux.getIdEvent());
+                                }
+                            }
+
+                            /* buscar el evento por id */
+                            if (optionEvent == 2) {
+                                /* comprobar id event */
+                                if (sidEvent == null || sidEvent.trim().equals("")) {
+                                    request.setAttribute("msgErrorIdEvent", "Error: Debe ingresar ID Evento.");
+                                    error = true;
+                                } else {
+                                    try {
+                                        entry.setIdEvent(Integer.parseInt(sidEvent));
+                                        /* buscar el evento */
+                                        listEvent = eventDAO.findByPlaceEvent(entry.getIdPlace(), entry.getIdEvent());
+                                    } catch (NumberFormatException n) {
+                                        request.setAttribute("msgErrorIdEvent", "Error: El ID Evento debe ser numérico.");
+                                        error = true;
+                                    }
+                                }
+                            }
+
                             ////////////////////////////////////
                             // EJECUTAR LÓGICA DE NEGOCIO
                             ////////////////////////////////////
@@ -156,45 +196,41 @@ public class ListAddServlet extends HttpServlet {
 
                                 if (card == null) {
                                     request.setAttribute("msgErrorCardNotFound", "ACCESSO PROHIBIDO: Tarjeta inválida, verifique código nuevamente o comuniquese con soporte técnico.");
-                                    System.out.println("error: tarjeta no existente");
                                 } else {
-                                    UserCard usercard = null;
                                     /* comprobar vigencia tarjeta */
                                     if (Format.currentDate().compareTo(card.getDateEndCard()) >= 0) {
                                         request.setAttribute("msgErrorExp", "Acceso Restringido: Tarjeta caducada.");
                                         System.out.println("tarjeta caducada");
                                     } else {
                                         System.out.println("tarjeta correcta");
-                                        /* obtener eventos a partir de la fecha actual */
-                                        Collection<Event> listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
 
-                                        /* recorrer collection para obtener eventos */
-                                        for (Event aux : listEvent) {                                            
-                                            Guest guest = new Guest();
-                                            guest.setIdPlace(entry.getIdPlace());
-                                            guest.setRut(card.getRut());
-                                            guest.setIdEvent(aux.getIdEvent());
+                                        /* si encuentra evento */
+                                        if (listEvent.size() > 0) {
+                                            /* buscar datos del cliente */
+                                            UserCard usercard = usercardDAO.findOneByRut(card.getRut());
 
-                                            /* consultar si existe invitacion */
-                                            Guest guestReg = guestDAO.findOneByGuest(guest);
-                                            if (guestReg != null) {
-                                                System.out.println("encuentra invitacion");
-                                                /* si existe invitacion, buscar datos del cliente */
-                                                entry.setIdEvent(aux.getIdEvent());
+                                            /* mostrar datos del cliente */
+                                            if (usercard != null) {
                                                 entry.setRut(card.getRut());
                                                 entry.setDv(card.getDv());
-                                                usercard = usercardDAO.findOneByRut(card.getRut());
-                                                break;
+
+                                                /* insertar registro en la BD */
+                                                try {
+                                                    listDAO.insert(entry);
+                                                    /* sumar puntos */
+                                                    for (Event eventAux : listEvent) {
+                                                        pointDAO.updatePointUp(entry, eventAux.getPoints());
+                                                        break;
+                                                    }
+                                                } catch (Exception ex) {
+                                                }
+                                                request.setAttribute("msgOk", "Bienvenido: " + usercard.getFirstName() + " " + usercard.getLastName());
+                                            } else {
+                                                request.setAttribute("msgErrorGuestNotFound", "Acceso Restringido: El cliente no posee invitaciones en este recinto.");
+                                                System.out.println("no existe invitaciones vigentes");
                                             }
-                                        }
-                                        /* mostrar datos si el cliente ha sido invitado */
-                                        if (usercard != null) {
-                                            System.out.println("obtiene datos del cliente");
-                                            listDAO.insert(entry);
-                                            request.setAttribute("msgOk", "Bienvenido: " + usercard.getFirstName() + " " + usercard.getLastName());
                                         } else {
-                                            request.setAttribute("msgErrorGuestNotFound", "Acceso Restringido: El cliente no posee invitaciones en este recinto.");
-                                            System.out.println("no existe invitaciones vigentes");
+                                            request.setAttribute("msgErrorEvent", "Error: No existe un evento para el día.");
                                         }
                                     }
                                 }
@@ -206,6 +242,7 @@ public class ListAddServlet extends HttpServlet {
 
                         Collection<Place> listPlace = placeDAO.getAll();
                         request.setAttribute("listPlace", listPlace);
+
                         request.setAttribute("reg", entry);
 
                     } catch (Exception parameterException) {

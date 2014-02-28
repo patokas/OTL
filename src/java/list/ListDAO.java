@@ -37,7 +37,7 @@ public class ListDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from list l, user_card uc, place p, event e, card c where l.rut = uc.rut and l.rut = c.rut and l.id_place = p.id_place and l.id_place = e.id_place and l.id_event = e.id_event group by id_list order by l.id_list desc";
+            String sql = "select * from list l, user_card uc, place p, event e, card c where l.rut = uc.rut and l.rut = c.rut and l.id_place = p.id_place and l.id_place = e.id_place and l.id_event = e.id_event group by l.id_place, l.id_event, l.rut order by l.create_time desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -45,7 +45,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -87,11 +86,10 @@ public class ListDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
-                List reg = new List();                
+                List reg = new List();
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -124,7 +122,7 @@ public class ListDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into list (id_event, id_place, rut, dv) values (?, ?, ?, ?)";
+            String sql = "insert into list (id_event, id_place, rut, dv, bar_code) values (?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -132,6 +130,7 @@ public class ListDAO {
             sentence.setInt(2, reg.getIdPlace());
             sentence.setInt(3, reg.getRut());
             sentence.setString(4, reg.getDv());
+            sentence.setInt(5, reg.getBarCode());
 
             sentence.executeUpdate();
 
@@ -152,11 +151,14 @@ public class ListDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "delete from list where id_list = ? ";
+            String sql = "delete from list where id_place = ? and id_event = ? and rut = ? and bar_code = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, reg.getIdList());
+            sentence.setInt(1, reg.getIdPlace());
+            sentence.setInt(2, reg.getIdEvent());
+            sentence.setInt(3, reg.getRut());
+            sentence.setInt(4, reg.getBarCode());
 
             sentence.executeUpdate();
 
@@ -188,7 +190,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -235,7 +236,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -280,7 +280,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -327,7 +326,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -407,7 +405,6 @@ public class ListDAO {
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdList(result.getInt("id_list"));
                 reg.setNameEvent(result.getString("tittle"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
