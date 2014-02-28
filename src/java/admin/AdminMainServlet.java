@@ -72,7 +72,7 @@ public class AdminMainServlet extends HttpServlet {
                     /* obtener los valores de session y asignar valores a la jsp */
                     request.setAttribute("userJsp", user);
                     request.setAttribute("access", access);
-                    request.setAttribute("idUser", idUser);
+                    request.setAttribute("idUser", idUser); 
 
                     try {
                         //////////////////////////////////////////

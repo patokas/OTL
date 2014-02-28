@@ -114,9 +114,11 @@ public class PlaceDAO {
     }
 
     public Collection<Place> getAll() {
-        Collection<Place> list = new ArrayList<Place>();
+
         Statement sentence = null;
         ResultSet result = null;
+
+        Collection<Place> list = new ArrayList<Place>();
 
         try {
             sentence = conexion.createStatement();
