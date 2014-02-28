@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "PlaceAddServlet", urlPatterns = {"/PlaceAddServlet"})
 public class PlaceAddServlet extends HttpServlet {
-    
+
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -42,21 +42,21 @@ public class PlaceAddServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
-        
+
         Connection conexion = null;
-        
+
         try {
             //////////////////////////////////////////
             // ESTABLECER CONEXION
             ////////////////////////////////////////// 
 
             conexion = ds.getConnection();
-            
+
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
-            
+
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
@@ -68,7 +68,7 @@ public class PlaceAddServlet extends HttpServlet {
             // COMPROBAR SESSION
             /////////////////////////////////////////
             try {
-                
+
                 HttpSession session = request.getSession(false);
 
                 /* obtener parametros de session */
@@ -88,7 +88,7 @@ public class PlaceAddServlet extends HttpServlet {
                 // RECIBIR Y COMPROBAR PARAMETROS
                 /////////////////////////////////////////
                 try {
-                    
+
                     String btnAdd = request.getParameter("add");
                     String sidCity = request.getParameter("idCity");
                     String snamePlace = request.getParameter("namePlace");
@@ -97,12 +97,13 @@ public class PlaceAddServlet extends HttpServlet {
                     String contact = request.getParameter("contact");
                     String description = request.getParameter("description");
                     String urlImage = request.getParameter("urlImage");
+                    String urlLogo = request.getParameter("urlLogo");
                     String sidCategory = request.getParameter("idCategory");
-                    
+
                     Place place = new Place();
-                    
+
                     boolean error = false;
-                    
+
                     if (btnAdd == null) {
                         request.setAttribute("msg", "Ingrese una plaza.");
                     } else {
@@ -182,7 +183,15 @@ public class PlaceAddServlet extends HttpServlet {
                         } else {
                             place.setUrlImage(urlImage);
                         }
-                        
+
+                        /* comprobar url logo */
+                        if (urlLogo == null || urlLogo.trim().equals("")) {
+                            request.setAttribute("msgErrorUrlLogo", "Error: Debe ingresar la url del logo.");
+                            error = true;
+                        } else {
+                            place.setUrlLogo(urlLogo);
+                        }
+
                         if (!error) {
                             try {
                                 placeDAO.insert(place);
@@ -199,12 +208,12 @@ public class PlaceAddServlet extends HttpServlet {
 
                     Collection<City> listCity = cityDAO.getAll();
                     request.setAttribute("listCity", listCity);
-                    
+
                     Collection<Category> listCategoty = categoryDAO.getAll();
                     request.setAttribute("listCategory", listCategoty);
-                    
+
                     request.setAttribute("place", place);
-                    
+
                 } catch (Exception parameterException) {
                 } finally {
                     request.getRequestDispatcher("/place/placeAdd.jsp").forward(request, response);

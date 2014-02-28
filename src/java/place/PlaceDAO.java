@@ -40,7 +40,10 @@ public class PlaceDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Place reg = new Place();
+                
+                /* obtener resultSet */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setAddress(result.getString("address"));
@@ -50,8 +53,11 @@ public class PlaceDAO {
                 reg.setNameCity(result.getString("name_city"));
                 reg.setDescription(result.getString("description"));
                 reg.setUrlImage(result.getString("url_image"));
+                reg.setUrlLogo(result.getString("url_logo"));
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
+                
+                /* agregar a la lista */
                 list.add(reg);
             }
 
@@ -59,6 +65,7 @@ public class PlaceDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar los recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -187,7 +194,7 @@ public class PlaceDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, id_category) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, id_category, url_logo) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -199,6 +206,7 @@ public class PlaceDAO {
             sentence.setString(6, reg.getDescription());
             sentence.setString(7, reg.getUrlImage());
             sentence.setInt(8, reg.getIdCategory());
+            sentence.setString(9, reg.getUrlLogo());
 
             sentence.executeUpdate();
 
@@ -219,7 +227,7 @@ public class PlaceDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, id_category = ? where id_place = ? ";
+            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, url_logo = ?, id_category = ? where id_place = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -230,8 +238,9 @@ public class PlaceDAO {
             sentence.setInt(5, reg.getIdCity());
             sentence.setString(6, reg.getDescription());
             sentence.setString(7, reg.getUrlImage());
-            sentence.setInt(8, reg.getIdCategory());
-            sentence.setInt(9, reg.getIdPlace());
+            sentence.setString(8, reg.getUrlLogo());
+            sentence.setInt(9, reg.getIdCategory());
+            sentence.setInt(10, reg.getIdPlace());
 
 
             sentence.executeUpdate();
@@ -241,6 +250,7 @@ public class PlaceDAO {
             ex.printStackTrace();
             throw new RuntimeException("RegDAO.update: " + reg, ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

@@ -21,8 +21,17 @@ public class Place {
     public String description;
     public int idCategory;
     public String nameCategory;
+    public String urlLogo;
 
     public Place() {
+    }
+
+    public String getUrlLogo() {
+        return urlLogo;
+    }
+
+    public void setUrlLogo(String urlLogo) {
+        this.urlLogo = urlLogo;
     }
 
     public int getIdCategory() {
@@ -39,7 +48,7 @@ public class Place {
 
     public void setNameCategory(String nameCategory) {
         this.nameCategory = nameCategory;
-    }        
+    }
 
     public String getDescription() {
         return description;
@@ -55,8 +64,8 @@ public class Place {
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
-    }    
-    
+    }
+
     public String getNameCity() {
         return nameCity;
     }
@@ -72,7 +81,7 @@ public class Place {
     public void setNamePlace(String namePlace) {
         this.namePlace = namePlace;
     }
-    
+
     public int getIdCity() {
         return idCity;
     }
@@ -80,7 +89,7 @@ public class Place {
     public void setIdCity(int idCity) {
         this.idCity = idCity;
     }
-    
+
     public int getContact() {
         return contact;
     }
@@ -95,7 +104,7 @@ public class Place {
 
     public void setIdPlace(int idPlace) {
         this.idPlace = idPlace;
-    }    
+    }
 
     public String getAddress() {
         return address;

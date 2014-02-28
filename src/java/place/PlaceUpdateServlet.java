@@ -96,6 +96,7 @@ public class PlaceUpdateServlet extends HttpServlet {
                     String contact = request.getParameter("contact");
                     String description = request.getParameter("description");
                     String urlImage = request.getParameter("urlImage");
+                    String urlLogo = request.getParameter("urlLogo");
                     String sidCategory = request.getParameter("idCategory");
                     
                     Place place = new Place();
@@ -195,6 +196,14 @@ public class PlaceUpdateServlet extends HttpServlet {
                         error = true;
                     } else {
                         place.setUrlImage(urlImage);
+                    }
+                    
+                    /* comprobar url logo */
+                    if(urlLogo == null || urlLogo.trim().equals("")) {
+                        request.setAttribute("msgErrorUrlLogo", "Error: Debe ingresar la url del logo.");
+                        error = true;
+                    } else {
+                        place.setUrlLogo(urlLogo);
                     }
                     
                     if (!error) {
