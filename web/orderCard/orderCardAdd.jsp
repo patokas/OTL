@@ -46,7 +46,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Mantenedor <small> Solicitud tarjeta</small></h1>
+                    <h1>Mantenedor <small> Solicitud Tarjeta</small></h1>
                     <ol class="breadcrumb">
                         <li><a href="OrderCardMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                         <li class="active"><i class="fa fa-edit"></i> Agregar</li>
@@ -106,10 +106,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Estado Solicitud</label>
-                                <select class="form-control" name="typeCard">
+                                <select class="form-control" name="request">
                                     <option value="0" <c:if test="${orderCard.request == 0 || orderCard.request == null}" >checked</c:if> >Pendiente</option>
-                                <option value="1" <c:if test="${orderCard.typeCard == 1}" >checked</c:if>>Aceptada</option>
-                                <option value="2" <c:if test="${orderCard.typeCard == 2}" >checked</c:if>>Rechazada</option>                              
+                                <option value="1" <c:if test="${orderCard.request == 1}" >checked</c:if>>Aceptada</option>
+                                <option value="2" <c:if test="${orderCard.request == 2}" >checked</c:if>>Rechazada</option>                              
                             </select>
                         </div>
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
