@@ -83,7 +83,7 @@
                     </c:if> 
                 </div>
                 <div class="col-lg-4">
-                    <form role="form" action="PlaceAddServlet" method="POST" name="formAdd"> 
+                    <form role="form" action="OrderCardAddServlet" method="POST" name="formAdd"> 
                         <c:if test="${msgErrorRut == null}" >
                             <div class="form-group">
                                 <label>RUT</label>

@@ -103,7 +103,6 @@ public class UserCardDAO {
                 result.close();
             } catch (Exception noGestionar) {
             }
-
         }
         return reg;
     }

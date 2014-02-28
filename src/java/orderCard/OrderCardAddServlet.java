@@ -85,7 +85,7 @@ public class OrderCardAddServlet extends HttpServlet {
                 try {
 
                     String btnAdd = request.getParameter("add");
-                    String stypeCard = request.getParameter("type_card");
+                    String stypeCard = request.getParameter("typeCard");
                     String srequest = request.getParameter("request");
                     String srut = request.getParameter("rut");
 
@@ -118,9 +118,10 @@ public class OrderCardAddServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-
+System.out.println(error);
                         /* comprobar rut */
                         if (srut == null || srut.trim().equals("")) {
+                            request.setAttribute("msgErrorRut", "Debe ingresar un RUT.");
                             error = true;
                         } else {
                             request.setAttribute("rut", srut);
@@ -136,15 +137,16 @@ public class OrderCardAddServlet extends HttpServlet {
                                         error = true;
                                     }
                                 } else {
-                                    request.setAttribute("msgErrorRut", "Error: Rut inválido.");
+                                    request.setAttribute("msgErrorRut", "Error: RUT inválido.");
                                     error = true;
                                 }
                             } catch (Exception ex) {
-                                request.setAttribute("msgErrorRut", "Error: Rut inválido.");
+                                request.setAttribute("msgErrorRut", "Error: RUT inválido.");
                                 error = true;
                             }
                         }
 
+                        
                         if (!error) {
                             try {
                                 orderCardDAO.insert(orderCard);
