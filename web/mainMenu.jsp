@@ -25,8 +25,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Mantenedores <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="ClientMainServlet">Cliente</a></li>
-                        <li><a href="CardMainServlet">Tarjeta</a></li>
+                        <li><a href="ClientMainServlet">Clientes</a></li>
+                        <li><a href="OrderCardMainServlet">Solicitud Tarjetas</a></li>
+                        <li><a href="CardMainServlet">Tarjetas</a></li>                        
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PointMainServlet">Puntos Cliente</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PromoGiftMainServlet">Promociones</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="ClientPromoGiftMainServlet">Promociones Cliente</a></li></c:if>

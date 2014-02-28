@@ -29,8 +29,10 @@ public class UserCardDAO {
     }
 
     public Collection<UserCard> findByRut(int rut) {
+        
         Statement sentence = null;
         ResultSet result = null;
+        
         Collection<UserCard> list = new ArrayList<UserCard>();
         try {
             sentence = conexion.createStatement();
@@ -58,12 +60,17 @@ public class UserCardDAO {
                 result.close();
             } catch (Exception noGestionar) {
             }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
 
         }
         return list;
     }
     
     public UserCard findOneByRut(int rut) {
+        
         Statement sentence = null;
         ResultSet result = null;
         
@@ -88,6 +95,10 @@ public class UserCardDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -302,6 +313,7 @@ public class UserCardDAO {
     }
 
     public void updatePassword(UserCard user) {
+        
         PreparedStatement sentence = null;
 
         try {

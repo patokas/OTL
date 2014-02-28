@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>OTL - Lugares</title>
+        <title>OTL</title>
 
         <!-- imperio css -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -52,9 +52,9 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Mantenedor <small> Lugares</small></h1>
+                    <h1>Mantenedor <small> Solicitud Tarjeta</small></h1>
                     <ol class="breadcrumb">
-                        <li class="active"><a href="PlaceMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
+                        <li class="active"><a href="OrderCardMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                     </ol>
                     <c:if test="${msg != null}" >
                         <div class="alert alert-info alert-dismissable">
@@ -85,13 +85,13 @@
             <div class="row">                  
                 <div class="col-lg-12">  
                     <div class="table-responsive">
-                        <form action="PlaceMainServlet" method="POST" name="form">
+                        <form action="OrderCardMainServlet" method="POST" name="form">
                             <div class="row-fluid">
                                 <div class="span12">                            
                                     <div class="box">                                
                                         <div class="box-title">
                                             Datatable
-                                            <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PlaceAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
+                                            <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'OrderCardAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
                                             </br>DB
                                         </div>
                                         <div class="box-content nopadding">
@@ -99,11 +99,13 @@
                                                 <thead>
                                                     <tr>
                                                         <th><input class="check_all" type="checkbox" /></th>
-                                                        <th>Id <i class="fa fa-sort"></i></th>
-                                                        <th>Nombre <i class="fa fa-sort"></i></th>
-                                                        <th>Dirección <i class="fa fa-sort"></i></th>                                                        
-                                                        <th>Estado Servicio <i class="fa fa-sort"></i></th>
-                                                        <th>Contacto <i class="fa fa-sort"></i></th>
+                                                        <th>ID <i class="fa fa-sort"></i></th>
+                                                        <th>Tipo tarjeta <i class="fa fa-sort"></i></th>
+                                                        <th>Solicitud <i class="fa fa-sort"></i></th>                                                        
+                                                        <th>Rut <i class="fa fa-sort"></i></th>
+                                                        <th>Nombres <i class="fa fa-sort"></i></th>
+                                                        <th>Apellidos <i class="fa fa-sort"></i></th>
+                                                        <th>Fecha <i class="fa fa-sort"></i></th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>
@@ -111,25 +113,40 @@
                                                 <tbody>
                                                     <c:forEach var="list" items="${list}">  
                                                         <tr>
-                                                            <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />"/></td>                                            
-                                                            <td class="center"><c:out value="${list.idPlace}" /></td>
-                                                            <td class="center"><c:out value="${list.namePlace}" /></td>
-                                                            <td class="center"><c:out value="${list.address}" /></td>
+                                                            <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idOrder}" />"/></td>                                            
+                                                            <td class="center"><c:out value="${list.idOrder}" /></td>                                                                                                                       
                                                             <td class="center">
-                                                                <c:if test="${list.status == 0 }" >
-                                                                    de Alta
+                                                                <c:if test="${list.typeCard == 1 }" >
+                                                                    BASIC
                                                                 </c:if>
-                                                                <c:if test="${list.status == 1 }" >
-                                                                    de Baja
+                                                                <c:if test="${list.typeCard == 2 }" >
+                                                                    SILVER
+                                                                </c:if>
+                                                                <c:if test="${list.typeCard == 3 }" >
+                                                                    GOLD
                                                                 </c:if>
                                                             </td>
-                                                            <td class="center"><c:out value="${list.contact}" /></td>
                                                             <td class="center">
-                                                                <a href="PlaceGetServlet?idPlace=<c:out value="${list.idPlace}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
+                                                                <c:if test="${list.request == 0 }" >
+                                                                    Pendiente
+                                                                </c:if>
+                                                                <c:if test="${list.request == 1 }" >
+                                                                    Aceptada
+                                                                </c:if>
+                                                                <c:if test="${list.request == 2 }" >
+                                                                    Rechazada
+                                                                </c:if>
+                                                            </td>
+                                                            <td class="center"><c:out value="${list.rut}" />-<c:out value="${list.dv}" /></td>
+                                                            <td class="center"><c:out value="${list.firstName}" /></td>
+                                                            <td class="center"><c:out value="${list.lastName}" /></td>
+                                                            <td class="center"><c:out value="${list.orderDate}" /></td>
+                                                            <td class="center">
+                                                                <a href="OrderCardGetServlet?idOrder=<c:out value="${list.idOrder}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                             </td>
                                                             <td class="center">
-                                                                <form action="PlaceMainServlet" method="post">
-                                                                    <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />"/>
+                                                                <form action="OrderCardMainServlet" method="post">
+                                                                    <input type="hidden" name="idOrder" value="<c:out value="${list.idOrder}" />"/>
                                                                     <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button>
                                                                 </form>
                                                             </td>
@@ -139,11 +156,13 @@
                                                 <tfoot>
                                                     <tr>
                                                         <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button></th>
-                                                        <th>Id </th>
-                                                        <th>Nombre de Plaza </th>
-                                                        <th>Dirección </th>
-                                                        <th>Estado Servicio </th>
-                                                        <th>Contacto </th>
+                                                        <th>ID </th>
+                                                        <th>Tipo tarjeta </th>
+                                                        <th>Solicitud </th>                                                        
+                                                        <th>Rut </th>
+                                                        <th>Nombres </th>
+                                                        <th>Apellidos </th>
+                                                        <th>Fecha </th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>

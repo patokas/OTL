@@ -215,6 +215,7 @@ public class PlaceDAO {
     }
 
     public void update(Place reg) {
+        
         PreparedStatement sentence = null;
 
         try {
