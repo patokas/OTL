@@ -97,7 +97,7 @@ public class PromoGiftListAddServlet extends HttpServlet {
 
                         String btnAdd = request.getParameter("add");
                         String sidPlace = request.getParameter("idPlace");
-                        String sidPromo = request.getParameter("idPromo");                        
+                        String sidPromo = request.getParameter("idPromo");
                         String srut = request.getParameter("rut");
 
                         ClientPromo pglReg = new ClientPromo();
@@ -132,19 +132,25 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                     request.setAttribute("msgErrorPromo", "Error: El id Promo debe ser numérico. ");
                                     error = true;
                                 }
-                            }                           
+                            }
 
                             /* comprobar rut */
-                            if (srut == null || srut.trim().equals("") || srut.length() < 2) {
+                            if (srut == null || srut.trim().equals("")) {
                                 request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                                 error = true;
                             } else {
-                                if (!ValidationRut.validateRut(srut)) {
-                                    error = true;
+                                request.setAttribute("rut", srut);
+                                try {
+                                    if (!ValidationRut.validateRut(srut)) {
+                                        error = true;
+                                        request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
+                                    } else {
+                                        pglReg.setRut(Format.getRut(srut));
+                                        pglReg.setDv(Format.getDv(srut));
+                                    }
+                                } catch (Exception ex) {
                                     request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
-                                } else {
-                                    pglReg.setRut(Format.getRut(srut));
-                                    pglReg.setDv(Format.getDv(srut));
+                                    error = true;
                                 }
                             }
 
@@ -167,7 +173,7 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                 if (pgReg.getIdPlace() > 0) {
                                     System.out.println("existe promo_gift");
                                     /* verificar si esta duplicada en tabla promo_gift_list */
-                                    ClientPromo aux = pglDAO.findbyPromoGiftList(pglReg);                                    
+                                    ClientPromo aux = pglDAO.findbyPromoGiftList(pglReg);
                                     if (aux != null) {
                                         System.out.println("existe promo o regalo para el cliente");
                                         request.setAttribute("msgErrorDup", "Error: ya existe esta Promo/Regalo para el usuario.");
@@ -191,9 +197,9 @@ public class PromoGiftListAddServlet extends HttpServlet {
                         /* obtener lista de lugares */
                         Collection<Place> listPlace = placeDAO.getAll();
                         request.setAttribute("listPlace", listPlace);
-                        
+
                         request.setAttribute("pglReg", pglReg);
-                        
+
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/promoGiftList/promoGiftListAdd.jsp").forward(request, response);

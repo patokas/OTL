@@ -37,10 +37,10 @@
 
     <div id="wrapper">
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <c:import var="menu" url="/mainMenu.jsp" />
-            <c:out value="${menu}" escapeXml="false" />
-            <!-- /.navbar-collapse -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <c:import var="menu" url="/mainMenu.jsp" />
+        <c:out value="${menu}" escapeXml="false" />
+        <!-- /.navbar-collapse -->
 
         <div id="page-wrapper">
 
@@ -113,30 +113,25 @@
                         </div>
                         <c:if test="${msgError == null }" >
                             <div class="form-group">
-                                <label>id Promo</label>
+                                <label>ID Promo</label>
                                 <input type="number" class="form-control" required="true" min="1" name="idPromo" value="<c:out value="${pglReg.idPromo}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgError1 != null }" >
                             <div class="form-group has-error">
-                                <label class="control-label" for="inputError">id Promo</label>
+                                <label class="control-label" for="inputError">ID Promo</label>
                                 <input type="number" class="form-control" required="true" min="1" name="idPromo" id="inputError" value="<c:out value="${pglReg.idPromo}" />">
                             </div>
                         </c:if>
                         <div class="form-group">
-                            <label>Rut (ex: 12345678-9)</label>
-                            <input class="form-control" required="true" maxlength="12" name="rut" value="<c:out value="${pglReg.rut}" />-<c:out value="${pglReg.dv}" />">
+                            <label>RUT</label>
+                            <input class="form-control" required="true" maxlength="12" name="rut" value="<c:out value="${rut}" />">
                         </div>                       
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>
                 </div>
-            </div><!-- /.row -->
-            <div class="row">                  
-                <div class="col-lg-12">                        
-
-                </div>
-            </div><!-- /.row -->
+            </div><!-- /.row -->            
 
         </div><!-- /#page-wrapper -->
 
