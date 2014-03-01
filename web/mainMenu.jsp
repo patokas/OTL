@@ -37,6 +37,7 @@
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="CategoryMainServlet">Categorías</a></li></c:if>
                         <li><a href="CityMainServlet">Ciudad</a></li>
                     <c:if test="${access == 777}" ><li><a href="PlaceMainServlet">Locales</a></li></c:if>
+                    <c:if test="${access == 777}" ><li><a href="DressCodeMainServlet">Código Vestir</a></li></c:if>
                     <c:if test="${access == 777}" ><li><a href="AdminMainServlet">Admin</a></li></c:if>
                     </ul>
                 </li>

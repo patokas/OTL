@@ -82,7 +82,7 @@ public class DressCodeDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from dress_code";
+            String sql = "select * from dress_code where id_dress_code = " + id + "";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -222,6 +222,7 @@ public class DressCodeDAO {
             sentence.setString(2, reg.getMenDetails());
             sentence.setString(3, reg.getWomenDetails());
             sentence.setString(4, reg.getUrlImage());
+            sentence.setInt(5, reg.getIdDressCode());
 
             sentence.executeUpdate();
 
