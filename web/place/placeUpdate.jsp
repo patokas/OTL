@@ -196,6 +196,14 @@
                                 </c:forEach>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Código de vestir</label>
+                            <select class="form-control" name="idDressCode">
+                                <c:forEach var="listDressCode" items="${listDressCode}">  
+                                    <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${place.idDressCode == listDressCode.idDressCode}">selected</c:if> > <c:out value="${listDressCode.tittle}" /> </option>
+                                </c:forEach>
+                            </select>
+                        </div>
                         <c:if test="${msgErrorUrlImage == null}" >
                             <div class="form-group">
                                 <label>Url Imagen</label>

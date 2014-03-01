@@ -36,13 +36,13 @@ public class PlaceDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci, category ca where id_place = " + id + " and pl.id_city = ci.id_city and pl.id_category = ca.id_category ";
+            String sql = "select * from place pl, city ci, category ca, dress_code dc where id_place = " + id + " and pl.id_dress_code = dc.id_dress_code and pl.id_city = ci.id_city and pl.id_category = ca.id_category ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
                 /* instanciar objeto */
                 Place reg = new Place();
-                
+
                 /* obtener resultSet */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -56,7 +56,9 @@ public class PlaceDAO {
                 reg.setUrlLogo(result.getString("url_logo"));
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
-                
+                reg.setIdDressCode(result.getInt("id_dress_code"));
+                reg.setTittle(result.getString("tittle"));
+
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -129,7 +131,7 @@ public class PlaceDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci, category ca where pl.id_city = ci.id_city and pl.id_category = ca.id_category";
+            String sql = "select * from place pl, city ci, category ca, dress_code dc where pl.id_dress_code = dc.id_dress_code and pl.id_city = ci.id_city and pl.id_category = ca.id_category";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -143,6 +145,8 @@ public class PlaceDAO {
                 reg.setNameCity(result.getString("name_city"));
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
+                reg.setTittle(result.getString("tittle"));
 
                 list.add(reg);
             }
@@ -194,7 +198,7 @@ public class PlaceDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, id_category, url_logo) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, id_category, url_logo, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -207,6 +211,7 @@ public class PlaceDAO {
             sentence.setString(7, reg.getUrlImage());
             sentence.setInt(8, reg.getIdCategory());
             sentence.setString(9, reg.getUrlLogo());
+            sentence.setInt(10, reg.getIdDressCode());
 
             sentence.executeUpdate();
 
@@ -223,11 +228,11 @@ public class PlaceDAO {
     }
 
     public void update(Place reg) {
-        
+
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, url_logo = ?, id_category = ? where id_place = ? ";
+            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, url_logo = ?, id_category = ?, id_dress_code = ? where id_place = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -240,7 +245,8 @@ public class PlaceDAO {
             sentence.setString(7, reg.getUrlImage());
             sentence.setString(8, reg.getUrlLogo());
             sentence.setInt(9, reg.getIdCategory());
-            sentence.setInt(10, reg.getIdPlace());
+            sentence.setInt(10, reg.getIdDressCode());
+            sentence.setInt(11, reg.getIdPlace());
 
 
             sentence.executeUpdate();

@@ -8,6 +8,8 @@ import category.Category;
 import category.CategoryDAO;
 import city.City;
 import city.CityDAO;
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -62,6 +64,9 @@ public class PlaceGetServlet extends HttpServlet {
 
             CategoryDAO categoryDAO = new CategoryDAO();
             categoryDAO.setConexion(conexion);
+
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -125,6 +130,9 @@ public class PlaceGetServlet extends HttpServlet {
 
                         Collection<Category> listCategory = categoryDAO.getAll();
                         request.setAttribute("listCategory", listCategory);
+
+                        Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                        request.setAttribute("listDressCode", listDressCode);
 
                     } catch (Exception parameterException) {
                     } finally {

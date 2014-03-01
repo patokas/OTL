@@ -22,8 +22,26 @@ public class Place {
     public int idCategory;
     public String nameCategory;
     public String urlLogo;
+    public int idDressCode;
+    public String tittle;
 
     public Place() {
+    }
+
+    public int getIdDressCode() {
+        return idDressCode;
+    }
+
+    public void setIdDressCode(int idDressCode) {
+        this.idDressCode = idDressCode;
+    }
+
+    public String getTittle() {
+        return tittle;
+    }
+
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 
     public String getUrlLogo() {

@@ -8,6 +8,8 @@ import category.Category;
 import category.CategoryDAO;
 import city.City;
 import city.CityDAO;
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -62,6 +64,9 @@ public class PlaceUpdateServlet extends HttpServlet {
             
             CategoryDAO categoryDAO = new CategoryDAO();
             categoryDAO.setConexion(conexion);
+            
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
 
             /////////////////////////////////////////
             // COMPROBAR SESSION
@@ -90,6 +95,7 @@ public class PlaceUpdateServlet extends HttpServlet {
 
                     String sidPlace = request.getParameter("idPlace");
                     String sidCity = request.getParameter("idCity");
+                    String sidDressCode = request.getParameter("idDressCode");
                     String snamePlace = request.getParameter("namePlace");
                     String sadress = request.getParameter("address");
                     String status = request.getParameter("status");
@@ -138,6 +144,18 @@ public class PlaceUpdateServlet extends HttpServlet {
                             place.setIdCategory(Integer.parseInt(sidCategory));
                         } catch (NumberFormatException n) {
                             request.setAttribute("msgErrorIdCategory", "Error al recibir id categoría");
+                            error = true;
+                        }
+                    }
+
+                    /* comprobar id dress code */
+                    if (sidDressCode == null || sidDressCode.trim().equals("")) {
+                        request.setAttribute("msgErrorIdDressCode", "Error al recbir ID código de vestir.");
+                        error = true;
+                    } else {
+                        try {
+                            place.setIdDressCode(Integer.parseInt(sidDressCode));
+                        } catch (NumberFormatException n) {
                             error = true;
                         }
                     }
@@ -197,9 +215,9 @@ public class PlaceUpdateServlet extends HttpServlet {
                     } else {
                         place.setUrlImage(urlImage);
                     }
-                    
+
                     /* comprobar url logo */
-                    if(urlLogo == null || urlLogo.trim().equals("")) {
+                    if (urlLogo == null || urlLogo.trim().equals("")) {
                         request.setAttribute("msgErrorUrlLogo", "Error: Debe ingresar la url del logo.");
                         error = true;
                     } else {
@@ -238,6 +256,9 @@ public class PlaceUpdateServlet extends HttpServlet {
                     
                     Collection<Category> listCategory = categoryDAO.getAll();
                     request.setAttribute("listCategory", listCategory);
+                    
+                    Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                    request.setAttribute("listDressCode", listDressCode);
                     
                     request.setAttribute("place", place);
                     

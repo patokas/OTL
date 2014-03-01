@@ -8,6 +8,8 @@ import category.Category;
 import category.CategoryDAO;
 import city.City;
 import city.CityDAO;
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -64,6 +66,9 @@ public class PlaceAddServlet extends HttpServlet {
             CategoryDAO categoryDAO = new CategoryDAO();
             categoryDAO.setConexion(conexion);
 
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
+
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -91,6 +96,7 @@ public class PlaceAddServlet extends HttpServlet {
 
                     String btnAdd = request.getParameter("add");
                     String sidCity = request.getParameter("idCity");
+                    String sidDressCode = request.getParameter("idDressCode");
                     String snamePlace = request.getParameter("namePlace");
                     String sadress = request.getParameter("address");
                     String status = request.getParameter("status");
@@ -129,6 +135,18 @@ public class PlaceAddServlet extends HttpServlet {
                             }
                         }
 
+                        /* comprobar id dress code */
+                        if (sidDressCode == null || sidDressCode.trim().equals("")) {
+                            request.setAttribute("msgErrorIdDressCode", "Error al recbir ID código de vestir.");
+                            error = true;
+                        } else {
+                            try {
+                                place.setIdDressCode(Integer.parseInt(sidDressCode));
+                            } catch (NumberFormatException n) {
+                                error = true;
+                            }
+                        }
+
                         /* comprobar name place */
                         if (snamePlace == null || snamePlace.trim().equals("")) {
                             request.setAttribute("msgErrorNamePlace", "Error: Debe ingresar un nombre para la Plaza. ");
@@ -145,7 +163,7 @@ public class PlaceAddServlet extends HttpServlet {
                             place.setAddress(sadress);
                         }
 
-                        /* comprobar status*/
+                        /* comprobar status */
                         if (status == null || status.trim().equals("")) {
                             request.setAttribute("msgErrorStatus", "Error: deber ingresar un estado de servicio válido (0: de Alta; 1: de Baja) ");
                             error = true;
@@ -211,6 +229,9 @@ public class PlaceAddServlet extends HttpServlet {
 
                     Collection<Category> listCategoty = categoryDAO.getAll();
                     request.setAttribute("listCategory", listCategoty);
+
+                    Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                    request.setAttribute("listDressCode", listDressCode);
 
                     request.setAttribute("place", place);
 

@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>OTL - Agregar Plaza</title>
+        <title>OTL</title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
@@ -180,6 +180,14 @@
                             <select class="form-control" name="idCategory">
                                 <c:forEach var="listCategory" items="${listCategory}">  
                                     <option value="<c:out value="${listCategory.idCategory}" />" <c:if test="${place.idCategory == listCategory.idCategory}">selected</c:if> > <c:out value="${listCategory.nameCategory}" /> </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Código de vestir</label>
+                            <select class="form-control" name="idDressCode">
+                                <c:forEach var="listDressCode" items="${listDressCode}">  
+                                    <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${place.idDressCode == listDressCode.idDressCode}">selected</c:if> > <c:out value="${listDressCode.tittle}" /> </option>
                                 </c:forEach>
                             </select>
                         </div>
