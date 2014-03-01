@@ -12,7 +12,7 @@ public class DressCode implements java.io.Serializable {
 
     public int idDressCode;
     public String tittle;
-    public String menDetails;
+    public String menDetails; 
     public String womenDetails;
     public String urlImage;
 
