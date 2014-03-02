@@ -111,49 +111,44 @@
                         <c:if test="${msgErrorMenDetails == null}" >
                             <div class="form-group">
                                 <label>Descripción para Hombres</label>
-                                <input class="form-control" required="true" maxlength="30" name="menDetails" value="<c:out value="${menDetails}" />">
+                                <input class="form-control" required="true" maxlength="255" name="menDetails" value="<c:out value="${menDetails}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorMenDetails != null }" >
                             <div class="form-group has-error">
                                 <label class="control-label" for="inputError">Descripción para Hombres</label>
-                                <input class="form-control" required="true" maxlength="30" name="menDetails" id="inputError" value="<c:out value="${menDetails}" />">
+                                <input class="form-control" required="true" maxlength="255" name="menDetails" id="inputError" value="<c:out value="${menDetails}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorWomenDetails == null}" >
                             <div class="form-group">
                                 <label>Descripción para Mujeres</label>
-                                <input class="form-control" required="true" maxlength="30" name="womenDetails" value="<c:out value="${womenDetails}" />">
+                                <input class="form-control" required="true" maxlength="255" name="womenDetails" value="<c:out value="${womenDetails}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorWomenDetails != null }" >
                             <div class="form-group has-error">
                                 <label class="control-label" for="inputError">Descripción para Mujeres</label>
-                                <input class="form-control" required="true" maxlength="30" name="womenDetails" id="inputError" value="<c:out value="${womenDetails}" />">
+                                <input class="form-control" required="true" maxlength="255" name="womenDetails" id="inputError" value="<c:out value="${womenDetails}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorUrlImage == null}" >
                             <div class="form-group">
                                 <label>URL imagen</label>
-                                <input class="form-control" required="true" maxlength="30" name="urlImage" value="<c:out value="${urlImage}" />">
+                                <input class="form-control" required="true" maxlength="255" name="urlImage" value="<c:out value="${urlImage}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorUrlImage != null }" >
                             <div class="form-group has-error">
                                 <label class="control-label" for="inputError">URL imagen</label>
-                                <input class="form-control" required="true" maxlength="30" name="urlImage" id="inputError" value="<c:out value="${urlImage}" />">
+                                <input class="form-control" required="true" maxlength="255" name="urlImage" id="inputError" value="<c:out value="${urlImage}" />">
                             </div>
                         </c:if>
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>
                 </div>
-            </div><!-- /.row -->
-            <div class="row">                  
-                <div class="col-lg-12">                        
-
-                </div>
-            </div><!-- /.row -->
+            </div><!-- /.row -->          
 
         </div><!-- /#page-wrapper -->
 
