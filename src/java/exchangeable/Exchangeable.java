@@ -17,8 +17,17 @@ public class Exchangeable implements java.io.Serializable {
     public String namePlace;
     public String urlImage;
     public int points;
+    public int request;
 
     public Exchangeable() {
+    }
+
+    public int getRequest() {
+        return request;
+    }
+
+    public void setRequest(int request) {
+        this.request = request;
     }
 
     public int getIdExchangeable() {
@@ -28,7 +37,7 @@ public class Exchangeable implements java.io.Serializable {
     public void setIdExchangeable(int idExchangeable) {
         this.idExchangeable = idExchangeable;
     }
-    
+
     public String getNamePlace() {
         return namePlace;
     }

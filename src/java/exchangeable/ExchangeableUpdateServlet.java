@@ -84,6 +84,7 @@ public class ExchangeableUpdateServlet extends HttpServlet {
                         String tittle = request.getParameter("tittle");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
+                        String srequest = request.getParameter("exchangeRequest");
 
                         Exchangeable exchange = new Exchangeable();
 
@@ -148,6 +149,19 @@ public class ExchangeableUpdateServlet extends HttpServlet {
                                 exchange.setPoints(Integer.parseInt(spoints));
                             } catch (NumberFormatException n) {
                                 request.setAttribute("msgErrorPoints", "Error: Los puntos deben ser numéricos.");
+                                error = true;
+                            }
+                        }
+
+                        /* comprobar request */
+                        if (srequest == null || srequest.trim().equals("")) {
+                            request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                            error = true;
+                        } else {
+                            try {
+                                exchange.setRequest(Integer.parseInt(srequest));
+                            } catch (NumberFormatException n) {
+                                request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
                                 error = true;
                             }
                         }

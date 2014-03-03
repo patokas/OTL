@@ -87,8 +87,14 @@
                             <strong><c:out value="${msgOk}" /></strong>
                         </div>
                     </c:if>
-
+                    <c:if test="${msgErrorRequest != null }" >
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong><c:out value="${msgErrorRequest}" /></strong></br>
+                        </div>
+                    </c:if>
                 </div>
+
                 <div class="col-lg-4">
                     <form role="form" action="ExchangeableAddServlet" method="POST" name="formAdd">                         
                         <div class="form-group">
@@ -134,7 +140,15 @@
                                 <label class="control-label" for="inputError">URL imagen </label>
                                 <input class="form-control" required="true" maxlength="200" id="inputError" name="urlImage" value="<c:out value="${exchange.urlImage}" />">
                             </div>
-                        </c:if>                        
+                        </c:if>    
+                        <div class="form-group">
+                            <label>Solicitud: </label>
+                            <select class="form-control" name="exchangeRequest">                                
+                                <option value="0" <c:if test="${exchange.request == 0}">selected</c:if>>Pendiente</option>
+                                <option value="1" <c:if test="${exchange.request == 1}">selected</c:if>>Aceptada</option>
+                                <option value="2" <c:if test="${exchange.request == 2}">selected</c:if>>Rechazada</option>
+                            </select>          
+                        </div>
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>

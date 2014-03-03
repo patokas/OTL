@@ -115,7 +115,8 @@
                                                             <th>Plaza <i class="fa fa-sort"></i></th>
                                                             <th>ID <i class="fa fa-sort"></i></th>
                                                             <th>Título Producto <i class="fa fa-sort"></i></th>
-                                                            <th>Puntos <i class="fa fa-sort"></i></th>                                                           
+                                                            <th>Puntos <i class="fa fa-sort"></i></th>       
+                                                            <th>Solicitud <i class="fa fa-sort"></i></th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>
@@ -129,7 +130,12 @@
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
                                                                 <td class="center"><c:out value="${list.points}" /></td>
                                                                 <td class="center">
-                                                                    <a href="ExchangeableGetServlet?idPlace=<c:out value="${list.idPlace}" />&idExchangeable=<c:out value="${list.idExchangeable}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
+                                                                    <c:if test="${list.request == 0}">Pendiente</c:if>
+                                                                    <c:if test="${list.request == 1}">Aceptada</c:if>
+                                                                    <c:if test="${list.request == 2}">Rechazada</c:if>
+                                                                    </td>
+                                                                    <td class="center">
+                                                                        <a href="ExchangeableGetServlet?idPlace=<c:out value="${list.idPlace}" />&idExchangeable=<c:out value="${list.idExchangeable}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                                 </td>
                                                                 <td class="center">
                                                                     <form action="ExchangeableMainServlet" method="post">
@@ -147,7 +153,8 @@
                                                             <th>Plaza</th>
                                                             <th>ID</th>
                                                             <th>Título Producto</th>
-                                                            <th>Puntos</th>                                                           
+                                                            <th>Puntos</th> 
+                                                            <th>Solicitud</th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>

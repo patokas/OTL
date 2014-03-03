@@ -48,6 +48,7 @@ public class ExchangeableDAO {
                 reg.setTittle(result.getString("tittle"));
                 reg.setUrlImage(result.getString("g.url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 /* agregar a collection */
                 list.add(reg);
@@ -115,6 +116,7 @@ public class ExchangeableDAO {
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setTittle(result.getString("tittle"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
                 /* asignar a la lista */
                 list.add(reg);
             }
@@ -142,14 +144,14 @@ public class ExchangeableDAO {
 
         try {
 
-            String sql = "insert into gift (id_place, tittle, url_image, points) values (?, ?, ?, ?)";
-
+            String sql = "insert into gift (id_place, tittle, url_image, points, request) values (?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, exchange.getIdPlace());
             sentence.setString(2, exchange.getTittle());
             sentence.setString(3, exchange.getUrlImage());
             sentence.setInt(4, exchange.getPoints());
+            sentence.setInt(5, exchange.getRequest());
 
             sentence.executeUpdate();
 
@@ -185,6 +187,7 @@ public class ExchangeableDAO {
                 reg.setTittle(result.getString("tittle"));
                 reg.setPoints(result.getInt("points"));
                 reg.setUrlImage(result.getString("url_image"));
+                reg.setRequest(result.getInt("request"));
             }
 
         } catch (SQLException ex) {
@@ -209,15 +212,15 @@ public class ExchangeableDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update gift set tittle = ?, url_image = ?, points = ? where id_place = ? and id_gift = ? ";
-
+            String sql = "update gift set tittle = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_gift = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, exchange.getTittle());
             sentence.setString(2, exchange.getUrlImage());
             sentence.setInt(3, exchange.getPoints());
-            sentence.setInt(4, exchange.getIdPlace());
-            sentence.setInt(5, exchange.getIdExchangeable());
+            sentence.setInt(4, exchange.getRequest());
+            sentence.setInt(5, exchange.getIdPlace());
+            sentence.setInt(6, exchange.getIdExchangeable());
 
             sentence.executeUpdate();
 

@@ -31,6 +31,7 @@ public class PointDAO {
     }
 
     public Collection<Point> getAll() {
+        
         Statement sentence = null;
         ResultSet result = null;
 

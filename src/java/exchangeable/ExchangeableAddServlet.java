@@ -88,6 +88,7 @@ public class ExchangeableAddServlet extends HttpServlet {
                         String tittle = request.getParameter("tittle");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
+                        String srequest = request.getParameter("exchangeRequest");
 
                         Exchangeable exchange = new Exchangeable();
 
@@ -141,6 +142,19 @@ public class ExchangeableAddServlet extends HttpServlet {
                                 }
                             }
 
+                            /* comprobar request */
+                            if (srequest == null || srequest.trim().equals("")) {
+                                request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                                error = true;
+                            } else {
+                                try {
+                                    exchange.setRequest(Integer.parseInt(srequest));
+                                } catch (NumberFormatException n) {
+                                    request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                                    error = true;
+                                }
+                            }
+
                             /////////////////////////////////////////
                             // EJECUTAR LOGICA DE NEGOCIO
                             /////////////////////////////////////////
@@ -160,7 +174,7 @@ public class ExchangeableAddServlet extends HttpServlet {
                             if (!error) {
                                 try {
                                     exDAO.insert(exchange);
-                                    request.setAttribute("msgOk", "El registro se ha ingresado exitosamente.");                                    
+                                    request.setAttribute("msgOk", "El registro se ha ingresado exitosamente.");
                                 } catch (Exception ex) {
                                     request.setAttribute("msgErrorInsert", "Error al insertar nuevo producto canjeable.");
                                 }

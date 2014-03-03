@@ -14,8 +14,26 @@ public class PlaceCategory {
     public String namePlace;
     public int idCategory;
     public String nameCategory;
+    public int idCity;
+    public String nameCity;
 
     public PlaceCategory() {
+    }
+
+    public int getIdCity() {
+        return idCity;
+    }
+
+    public void setIdCity(int idCity) {
+        this.idCity = idCity;
+    }
+
+    public String getNameCity() {
+        return nameCity;
+    }
+
+    public void setNameCity(String nameCity) {
+        this.nameCity = nameCity;
     }
 
     public int getIdPlace() {
