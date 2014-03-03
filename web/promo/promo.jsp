@@ -116,6 +116,7 @@
                                                             <th>ID <i class="fa fa-sort"></i></th>
                                                             <th>Título Promoción <i class="fa fa-sort"></i></th>
                                                             <th>Puntos <i class="fa fa-sort"></i></th>
+                                                            <th>Solicitud <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Inicio <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Término <i class="fa fa-sort"></i></th>
                                                             <th></th>
@@ -130,7 +131,12 @@
                                                                 <td class="center"><c:out value="${list.idPromo}" /></td>
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
                                                                 <td class="center"><c:out value="${list.points}" /></td>
-                                                                    <td><c:out value="${list.dateBegin}" /></td>
+                                                                <td class="center">
+                                                                    <c:if test="${list.request == 0}">Pendiente</c:if>
+                                                                    <c:if test="${list.request == 1}">Aceptada</c:if>
+                                                                    <c:if test="${list.request == 2}">Rechazada</c:if>
+                                                                    </td>
+                                                                    <td class="center"><c:out value="${list.dateBegin}" /></td>
                                                                 <td class="center"><c:out value="${list.dateEnd}" /></td>
                                                                 <td class="center">
                                                                     <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
@@ -147,13 +153,14 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button></th>
-                                                            <th>Plaza</th>
-                                                            <th>ID </th>
-                                                            <th>Título Promoción</th>
-                                                            <th>Puntos</th>
-                                                            <th>Fecha Inicio</th>
-                                                            <th>Fecha Término</th>
+                                                            <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button> </th>
+                                                            <th>Plaza </th>
+                                                            <th>ID</th>
+                                                            <th>Título Promoción </th>
+                                                            <th>Puntos </th>
+                                                            <th>Solicitud </th>
+                                                            <th>Fecha Inicio </th>
+                                                            <th>Fecha Término </th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>

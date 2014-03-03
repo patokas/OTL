@@ -52,15 +52,16 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
 
-            //5 let free resources        
         } catch (SQLException ex) {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -95,6 +96,7 @@ public class EventDAO {
                 reg.setDateBegin(result.getString("date_begin"));
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -103,6 +105,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -154,8 +157,7 @@ public class EventDAO {
 
         try {
 
-            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points) values (?, ?, ?, ?, ?, ?, ?, ?)";
-
+            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, maxIdEvent);
@@ -166,6 +168,7 @@ public class EventDAO {
             sentence.setString(6, event.getDateEnd());
             sentence.setString(7, event.getUrlImage());
             sentence.setInt(8, event.getPoints());
+            sentence.setInt(9, event.getRequest());
 
             sentence.executeUpdate();
 
@@ -174,6 +177,7 @@ public class EventDAO {
             ex.printStackTrace();
             throw new RuntimeException("regDAO.add: " + event, ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -187,8 +191,7 @@ public class EventDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ? where id_place = ? and id_event = ? ";
-
+            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_event = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, event.getTittle());
@@ -197,8 +200,9 @@ public class EventDAO {
             sentence.setString(4, event.getDateEnd());
             sentence.setString(5, event.getUrlImage());
             sentence.setInt(6, event.getPoints());
-            sentence.setInt(7, event.getIdPlace());
-            sentence.setInt(8, event.getIdEvent());
+            sentence.setInt(7, event.getRequest());
+            sentence.setInt(8, event.getIdPlace());
+            sentence.setInt(9, event.getIdEvent());
 
             sentence.executeUpdate();
 
@@ -207,6 +211,7 @@ public class EventDAO {
             ex.printStackTrace();
             throw new RuntimeException("RegDAO.update: " + event, ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -233,6 +238,7 @@ public class EventDAO {
             ex.printStackTrace();
             throw new RuntimeException("regDAO.eliminar: " + event, ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -263,6 +269,7 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("e.url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -271,6 +278,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -284,6 +292,7 @@ public class EventDAO {
     }
 
     public Collection<Event> findByPlace(Event event) {
+
         Statement sentence = null;
         ResultSet result = null;
 
@@ -304,6 +313,7 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -312,6 +322,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -325,6 +336,7 @@ public class EventDAO {
     }
 
     public Collection<Event> findbyDate(String date1, String date2) {
+
         Statement sentence = null;
         ResultSet result = null;
 
@@ -345,6 +357,7 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -353,6 +366,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -387,6 +401,7 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -395,6 +410,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -415,9 +431,8 @@ public class EventDAO {
         event.setIdEvent(maxIdEvent);
 
         try {
-
-            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points) values (?, ?, ?, ?, ?, ?, ?, ?)";
-
+            
+            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, event.getIdEvent());
@@ -428,6 +443,7 @@ public class EventDAO {
             sentence.setString(6, event.getDateEnd());
             sentence.setString(7, event.getUrlImage());
             sentence.setInt(8, event.getPoints());
+            sentence.setInt(9, event.getRequest());
 
             sentence.executeUpdate();
 
@@ -445,15 +461,16 @@ public class EventDAO {
                     sentence.executeUpdate();
                 }
             } catch (SQLException e) {
-                // todo Gestionar mejor esta exception
+                // Gestionar mejor esta exception
                 e.printStackTrace();
                 throw new RuntimeException("regDAO.add: " + listUC, e);
             }
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
+            // Gestionar mejor esta exception
             ex.printStackTrace();
             throw new RuntimeException("regDAO.add: " + event, ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -484,6 +501,7 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
@@ -492,6 +510,7 @@ public class EventDAO {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {

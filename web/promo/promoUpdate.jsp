@@ -117,6 +117,12 @@
                             <strong><c:out value="${msgErrorPoints}" /></strong></br>
                         </div>
                     </c:if>
+                    <c:if test="${msgErrorRequest != null }" >
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong><c:out value="${msgErrorRequest}" /></strong></br>
+                        </div>
+                    </c:if>
                 </div>
                 <div class="col-lg-4">
                     <form role="form" action="PromoUpdateServlet" method="POST" name="formUpdate">
@@ -224,9 +230,10 @@
                         <div class="form-group">
                             <label>Solicitud: </label>
                             <select class="form-control" name="promoRequest">                                
-                                <option value="0" <c:if test="${promo.request == 0}">selected</c:if>>No Aceptada</option>
-                                <option value="1" <c:if test="${promo.request == 1}">selected</c:if>>Aceptada</option>                                
-                            </select>                                
+                                <option value="0" <c:if test="${promo.request == 0}">selected</c:if>>Pendiente</option>
+                                <option value="1" <c:if test="${promo.request == 1}">selected</c:if>>Aceptada</option>
+                                <option value="2" <c:if test="${promo.request == 2}">selected</c:if>>Rechazada</option>
+                            </select> 
                         </div>
                         <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
                     </form>

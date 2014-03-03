@@ -123,6 +123,7 @@
                                                             <th>Plaza <i class="fa fa-sort"></i></th>
                                                             <th>ID <i class="fa fa-sort"></i></th>
                                                             <th>Título Evento <i class="fa fa-sort"></i></th>
+                                                            <th>Solicitud <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Inicio <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Término <i class="fa fa-sort"></i></th>
                                                             <th></th>
@@ -136,7 +137,12 @@
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>
                                                                 <td class="center"><c:out value="${list.idEvent}" /></td>
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
-                                                                <td class="center"><c:out value="${list.dateBegin}" /></td>
+                                                                <td class="center">
+                                                                    <c:if test="${list.request == 0}">Pendiente</c:if>
+                                                                    <c:if test="${list.request == 1}">Aceptada</c:if>
+                                                                    <c:if test="${list.request == 2}">Rechazada</c:if>
+                                                                    </td>
+                                                                    <td class="center"><c:out value="${list.dateBegin}" /></td>
                                                                 <td class="center"><c:out value="${list.dateEnd}" /></td>
                                                                 <td class="center">
                                                                     <a href="EventGetServlet?idPlace=<c:out value="${list.idPlace}" />&idEvent=<c:out value="${list.idEvent}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
@@ -157,6 +163,7 @@
                                                             <th>Plaza </th>
                                                             <th>id</th>
                                                             <th>Título Evento </th>
+                                                            <th>Solicitud </th>
                                                             <th>Fecha Inicio </th>
                                                             <th>Fecha Término </th>
                                                             <th></th>

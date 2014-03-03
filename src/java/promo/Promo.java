@@ -19,8 +19,17 @@ public class Promo implements java.io.Serializable {
     public String dateBegin;
     public String dateEnd;
     public int points;
+    public int request;
 
     public Promo() {
+    }
+
+    public int getRequest() {
+        return request;
+    }
+
+    public void setRequest(int request) {
+        this.request = request;
     }
 
     public int getPoints() {

@@ -121,7 +121,7 @@ public class PromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where pr.id_place = pl.id_place order by pr.id_promo desc";
+            String sql = "select * from promo_gift pr, place pl where pr.id_place = pl.id_place order by id_promo desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -134,15 +134,16 @@ public class PromoDAO {
                 reg.setDateBegin(result.getString("date_begin"));
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
 
                 list.add(reg);
             }
-
-            //5 let free resources        
+                 
         } catch (SQLException ex) {
             // Gestionar mejor esta exception
             ex.printStackTrace();
         } finally {
+            /* liberar los recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -220,8 +221,7 @@ public class PromoDAO {
 
         try {
 
-            String sql = "insert into promo_gift (id_promo, id_place, tittle, details, date_begin, date_end, url_image, points) values (?, ?, ?, ?, ?, ?, ?, ?)";
-
+            String sql = "insert into promo_gift (id_promo, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, maxIdPromo);
@@ -232,6 +232,7 @@ public class PromoDAO {
             sentence.setString(6, promo.getDateEnd());
             sentence.setString(7, promo.getUrlImage());
             sentence.setInt(8, promo.getPoints());
+            sentence.setInt(9, promo.getRequest());
 
             sentence.executeUpdate();
 
@@ -248,11 +249,11 @@ public class PromoDAO {
     }
 
     public void update(Promo promo) {
-        
+
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update promo_gift set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ? where id_place = ? and id_promo = ? ";
+            String sql = "update promo_gift set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_promo = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -262,8 +263,9 @@ public class PromoDAO {
             sentence.setString(4, promo.getDateEnd());
             sentence.setString(5, promo.getUrlImage());
             sentence.setInt(6, promo.getPoints());
-            sentence.setInt(7, promo.getIdPlace());
-            sentence.setInt(8, promo.getIdPromo());
+            sentence.setInt(7, promo.getRequest());
+            sentence.setInt(8, promo.getIdPlace());
+            sentence.setInt(9, promo.getIdPromo());
 
             sentence.executeUpdate();
 
@@ -301,6 +303,7 @@ public class PromoDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setUrlImage(result.getString("pr.url_image"));
                 reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
             }
 
         } catch (SQLException ex) {
@@ -327,9 +330,7 @@ public class PromoDAO {
         promo.setIdPromo(maxIdPromo);
 
         try {
-
-            String sql = "insert into promo_gift (id_promo, id_place, tittle, details, date_begin, date_end, url_image, points) values (?, ?, ?, ?, ?, ?, ?, ?)";
-
+            String sql = "insert into promo_gift (id_promo, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, maxIdPromo);
@@ -340,6 +341,7 @@ public class PromoDAO {
             sentence.setString(6, promo.getDateEnd());
             sentence.setString(7, promo.getUrlImage());
             sentence.setInt(8, promo.getPoints());
+            sentence.setInt(9, promo.getRequest());
 
             sentence.executeUpdate();
 

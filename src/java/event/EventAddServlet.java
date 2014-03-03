@@ -62,7 +62,7 @@ public class EventAddServlet extends HttpServlet {
             placeDAO.setConexion(conexion);
 
             UserCardDAO usercardDAO = new UserCardDAO();
-            usercardDAO.setConexion(conexion);          
+            usercardDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -105,6 +105,7 @@ public class EventAddServlet extends HttpServlet {
                         String dateEnd = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("url");
                         String spoints = request.getParameter("points");
+                        String srequest = request.getParameter("eventRequest");
 
                         boolean error = false;
 
@@ -180,6 +181,19 @@ public class EventAddServlet extends HttpServlet {
                                             error = true;
                                         }
                                     }
+                                }
+                            }
+
+                            /* comprobar request */
+                            if (srequest == null || srequest.trim().equals("")) {
+                                request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                                error = true;
+                            } else {
+                                try {
+                                    event.setRequest(Integer.parseInt(srequest));
+                                } catch (NumberFormatException n) {
+                                    request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                                    error = true;
                                 }
                             }
 

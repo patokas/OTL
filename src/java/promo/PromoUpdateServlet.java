@@ -86,6 +86,7 @@ public class PromoUpdateServlet extends HttpServlet {
                         String date2 = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
+                        String srequest = request.getParameter("promoRequest");
 
                         Promo promo = new Promo();
 
@@ -180,6 +181,19 @@ public class PromoUpdateServlet extends HttpServlet {
                                 promo.setPoints(Integer.parseInt(spoints));
                             } catch (NumberFormatException n) {
                                 request.setAttribute("msgErrorPoints", "Error: Los puntos deben ser numéricos.");
+                                error = true;
+                            }
+                        }
+
+                        /* comprobar request */
+                        if (srequest == null || srequest.trim().equals("")) {
+                            request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                            error = true;
+                        } else {
+                            try {
+                                promo.setRequest(Integer.parseInt(srequest));
+                            } catch (NumberFormatException n) {
+                                request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
                                 error = true;
                             }
                         }

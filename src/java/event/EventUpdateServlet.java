@@ -95,6 +95,7 @@ public class EventUpdateServlet extends HttpServlet {
                         String dateEnd = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
+                        String srequest = request.getParameter("eventRequest");
 
                         boolean error = false;
 
@@ -137,15 +138,15 @@ public class EventUpdateServlet extends HttpServlet {
                         } else {
                             event.setDetails(details);
                         }
-                        
+
                         /* comprobar points */
-                        if(spoints == null || spoints.trim().equals("")) {
+                        if (spoints == null || spoints.trim().equals("")) {
                             request.setAttribute("msgErrorPoints", "Error: Debe ingresar puntos.");
                             error = true;
                         } else {
                             try {
                                 event.setPoints(Integer.parseInt(spoints));
-                                if (event.getPoints() < 0 ) {
+                                if (event.getPoints() < 0) {
                                     request.setAttribute("msgErrorPoints", "Error: Los puntos no pueden ser negativos.");
                                     error = true;
                                 }
@@ -154,9 +155,9 @@ public class EventUpdateServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-                        
+
                         /* comprobar url image*/
-                        if(urlImage == null || urlImage.trim().equals("")) {
+                        if (urlImage == null || urlImage.trim().equals("")) {
                             request.setAttribute("msgErrorUrlImage", "Error: Debe ingresar url de imagen.");
                             error = true;
                         } else {
@@ -181,6 +182,19 @@ public class EventUpdateServlet extends HttpServlet {
                                     request.setAttribute("msgErrorDate", "Error: La fecha de término debe ser mayor que la fecha de inicio.");
                                     error = true;
                                 }
+                            }
+                        }
+
+                        /* comprobar request */
+                        if (srequest == null || srequest.trim().equals("")) {
+                            request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
+                            error = true;
+                        } else {
+                            try {
+                                event.setRequest(Integer.parseInt(srequest));
+                            } catch (NumberFormatException n) {
+                                request.setAttribute("msgErrorType", "Error al recibir la solicitud.");
+                                error = true;
                             }
                         }
 
@@ -212,7 +226,7 @@ public class EventUpdateServlet extends HttpServlet {
                                 }
                             }
                         }
-                        
+
                         request.setAttribute("event", event);
 
                     } catch (Exception parameterException) {

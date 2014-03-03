@@ -9,7 +9,7 @@ package event;
  * @author patricio alberto
  */
 public class Event implements java.io.Serializable {
-    
+
     public int idEvent;
     public int idPlace;
     public String namePlace;
@@ -19,8 +19,17 @@ public class Event implements java.io.Serializable {
     public String dateEnd;
     public String urlImage;
     public int points;
+    public int request;
 
     public Event() {
+    }
+
+    public int getRequest() {
+        return request;
+    }
+
+    public void setRequest(int request) {
+        this.request = request;
     }
 
     public int getPoints() {
@@ -29,8 +38,8 @@ public class Event implements java.io.Serializable {
 
     public void setPoints(int points) {
         this.points = points;
-    }    
-    
+    }
+
     public String getUrlImage() {
         return urlImage;
     }
@@ -38,7 +47,7 @@ public class Event implements java.io.Serializable {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
-    
+
     public int getIdEvent() {
         return idEvent;
     }
@@ -94,6 +103,4 @@ public class Event implements java.io.Serializable {
     public void setDateEnd(String dateEnd) {
         this.dateEnd = dateEnd;
     }
-        
-    
 }
