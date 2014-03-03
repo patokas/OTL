@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>OTL - Promociones Por Cliente</title>
+        <title>OTL</title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
@@ -46,9 +46,9 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Mantenedor <small> Promociones por Cliente</small></h1>
+                    <h1>Mantenedor <small> Categorías Lugar</small></h1>
                     <ol class="breadcrumb">
-                        <li><a href="ClientPromoGiftMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
+                        <li><a href="PlaceCategoryMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                         <li class="active"><i class="fa fa-edit"></i> Agregar</li>
                     </ol>
                     <c:if test="${msg!= null }" >
@@ -102,31 +102,23 @@
 
                 </div>
                 <div class="col-lg-4">
-                    <form role="form" action="PromoGiftListAddServlet" method="POST" name="formAdd"> 
+                    <form role="form" action="PlaceCategoryAddServlet" method="POST" name="formAdd"> 
                         <div class="form-group">
-                            <label>Plaza</label>
+                            <label>Lugar</label>
                             <select class="form-control" name="idPlace">
                                 <c:forEach var="listPlace" items="${listPlace}">  
-                                    <option value="<c:out value="${listPlace.idPlace}" />" <c:if test="${pglReg.idPlace == listPlace.idPlace}">selected</c:if>> <c:out value="${listPlace.namePlace}" /> </option>
+                                    <option value="<c:out value="${listPlace.idPlace}" />" <c:if test="${placeCategory.idPlace == listPlace.idPlace}">selected</c:if>> <c:out value="${listPlace.namePlace}" /> </option>
                                 </c:forEach>
                             </select>                                
                         </div>
-                        <c:if test="${msgError == null }" >
-                            <div class="form-group">
-                                <label>ID Promo</label>
-                                <input type="number" class="form-control" required="true" min="1" name="idPromo" value="<c:out value="${pglReg.idPromo}" />">
-                            </div>
-                        </c:if>
-                        <c:if test="${msgError1 != null }" >
-                            <div class="form-group has-error">
-                                <label class="control-label" for="inputError">ID Promo</label>
-                                <input type="number" class="form-control" required="true" min="1" name="idPromo" id="inputError" value="<c:out value="${pglReg.idPromo}" />">
-                            </div>
-                        </c:if>
                         <div class="form-group">
-                            <label>RUT</label>
-                            <input class="form-control" required="true" maxlength="12" name="rut" value="<c:out value="${rut}" />">
-                        </div>                       
+                            <label>Categoría</label>
+                            <select class="form-control" name="idCategory">
+                                <c:forEach var="listCategory" items="${listCategory}">  
+                                    <option value="<c:out value="${listCategory.idCategory}" />" <c:if test="${placeCategory.idCategory == listCategory.idCategory}">selected</c:if>> <c:out value="${listCategory.nameCategory}" /> </option>
+                                </c:forEach>
+                            </select>                                
+                        </div>
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>

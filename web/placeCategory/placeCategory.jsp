@@ -103,7 +103,7 @@
                                         <div class="box">                                
                                             <div class="box-title">
                                                 Datatable
-                                                <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PromoGiftListAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
+                                                <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PlaceCategoryAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
                                                 </br>DB
                                             </div>
                                             <div class="box-content nopadding">
@@ -111,29 +111,27 @@
                                                     <thead>
                                                         <tr>
                                                             <th><input class="check_all" type="checkbox" /></th>
-                                                            <th>PLaza <i class="fa fa-sort"></i></th>
-                                                            <th>Id <i class="fa fa-sort"></i></th>
-                                                            <th>Título Promoción <i class="fa fa-sort"></i></th>
-                                                            <th>Rut <i class="fa fa-sort"></i></th>
-                                                            <th>Puntos <i class="fa fa-sort"></i></th>
+                                                            <th>ID Lugar <i class="fa fa-sort"></i></th>
+                                                            <th>Nombre Lugar <i class="fa fa-sort"></i></th>
+                                                            <th>Ciudad <i class="fa fa-sort"></i></th>
+                                                            <th>ID Categoría <i class="fa fa-sort"></i></th>
+                                                            <th>Nombre Categoría <i class="fa fa-sort"></i></th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <c:forEach var="list" items="${list}">  
-                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idPromo}" />-<c:out value="${list.rut}" />"/></td>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idCategory}" />"/></td>
+                                                                <td class="center"><c:out value="${list.idPlace}" /></td>
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>
-                                                                <td class="center"><c:out value="${list.idPromo}" /></td>
-                                                                <td class="center"><c:out value="${list.tittlePromo}" /></td>
-
-                                                                <td class="center"><c:out value="${list.rut}" />-<c:out value="${list.dv}" /></td>                                                                
-                                                                <td class="center"><c:out value="${list.points}" /></td>                                                                
+                                                                <td class="center"><c:out value="${list.nameCity}" /></td>
+                                                                <td class="center"><c:out value="${list.idCategory}" /></td>                                                                
+                                                                <td class="center"><c:out value="${list.nameCategory}" /></td>                                                                
                                                                 <td class="center">
-                                                                    <form action="ClientPromoGiftMainServlet" method="post">
-                                                                        <input type="hidden" name="rut" value="<c:out value="${list.rut}" />"/>
+                                                                    <form action="PlaceCategoryMainServlet" method="post">                                                                        
                                                                         <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />"/>
-                                                                        <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />
+                                                                        <input type="hidden" name="idCategory" value="<c:out value="${list.idCategory}" />" />
                                                                         <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button>
                                                                     </form>
                                                                 </td>
@@ -143,11 +141,11 @@
                                                     <tfoot>
                                                         <tr>
                                                             <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button></th>
-                                                            <th>PLaza </th>
-                                                            <th>Id Promo </th>
-                                                            <th>Título Promoción </th>
-                                                            <th>Rut </th>
-                                                            <th>puntos </th>
+                                                            <th>ID Lugar </th>
+                                                            <th>Nombre Lugar </th>
+                                                            <th>Ciudad </th>
+                                                            <th>ID Categoría </th>
+                                                            <th>Nombre Categoría s</th>
                                                             <th></th>
                                                         </tr>
                                                     </tfoot>
