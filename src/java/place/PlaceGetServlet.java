@@ -62,12 +62,6 @@ public class PlaceGetServlet extends HttpServlet {
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
-            CategoryDAO categoryDAO = new CategoryDAO();
-            categoryDAO.setConexion(conexion);
-
-            DressCodeDAO dressCodeDAO = new DressCodeDAO();
-            dressCodeDAO.setConexion(conexion);
-
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -125,15 +119,13 @@ public class PlaceGetServlet extends HttpServlet {
                         // ESTABLECER ATRIBUTOS AL REQUEST
                         /////////////////////////////////////////
 
-                        Collection<City> listCity = cityDAO.getAll();
-                        request.setAttribute("listCity", listCity);
-
-                        Collection<Category> listCategory = categoryDAO.getAll();
-                        request.setAttribute("listCategory", listCategory);
-
-                        Collection<DressCode> listDressCode = dressCodeDAO.getAll();
-                        request.setAttribute("listDressCode", listDressCode);
-
+                        try {
+                            Collection<City> listCity = cityDAO.getAll();
+                            request.setAttribute("listCity", listCity);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/place/placeUpdate.jsp").forward(request, response);

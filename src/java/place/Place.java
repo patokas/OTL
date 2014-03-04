@@ -19,8 +19,6 @@ public class Place {
     public int contact;
     public String urlImage;
     public String description;
-    public int idCategory;
-    public String nameCategory;
     public String urlLogo;
     public int idDressCode;
     public String tittle;
@@ -50,23 +48,7 @@ public class Place {
 
     public void setUrlLogo(String urlLogo) {
         this.urlLogo = urlLogo;
-    }
-
-    public int getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(int idCategory) {
-        this.idCategory = idCategory;
-    }
-
-    public String getNameCategory() {
-        return nameCategory;
-    }
-
-    public void setNameCategory(String nameCategory) {
-        this.nameCategory = nameCategory;
-    }
+    } 
 
     public String getDescription() {
         return description;

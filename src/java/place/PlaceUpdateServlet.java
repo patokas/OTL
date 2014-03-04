@@ -28,7 +28,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "PlaceUpdateServlet", urlPatterns = {"/PlaceUpdateServlet"})
 public class PlaceUpdateServlet extends HttpServlet {
-    
+
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -44,29 +44,23 @@ public class PlaceUpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
-        
+
         Connection conexion = null;
-        
+
         try {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
 
             conexion = ds.getConnection();
-            
+
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
-            
+
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
-            
-            CategoryDAO categoryDAO = new CategoryDAO();
-            categoryDAO.setConexion(conexion);
-            
-            DressCodeDAO dressCodeDAO = new DressCodeDAO();
-            dressCodeDAO.setConexion(conexion);
 
             /////////////////////////////////////////
             // COMPROBAR SESSION
@@ -87,7 +81,7 @@ public class PlaceUpdateServlet extends HttpServlet {
                 /* obtener los valores de session y asignar valores a la jsp */
                 request.setAttribute("userJsp", username);
                 request.setAttribute("access", access);
-                
+
                 try {
                     /////////////////////////////////////////
                     // RECIBIR Y COMPROBAR PARAMETROS
@@ -95,7 +89,6 @@ public class PlaceUpdateServlet extends HttpServlet {
 
                     String sidPlace = request.getParameter("idPlace");
                     String sidCity = request.getParameter("idCity");
-                    String sidDressCode = request.getParameter("idDressCode");
                     String snamePlace = request.getParameter("namePlace");
                     String sadress = request.getParameter("address");
                     String status = request.getParameter("status");
@@ -103,10 +96,9 @@ public class PlaceUpdateServlet extends HttpServlet {
                     String description = request.getParameter("description");
                     String urlImage = request.getParameter("urlImage");
                     String urlLogo = request.getParameter("urlLogo");
-                    String sidCategory = request.getParameter("idCategory");
-                    
+
                     Place place = new Place();
-                    
+
                     boolean error = false;
 
                     /* comprobar id place */
@@ -131,31 +123,6 @@ public class PlaceUpdateServlet extends HttpServlet {
                             place.setIdCity(Integer.parseInt(sidCity));
                         } catch (NumberFormatException n) {
                             request.setAttribute("msgErrorIdCity", "Error al recibir id ciudad. ");
-                            error = true;
-                        }
-                    }
-
-                    /* comprobar id category */
-                    if (sidCategory == null || sidCategory.trim().equals("")) {
-                        request.setAttribute("msgErrorIdCategory", "Error al recibir id categoría");
-                        error = true;
-                    } else {
-                        try {
-                            place.setIdCategory(Integer.parseInt(sidCategory));
-                        } catch (NumberFormatException n) {
-                            request.setAttribute("msgErrorIdCategory", "Error al recibir id categoría");
-                            error = true;
-                        }
-                    }
-
-                    /* comprobar id dress code */
-                    if (sidDressCode == null || sidDressCode.trim().equals("")) {
-                        request.setAttribute("msgErrorIdDressCode", "Error al recbir ID código de vestir.");
-                        error = true;
-                    } else {
-                        try {
-                            place.setIdDressCode(Integer.parseInt(sidDressCode));
-                        } catch (NumberFormatException n) {
                             error = true;
                         }
                     }
@@ -223,7 +190,7 @@ public class PlaceUpdateServlet extends HttpServlet {
                     } else {
                         place.setUrlLogo(urlLogo);
                     }
-                    
+
                     if (!error) {
                         /* comprobar duplicaciones */
                         Collection<Place> list = placeDAO.findByName(place.getNamePlace());
@@ -251,17 +218,15 @@ public class PlaceUpdateServlet extends HttpServlet {
                     // ESTABLECER ATRIBUTOS AL REQUEST
                     /////////////////////////////////////////
 
-                    Collection<City> listCity = cityDAO.getAll();
-                    request.setAttribute("listCity", listCity);
-                    
-                    Collection<Category> listCategory = categoryDAO.getAll();
-                    request.setAttribute("listCategory", listCategory);
-                    
-                    Collection<DressCode> listDressCode = dressCodeDAO.getAll();
-                    request.setAttribute("listDressCode", listDressCode);
-                    
+                    try {
+                        Collection<City> listCity = cityDAO.getAll();
+                        request.setAttribute("listCity", listCity);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
                     request.setAttribute("place", place);
-                    
+
                 } catch (Exception parameterException) {
                 } finally {
                     request.getRequestDispatcher("/place/placeUpdate.jsp").forward(request, response);

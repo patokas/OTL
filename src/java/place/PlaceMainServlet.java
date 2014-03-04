@@ -4,9 +4,6 @@
  */
 package place;
 
-import category.CategoryDAO;
-import city.City;
-import city.CityDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -56,10 +53,6 @@ public class PlaceMainServlet extends HttpServlet {
             /* definir, instanciar y pasar la conexion a placeDAO */
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
-
-            /* definir, instanciar y pasar la conexion a cityDAO */
-            CityDAO cityDAO = new CityDAO();
-            cityDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -130,21 +123,20 @@ public class PlaceMainServlet extends HttpServlet {
                         // ESTABLECER ATRIBUTOS AL REQUEST
                         /////////////////////////////////////////
 
-                        Collection<Place> listPlace = placeDAO.getAll();
+                        try {
+                            Collection<Place> listPlace = placeDAO.getAll();
+                            request.setAttribute("list", listPlace);
 
-                        if (listPlace.size() == 1) {
-                            request.setAttribute("msg", "1 registro encontrado en la base de datos.");
-                        } else if (listPlace.size() > 1) {
-                            request.setAttribute("msg", listPlace.size() + " registros encontrados en la base de datos.");
-                        } else if (listPlace.isEmpty()) {
-                            request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            if (listPlace.size() == 1) {
+                                request.setAttribute("msg", "1 registro encontrado en la base de datos.");
+                            } else if (listPlace.size() > 1) {
+                                request.setAttribute("msg", listPlace.size() + " registros encontrados en la base de datos.");
+                            } else if (listPlace.isEmpty()) {
+                                request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
-
-                        Collection<City> listCity = cityDAO.getAll();
-                        request.setAttribute("listCity", listCity);
-
-                        request.setAttribute("list", listPlace);
-
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/place/place.jsp").forward(request, response);

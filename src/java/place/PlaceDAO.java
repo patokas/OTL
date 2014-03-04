@@ -4,6 +4,8 @@
  */
 package place;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +38,7 @@ public class PlaceDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci, category ca, dress_code dc where id_place = " + id + " and pl.id_dress_code = dc.id_dress_code and pl.id_city = ci.id_city and pl.id_category = ca.id_category ";
+            String sql = "select * from place pl, city ci where id_place = " + id + " and pl.id_city = ci.id_city";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -54,10 +56,6 @@ public class PlaceDAO {
                 reg.setDescription(result.getString("description"));
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setUrlLogo(result.getString("url_logo"));
-                reg.setIdCategory(result.getInt("id_category"));
-                reg.setNameCategory(result.getString("name_category"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-                reg.setTittle(result.getString("tittle"));
 
                 /* agregar a la lista */
                 list.add(reg);
@@ -131,7 +129,7 @@ public class PlaceDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci, category ca, dress_code dc where pl.id_dress_code = dc.id_dress_code and pl.id_city = ci.id_city and pl.id_category = ca.id_category";
+            String sql = "select * from place pl, city ci where pl.id_city = ci.id_city";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -143,10 +141,6 @@ public class PlaceDAO {
                 reg.setContact(result.getInt("contact"));
                 reg.setIdCity(result.getInt("id_city"));
                 reg.setNameCity(result.getString("name_city"));
-                reg.setIdCategory(result.getInt("id_category"));
-                reg.setNameCategory(result.getString("name_category"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-                reg.setTittle(result.getString("tittle"));
 
                 list.add(reg);
             }
@@ -198,7 +192,7 @@ public class PlaceDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, id_category, url_logo, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into place (name_place, id_city, address, status, contact, description, url_image, url_logo) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -209,16 +203,19 @@ public class PlaceDAO {
             sentence.setInt(5, reg.getContact());
             sentence.setString(6, reg.getDescription());
             sentence.setString(7, reg.getUrlImage());
-            sentence.setInt(8, reg.getIdCategory());
-            sentence.setString(9, reg.getUrlLogo());
-            sentence.setInt(10, reg.getIdDressCode());
+            sentence.setString(8, reg.getUrlLogo());
 
             sentence.executeUpdate();
-
+            
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis: " + ex);
+            throw new RuntimeException("Syntax: " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad : " + ex);
+            throw new RuntimeException("MySQL Exception : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
             ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            throw new RuntimeException("placeDAO.add: " + reg, ex);
         } finally {
             try {
                 sentence.close();
@@ -232,7 +229,7 @@ public class PlaceDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, url_logo = ?, id_category = ?, id_dress_code = ? where id_place = ? ";
+            String sql = "update place set name_place = ?, address = ?, status = ?, contact = ?, id_city = ?, description = ?, url_image = ?, url_logo = ? where id_place = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -244,9 +241,7 @@ public class PlaceDAO {
             sentence.setString(6, reg.getDescription());
             sentence.setString(7, reg.getUrlImage());
             sentence.setString(8, reg.getUrlLogo());
-            sentence.setInt(9, reg.getIdCategory());
-            sentence.setInt(10, reg.getIdDressCode());
-            sentence.setInt(11, reg.getIdPlace());
+            sentence.setInt(9, reg.getIdPlace());
 
 
             sentence.executeUpdate();

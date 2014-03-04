@@ -46,7 +46,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Mantenedor <small> Plazas</small></h1>
+                    <h1>Mantenedor <small> Lugares</small></h1>
                     <ol class="breadcrumb">
                         <li><a href="PlaceMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                         <li class="active"><i class="fa fa-edit"></i> Actualizar</li>
@@ -187,23 +187,7 @@
                                 <label class="control-label" for="inputError">Descripción</label>
                                 <input class="form-control" required="true" maxlength="200" id="inputError" name="description" value="<c:out value="${place.description}" />">
                             </div>
-                        </c:if>
-                        <div class="form-group">
-                            <label>Categoría</label>
-                            <select class="form-control" name="idCategory">
-                                <c:forEach var="listCategory" items="${listCategory}">  
-                                    <option value="<c:out value="${listCategory.idCategory}" />" <c:if test="${place.idCategory == listCategory.idCategory}">selected</c:if> > <c:out value="${listCategory.nameCategory}" /> </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Código de vestir</label>
-                            <select class="form-control" name="idDressCode">
-                                <c:forEach var="listDressCode" items="${listDressCode}">  
-                                    <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${place.idDressCode == listDressCode.idDressCode}">selected</c:if> > <c:out value="${listDressCode.tittle}" /> </option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        </c:if>                                                
                         <c:if test="${msgErrorUrlImage == null}" >
                             <div class="form-group">
                                 <label>Url Imagen</label>

@@ -174,23 +174,7 @@
                                 <label class="control-label" for="inputError">Descripción</label>
                                 <input class="form-control" maxlength="100" required="true" name="description" id="inputError" value="<c:out value="${place.description}" />">
                             </div>
-                        </c:if>
-                        <div class="form-group">
-                            <label>Categoría</label>
-                            <select class="form-control" name="idCategory">
-                                <c:forEach var="listCategory" items="${listCategory}">  
-                                    <option value="<c:out value="${listCategory.idCategory}" />" <c:if test="${place.idCategory == listCategory.idCategory}">selected</c:if> > <c:out value="${listCategory.nameCategory}" /> </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Código de vestir</label>
-                            <select class="form-control" name="idDressCode">
-                                <c:forEach var="listDressCode" items="${listDressCode}">  
-                                    <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${place.idDressCode == listDressCode.idDressCode}">selected</c:if> > <c:out value="${listDressCode.tittle}" /> </option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        </c:if>                        
                         <c:if test="${msgErrorUrl == null}" >
                             <div class="form-group">
                                 <label>Url de Imagen</label>
