@@ -5,6 +5,8 @@
 package event;
 
 import Helpers.Format;
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -18,8 +20,6 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import place.Place;
 import place.PlaceDAO;
-import userCard.UserCard;
-import userCard.UserCardDAO;
 
 /**
  *
@@ -61,8 +61,8 @@ public class EventAddServlet extends HttpServlet {
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
 
-            UserCardDAO usercardDAO = new UserCardDAO();
-            usercardDAO.setConexion(conexion);
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -89,8 +89,6 @@ public class EventAddServlet extends HttpServlet {
                     ///////////////////////////////////////                   
 
                     Event event = new Event();
-
-                    Collection<Place> listPlace = null;
 
                     try {
                         /////////////////////////////////////////
@@ -244,12 +242,20 @@ public class EventAddServlet extends HttpServlet {
 
                         /* obtener lista de lugares */
                         try {
-                            listPlace = placeDAO.getAll();
+                            Collection<Place> listPlace = placeDAO.getAll();
+                            request.setAttribute("listPlace", listPlace);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
-                        request.setAttribute("listPlace", listPlace);
+                        /* obtener lista de codigos de vestir */
+                        try {
+                            Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                            request.setAttribute("listDressCode", listDressCode);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+
                         request.setAttribute("event", event);
 
                     } catch (Exception parameterException) {

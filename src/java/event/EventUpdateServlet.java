@@ -4,6 +4,8 @@
  */
 package event;
 
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -22,7 +24,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "EventUpdateServlet", urlPatterns = {"/EventUpdateServlet"})
 public class EventUpdateServlet extends HttpServlet {
-
+    
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -44,16 +46,19 @@ public class EventUpdateServlet extends HttpServlet {
 
         /* definir conexion */
         Connection conexion = null;
-
+        
         try {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             ///////////////////////////////////////// 
 
             conexion = ds.getConnection();
-
+            
             EventDAO eventDAO = new EventDAO();
             eventDAO.setConexion(conexion);
+            
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -80,7 +85,7 @@ public class EventUpdateServlet extends HttpServlet {
                     ////////////////////////////////////////
 
                     Event event = new Event();
-
+                    
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
@@ -97,7 +102,7 @@ public class EventUpdateServlet extends HttpServlet {
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("eventRequest");
                         String sidDressCode = request.getParameter("idDressCode");
-
+                        
                         boolean error = false;
 
                         /* comprobar id place */
@@ -209,7 +214,7 @@ public class EventUpdateServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-
+                        
                         if (!error) {
                             /* traer todos los registros con el mismo tittle */
                             Collection<Event> list = eventDAO.findByTittle(event);
@@ -239,8 +244,16 @@ public class EventUpdateServlet extends HttpServlet {
                             }
                         }
 
+                        /* obtener lista de codigos de vestir */
+                        try {
+                            Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                            request.setAttribute("listDressCode", listDressCode);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        
                         request.setAttribute("event", event);
-
+                        
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/event/eventUpdate.jsp").forward(request, response);

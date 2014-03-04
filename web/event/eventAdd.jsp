@@ -165,6 +165,14 @@
                                 <input type="number" class="form-control" min="0" max="99999" name="points" id="inputError" value="<c:out value="${event.points}" />">
                             </div>
                         </c:if>
+                        <div class="form-group">
+                            <label>Código de Vestir</label>
+                            <select class="form-control" name="idDressCode">
+                                <c:forEach var="listDressCode" items="${listDressCode}">  
+                                    <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${event.idDressCode == listDressCode.idDressCode}">selected</c:if>> <c:out value="${listDressCode.nameDressCode}" /> </option>
+                                </c:forEach>
+                            </select>                                
+                        </div>
                         <c:if test="${msgErrorPoints == null }" >
                             <div class="form-group">
                                 <label>Puntos</label>

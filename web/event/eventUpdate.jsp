@@ -186,6 +186,14 @@
                                     <input class="form-control" required="true" maxlength="100" id="inputError" name="details" value="<c:out value="${event.details}" />">                            
                                 </div>
                             </c:if>
+                            <div class="form-group">
+                                <label>Código de Vestir</label>
+                                <select class="form-control" name="idDressCode">
+                                    <c:forEach var="listDressCode" items="${listDressCode}">  
+                                        <option value="<c:out value="${listDressCode.idDressCode}" />" <c:if test="${event.idDressCode == listDressCode.idDressCode}">selected</c:if>> <c:out value="${listDressCode.nameDressCode}" /> </option>
+                                    </c:forEach>
+                                </select>                                
+                            </div>
                             <c:if test="${msgErrorPoints != null }" >
                                 <div class="form-group has-error">
                                     <label class="control-label" for="inputError">Puntos</label>

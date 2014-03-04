@@ -5,6 +5,8 @@
 package event;
 
 import Helpers.Format;
+import dressCode.DressCode;
+import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -59,6 +61,9 @@ public class EventGetServlet extends HttpServlet {
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
 
+            DressCodeDAO dressCodeDAO = new DressCodeDAO();
+            dressCodeDAO.setConexion(conexion);
+
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -83,9 +88,7 @@ public class EventGetServlet extends HttpServlet {
                     // DECLARAR VARIABLES DE INSTANCIA
                     /////////////////////////////////////////
 
-                    Event reg = null;
-
-                    Collection<Place> listPlace = null;
+                    Event reg = null;                    
 
                     try {
                         /////////////////////////////////////////
@@ -142,10 +145,20 @@ public class EventGetServlet extends HttpServlet {
 
                         /* obtener lista de lugares */
                         try {
-                            listPlace = placeDAO.getAll();
+                            Collection<Place> listPlace = placeDAO.getAll();
                             request.setAttribute("listPlace", listPlace);
                         } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
+
+                        /* obtener lista de codigos de vestir */
+                        try {
+                            Collection<DressCode> listDressCode = dressCodeDAO.getAll();
+                            request.setAttribute("listDressCode", listDressCode);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+
                         /* enviar datos del objeto a la vista */
                         request.setAttribute("event", reg);
 
