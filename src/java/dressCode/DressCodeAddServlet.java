@@ -79,7 +79,7 @@ public class DressCodeAddServlet extends HttpServlet {
                 try {
 
                     String btnAdd = request.getParameter("add");
-                    String tittle = request.getParameter("tittle");
+                    String nameDressCode = request.getParameter("nameDressCode");
                     String menDetails = request.getParameter("menDetails");
                     String womenDetails = request.getParameter("womenDetails");
                     String urlImage = request.getParameter("urlImage");
@@ -119,13 +119,13 @@ public class DressCodeAddServlet extends HttpServlet {
                         }
 
                         /* comprobar tittle */
-                        if (tittle == null || tittle.trim().equals("")) {
+                        if (nameDressCode == null || nameDressCode.trim().equals("")) {
                             request.setAttribute("msgErrorTittle", "Error: Debe ingresar título de código de vestir.");
                             error = true;
                         } else {
-                            request.setAttribute("tittle", tittle);
+                            request.setAttribute("nameDressCode", nameDressCode);
                             /* capitalizar título */
-                            dressCode.setTittle(Format.capital(tittle));
+                            dressCode.setNameDressCode(Format.capital(nameDressCode));
                         }
 
                         ////////////////////////////////////
@@ -133,7 +133,7 @@ public class DressCodeAddServlet extends HttpServlet {
                         ///////////////////////////////////
                         if (!error) {
                             /* buscar duplicaciones de tittle */
-                            boolean find = dressCodeDAO.findByName(dressCode.getTittle());
+                            boolean find = dressCodeDAO.findByName(dressCode.getNameDressCode());
                             if (find) {
                                 request.setAttribute("msgErrorDup", "Error: Ya existe un código de vestir con el mismo título.");
                             } else {

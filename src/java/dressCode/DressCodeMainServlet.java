@@ -93,7 +93,7 @@ public class DressCodeMainServlet extends HttpServlet {
                             /* eliminar registro */
                             try {
                                 dressCodeDAO.delete(dressCode.getIdDressCode());
-                                request.setAttribute("msgDel", "Una ciudad ha sido eliminada.");
+                                request.setAttribute("msgDel", "Un registro ha sido eliminado.");
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 request.setAttribute("msgErrorDel", "Error al eliminar registro, verifique parámetros.");
@@ -130,17 +130,19 @@ public class DressCodeMainServlet extends HttpServlet {
                     }
 
                     /* obtener datos de BD */
-                    Collection<DressCode> list = dressCodeDAO.getAll();
-
-                    if (list.size() == 1) {
-                        request.setAttribute("msg", "1 registro encontrado en la base de datos.");
-                    } else if (list.size() > 1) {
-                        request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
-                    } else if (list.isEmpty()) {
-                        request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                    try {
+                        Collection<DressCode> list = dressCodeDAO.getAll();
+                        request.setAttribute("list", list);
+                        if (list.size() == 1) {
+                            request.setAttribute("msg", "1 registro encontrado en la base de datos.");
+                        } else if (list.size() > 1) {
+                            request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
+                        } else if (list.isEmpty()) {
+                            request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-
-                    request.setAttribute("list", list);
 
                 } catch (Exception parameterException) {
                 } finally {

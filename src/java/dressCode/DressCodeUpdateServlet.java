@@ -4,13 +4,8 @@
  */
 package dressCode;
 
-import Helpers.Format;
-import city.City;
-import city.CityDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +21,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "DressCodeUpdateServlet", urlPatterns = {"/DressCodeUpdateServlet"})
 public class DressCodeUpdateServlet extends HttpServlet {
-    
+
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -42,18 +37,18 @@ public class DressCodeUpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
-        
+
         Connection conexion = null;
-        
+
         try {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             //////////////////////////////////////// 
 
             conexion = ds.getConnection();
-            
+
             DressCodeDAO dressCodeDAO = new DressCodeDAO();
             dressCodeDAO.setConexion(conexion);
 
@@ -72,20 +67,20 @@ public class DressCodeUpdateServlet extends HttpServlet {
                 /* asignar valores a la jsp */
                 request.setAttribute("userJsp", userJsp);
                 request.setAttribute("access", access);
-                
+
                 try {
                     /////////////////////////////////////////
                     // RECIBIR Y COMPROBAR PARAMETROS
                     //////////////////////////////////////// 
 
                     String sidDressCode = request.getParameter("idDressCode");
-                    String tittle = request.getParameter("tittle");
+                    String nameDressCode = request.getParameter("nameDressCode");
                     String menDetails = request.getParameter("menDetails");
                     String womenDetails = request.getParameter("womenDetails");
                     String urlImage = request.getParameter("urlImage");
-                    
+
                     DressCode dressCode = new DressCode();
-                    
+
                     boolean error = false;
 
                     /* comprobar idDressCode */
@@ -101,14 +96,14 @@ public class DressCodeUpdateServlet extends HttpServlet {
                         }
                     }
 
-                    /* comprobar tittle */
-                    if (tittle == null || tittle.trim().equals("")) {
+                    /* comprobar name dress code */
+                    if (nameDressCode == null || nameDressCode.trim().equals("")) {
                         request.setAttribute("msgErrorTittle", "Error: Debe ingresar un título de código de vestir.");
                         error = true;
                     } else {
-                        dressCode.setTittle(tittle);
+                        dressCode.setNameDressCode(nameDressCode);
                         /* comprobar duplicaciones */
-                        boolean find = dressCodeDAO.findByIdName(dressCode.getIdDressCode(), dressCode.getTittle());
+                        boolean find = dressCodeDAO.findByIdName(dressCode.getIdDressCode(), dressCode.getNameDressCode());
                         if (find) {
                             request.setAttribute("msgErrorDup", "Error: ya existe un código de vestir con ese título.");
                             error = true;
@@ -138,7 +133,7 @@ public class DressCodeUpdateServlet extends HttpServlet {
                     } else {
                         dressCode.setUrlImage(urlImage);
                     }
-                    
+
                     if (!error) {
                         /* comprobar existencia */
                         DressCode aux = dressCodeDAO.findById(dressCode.getIdDressCode());

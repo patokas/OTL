@@ -122,7 +122,7 @@
                                                             <tr>
                                                                 <th><input type="checkbox" name="chk" value="<c:out value="${list.idDressCode}" />"/></th>
                                                                 <td class="center"><c:out value="${list.idDressCode}" /></td>
-                                                                <td class="center"><c:out value="${list.tittle}" /></td>
+                                                                <td class="center"><c:out value="${list.nameDressCode}" /></td>
                                                                 <td class="center">
                                                                     <a href="DressCodeGetServlet?idDressCode=<c:out value="${list.idDressCode}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>                                                                
                                                                 </td>

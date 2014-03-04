@@ -96,6 +96,7 @@ public class EventUpdateServlet extends HttpServlet {
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("eventRequest");
+                        String sidDressCode = request.getParameter("idDressCode");
 
                         boolean error = false;
 
@@ -194,6 +195,17 @@ public class EventUpdateServlet extends HttpServlet {
                                 event.setRequest(Integer.parseInt(srequest));
                             } catch (NumberFormatException n) {
                                 request.setAttribute("msgErrorType", "Error al recibir la solicitud.");
+                                error = true;
+                            }
+                        }
+
+                        /* comprobar id dress code */
+                        if (sidDressCode == null || sidDressCode.trim().equals("")) {
+                            error = true;
+                        } else {
+                            try {
+                                event.setIdDressCode(Integer.parseInt(sidDressCode));
+                            } catch (NumberFormatException n) {
                                 error = true;
                             }
                         }

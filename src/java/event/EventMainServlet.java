@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import place.Place;
-import place.PlaceDAO;
 
 /**
  *
@@ -53,9 +51,6 @@ public class EventMainServlet extends HttpServlet {
 
             EventDAO eventDAO = new EventDAO();
             eventDAO.setConexion(conexion);
-
-            PlaceDAO placeDAO = new PlaceDAO();
-            placeDAO.setConexion(conexion);
 
             //////////////////////////////////////////
             // COMPROBAR SESSION
@@ -140,17 +135,17 @@ public class EventMainServlet extends HttpServlet {
                         // OBTENER REGISTROS DE DAO's
                         ////////////////////////////////////////
 
-                        Collection<Event> listEvent = eventDAO.getAll();
+                        try {
+                            Collection<Event> listEvent = eventDAO.getAll();
+                            request.setAttribute("list", listEvent);
 
-                        request.setAttribute("list", listEvent);
-                        if (listEvent.size() > 1) {
-                            request.setAttribute("msg", listEvent.size() + " registros encontrados en la base de datos.");
-                        } else if (listEvent.isEmpty()) {
-                            request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            if (listEvent.size() > 1) {
+                                request.setAttribute("msg", listEvent.size() + " registros encontrados en la base de datos.");
+                            } else if (listEvent.isEmpty()) {
+                                request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            }
+                        } catch (Exception ex) {
                         }
-
-                        Collection<Place> listPlace = placeDAO.getAll();
-                        request.setAttribute("listPlace", listPlace);
 
                     } catch (Exception parameterException) {
                     } finally {

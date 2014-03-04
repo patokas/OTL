@@ -50,7 +50,7 @@ public class EventGetServlet extends HttpServlet {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
-            
+
             conexion = ds.getConnection();
 
             EventDAO eventDAO = new EventDAO();
@@ -84,7 +84,7 @@ public class EventGetServlet extends HttpServlet {
                     /////////////////////////////////////////
 
                     Event reg = null;
-                    
+
                     Collection<Place> listPlace = null;
 
                     try {
@@ -124,7 +124,6 @@ public class EventGetServlet extends HttpServlet {
                         }
 
                         if (!error) {
-                            listPlace = placeDAO.getAll();
                             Collection<Event> listEvent = eventDAO.findByPlaceEvent(event);
 
                             if (listEvent.size() > 0) {
@@ -140,10 +139,18 @@ public class EventGetServlet extends HttpServlet {
                                 request.setAttribute("msgErrorFound", "Error: No se encontró el Evento.");
                             }
                         }
+
+                        /* obtener lista de lugares */
+                        try {
+                            listPlace = placeDAO.getAll();
+                            request.setAttribute("listPlace", listPlace);
+                        } catch (Exception ex) {
+                        }
+                        /* enviar datos del objeto a la vista */
+                        request.setAttribute("event", reg);
+
                     } catch (Exception parameterException) {
                     } finally {
-                        request.setAttribute("event", reg);
-                        request.setAttribute("listPlace", listPlace);
                         request.getRequestDispatcher("/event/eventUpdate.jsp").forward(request, response);
                     }
                 }

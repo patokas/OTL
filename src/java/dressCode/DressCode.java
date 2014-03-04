@@ -11,8 +11,8 @@ package dressCode;
 public class DressCode implements java.io.Serializable {
 
     public int idDressCode;
-    public String tittle;
-    public String menDetails; 
+    public String nameDressCode;
+    public String menDetails;
     public String womenDetails;
     public String urlImage;
 
@@ -27,12 +27,12 @@ public class DressCode implements java.io.Serializable {
         this.idDressCode = idDressCode;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getNameDressCode() {
+        return nameDressCode;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setNameDressCode(String nameDressCode) {
+        this.nameDressCode = nameDressCode;
     }
 
     public String getMenDetails() {

@@ -20,8 +20,26 @@ public class Event implements java.io.Serializable {
     public String urlImage;
     public int points;
     public int request;
+    public int idDressCode;
+    public String nameDressCode;
 
     public Event() {
+    }
+
+    public int getIdDressCode() {
+        return idDressCode;
+    }
+
+    public void setIdDressCode(int idDressCode) {
+        this.idDressCode = idDressCode;
+    }
+
+    public String getNameDressCode() {
+        return nameDressCode;
+    }
+
+    public void setNameDressCode(String nameDressCode) {
+        this.nameDressCode = nameDressCode;
     }
 
     public int getRequest() {

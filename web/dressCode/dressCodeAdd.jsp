@@ -99,13 +99,13 @@
                         <c:if test="${msgErrorDup == null && msgErrorTittle == null}" >
                             <div class="form-group">
                                 <label>Título</label>
-                                <input class="form-control" required="true" maxlength="30" name="tittle" value="<c:out value="${tittle}" />">
+                                <input class="form-control" required="true" maxlength="30" name="nameDressCode" value="<c:out value="${nameDressCode}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorDup != null || msgErrorTittle != null }" >
                             <div class="form-group has-error">
                                 <label class="control-label" for="inputError">Título</label>
-                                <input class="form-control" required="true" maxlength="30" name="tittle" id="inputError" value="<c:out value="${tittle}" />">
+                                <input class="form-control" required="true" maxlength="30" name="nameDressCode" id="inputError" value="<c:out value="${nameDressCode}" />">
                             </div>
                         </c:if>
                         <c:if test="${msgErrorMenDetails == null}" >

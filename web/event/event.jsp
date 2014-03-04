@@ -124,6 +124,7 @@
                                                             <th>ID <i class="fa fa-sort"></i></th>
                                                             <th>Título Evento <i class="fa fa-sort"></i></th>
                                                             <th>Solicitud <i class="fa fa-sort"></i></th>
+                                                            <th>Código Vestir <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Inicio <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Término <i class="fa fa-sort"></i></th>
                                                             <th></th>
@@ -142,6 +143,7 @@
                                                                     <c:if test="${list.request == 1}">Aceptada</c:if>
                                                                     <c:if test="${list.request == 2}">Rechazada</c:if>
                                                                     </td>
+                                                                     <td class="center"><c:out value="${list.nameDressCode}" /></td>
                                                                     <td class="center"><c:out value="${list.dateBegin}" /></td>
                                                                 <td class="center"><c:out value="${list.dateEnd}" /></td>
                                                                 <td class="center">
@@ -164,6 +166,7 @@
                                                             <th>id</th>
                                                             <th>Título Evento </th>
                                                             <th>Solicitud </th>
+                                                            <th>Código Vestir </th>
                                                             <th>Fecha Inicio </th>
                                                             <th>Fecha Término </th>
                                                             <th></th>

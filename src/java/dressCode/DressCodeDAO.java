@@ -4,7 +4,6 @@
  */
 package dressCode;
 
-import city.City;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +46,7 @@ public class DressCodeDAO {
 
                 /* obtener resultSet */
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-                reg.setTittle(result.getString("tittle"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setMenDetails(result.getString("men_details"));
                 reg.setWomenDetails(result.getString("women_details"));
                 reg.setUrlImage(result.getString("url_image"));
@@ -91,7 +90,7 @@ public class DressCodeDAO {
 
                 /* obtener resultSet */
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-                reg.setTittle(result.getString("tittle"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setMenDetails(result.getString("men_details"));
                 reg.setWomenDetails(result.getString("women_details"));
                 reg.setUrlImage(result.getString("url_image"));
@@ -123,7 +122,7 @@ public class DressCodeDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from dress_code where tittle = '" + name + "'";
+            String sql = "select * from dress_code where name_dress_code = '" + name + "'";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -156,7 +155,7 @@ public class DressCodeDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from dress_code where tittle = '" + name + "' and id_dress_code <> " + id + "";
+            String sql = "select * from dress_code where name_dress_code = '" + name + "' and id_dress_code <> " + id + "";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -185,11 +184,11 @@ public class DressCodeDAO {
 
         try {
 
-            String sql = "insert into dress_code (tittle, men_details, women_details, url_image) values (?, ?, ?, ?)";
+            String sql = "insert into dress_code (name_dress_code, men_details, women_details, url_image) values (?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setString(1, reg.getTittle());
+            sentence.setString(1, reg.getNameDressCode());
             sentence.setString(2, reg.getMenDetails());
             sentence.setString(3, reg.getWomenDetails());
             sentence.setString(4, reg.getUrlImage());
@@ -214,11 +213,11 @@ public class DressCodeDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update dress_code set tittle = ?, men_details = ?, women_details = ?, url_image = ? where id_dress_code = ?";
+            String sql = "update dress_code set name_dress_code = ?, men_details = ?, women_details = ?, url_image = ? where id_dress_code = ?";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setString(1, reg.getTittle());
+            sentence.setString(1, reg.getNameDressCode());
             sentence.setString(2, reg.getMenDetails());
             sentence.setString(3, reg.getWomenDetails());
             sentence.setString(4, reg.getUrlImage());

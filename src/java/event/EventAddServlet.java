@@ -84,7 +84,7 @@ public class EventAddServlet extends HttpServlet {
                     request.setAttribute("access", access);
                     request.setAttribute("su", 777); //superuser
 
-                    ////////////////////////////////////////
+                    ///////////////////////////////////////
                     // DECLARAR VARIABLES DE INSTANCIA
                     ///////////////////////////////////////                   
 
@@ -106,6 +106,7 @@ public class EventAddServlet extends HttpServlet {
                         String urlImage = request.getParameter("url");
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("eventRequest");
+                        String sidDressCode = request.getParameter("idDressCode");
 
                         boolean error = false;
 
@@ -216,20 +217,24 @@ public class EventAddServlet extends HttpServlet {
                                 }
                             }
 
-                            if (!error) {
-                                /* obtener lista de user_card */
+                            /* comprobar id dress code */
+                            if (sidDressCode == null || sidDressCode.trim().equals("")) {
+                                error = true;
+                            } else {
                                 try {
-                                    Collection<UserCard> listUC = usercardDAO.getAll();
-                                    /* insertar nuevo evento */
-                                    try {
-                                        eventDAO.insert(event, listUC);
-                                        request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                    } catch (Exception ex) {
-                                        request.setAttribute("msgErrorEvent", "Error al insertar el evento, verifique coincidencias.");
-                                        ex.printStackTrace();
-                                    }
+                                    event.setIdDressCode(Integer.parseInt(sidDressCode));
+                                } catch (NumberFormatException n) {
+                                    error = true;
+                                }
+                            }
+
+                            if (!error) {
+                                /* insertar nuevo evento */
+                                try {
+                                    eventDAO.insert(event);
+                                    request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
                                 } catch (Exception ex) {
-                                    request.setAttribute("msgErrorEvent", "Error al obtener lista de clientes, verifique conexión.");
+                                    request.setAttribute("msgErrorEvent", "Error al insertar el evento, verifique coincidencias.");
                                     ex.printStackTrace();
                                 }
                             }

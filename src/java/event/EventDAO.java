@@ -38,11 +38,12 @@ public class EventDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place p where e.id_place = p.id_place order by e.id_event desc";
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = p.id_place order by e.id_event desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
                 Event reg = new Event();
+
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -53,6 +54,8 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
 
                 list.add(reg);
             }
@@ -157,7 +160,7 @@ public class EventDAO {
 
         try {
 
-            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, maxIdEvent);
@@ -169,6 +172,7 @@ public class EventDAO {
             sentence.setString(7, event.getUrlImage());
             sentence.setInt(8, event.getPoints());
             sentence.setInt(9, event.getRequest());
+            sentence.setInt(10, event.getIdDressCode());
 
             sentence.executeUpdate();
 
@@ -191,7 +195,7 @@ public class EventDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_event = ? ";
+            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ?, id_dress_code = ? where id_place = ? and id_event = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, event.getTittle());
@@ -201,8 +205,9 @@ public class EventDAO {
             sentence.setString(5, event.getUrlImage());
             sentence.setInt(6, event.getPoints());
             sentence.setInt(7, event.getRequest());
-            sentence.setInt(8, event.getIdPlace());
-            sentence.setInt(9, event.getIdEvent());
+            sentence.setInt(8, event.getIdDressCode());
+            sentence.setInt(9, event.getIdPlace());
+            sentence.setInt(10, event.getIdEvent());
 
             sentence.executeUpdate();
 
@@ -299,7 +304,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place p where e.id_place = " + event.getIdPlace() + " and e.id_place = p.id_place ";
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + event.getIdPlace() + " and e.id_place = p.id_place ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -314,6 +319,8 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
 
                 list.add(reg);
             }
@@ -343,7 +350,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place p where e.date_begin >= '" + date1 + "' and e.date_begin <= '" + date2 + "' and e.id_place = p.id_place ";
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin >= '" + date1 + "' and e.date_begin <= '" + date2 + "' and e.id_place = p.id_place ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -358,6 +365,8 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
 
                 list.add(reg);
             }
@@ -387,7 +396,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place p where e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place ";
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -402,6 +411,8 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
 
                 list.add(reg);
             }
@@ -423,62 +434,6 @@ public class EventDAO {
         return list;
     }
 
-    public void insert(Event event, Collection<UserCard> listUC) {
-
-        PreparedStatement sentence = null;
-
-        int maxIdEvent = maxIdEvent(event);
-        event.setIdEvent(maxIdEvent);
-
-        try {
-            
-            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            sentence = conexion.prepareStatement(sql);
-
-            sentence.setInt(1, event.getIdEvent());
-            sentence.setInt(2, event.getIdPlace());
-            sentence.setString(3, event.getTittle());
-            sentence.setString(4, event.getDetails());
-            sentence.setString(5, event.getDateBegin());
-            sentence.setString(6, event.getDateEnd());
-            sentence.setString(7, event.getUrlImage());
-            sentence.setInt(8, event.getPoints());
-            sentence.setInt(9, event.getRequest());
-
-            sentence.executeUpdate();
-
-            try {
-                for (UserCard aux : listUC) {
-                    String sqlUser = "insert into guest (rut, dv, id_place, id_event) values (?, ?, ?, ?)";
-
-                    sentence = conexion.prepareStatement(sqlUser);
-
-                    sentence.setInt(1, aux.getRut());
-                    sentence.setString(2, aux.getDv());
-                    sentence.setInt(3, event.getIdPlace());
-                    sentence.setInt(4, event.getIdEvent());
-
-                    sentence.executeUpdate();
-                }
-            } catch (SQLException e) {
-                // Gestionar mejor esta exception
-                e.printStackTrace();
-                throw new RuntimeException("regDAO.add: " + listUC, e);
-            }
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + event, ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-
-    }
-
     public Collection<Event> findByPlaceEvent(int idPlace, int idEvent) {
 
         Statement sentence = null;
@@ -487,7 +442,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place pl where e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
+            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -502,6 +457,8 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
 
                 list.add(reg);
             }
