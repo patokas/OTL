@@ -119,60 +119,26 @@ public class EventDAO {
             }
         }
         return list;
-    }
-
-    public int maxIdEvent(Event event) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-        Event reg = new Event();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select max(id_event) from event where id_place = " + event.getIdPlace() + " ";
-
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                reg.setIdEvent(result.getInt(1) + 1);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return reg.getIdEvent();
-    }
+    }    
 
     public void insert(Event event) {
 
-        PreparedStatement sentence = null;
-
-        int maxIdEvent = maxIdEvent(event);
+        PreparedStatement sentence = null;        
 
         try {
 
-            String sql = "insert into event (id_event, id_place, tittle, details, date_begin, date_end, url_image, points, request, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into event (id_place, tittle, details, date_begin, date_end, url_image, points, request, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
-
-            sentence.setInt(1, maxIdEvent);
-            sentence.setInt(2, event.getIdPlace());
-            sentence.setString(3, event.getTittle());
-            sentence.setString(4, event.getDetails());
-            sentence.setString(5, event.getDateBegin());
-            sentence.setString(6, event.getDateEnd());
-            sentence.setString(7, event.getUrlImage());
-            sentence.setInt(8, event.getPoints());
-            sentence.setInt(9, event.getRequest());
-            sentence.setInt(10, event.getIdDressCode());
+            
+            sentence.setInt(1, event.getIdPlace());
+            sentence.setString(2, event.getTittle());
+            sentence.setString(3, event.getDetails());
+            sentence.setString(4, event.getDateBegin());
+            sentence.setString(5, event.getDateEnd());
+            sentence.setString(6, event.getUrlImage());
+            sentence.setInt(7, event.getPoints());
+            sentence.setInt(8, event.getRequest());
+            sentence.setInt(9, event.getIdDressCode());
 
             sentence.executeUpdate();
 

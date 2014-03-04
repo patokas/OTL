@@ -120,8 +120,8 @@
                                                     <thead>
                                                         <tr>
                                                             <th><input class="check_all" type="checkbox" /></th>
-                                                            <th>Plaza <i class="fa fa-sort"></i></th>
                                                             <th>ID <i class="fa fa-sort"></i></th>
+                                                            <th>Lugar <i class="fa fa-sort"></i></th>                                                            
                                                             <th>Título Evento <i class="fa fa-sort"></i></th>
                                                             <th>Solicitud <i class="fa fa-sort"></i></th>
                                                             <th>Código Vestir <i class="fa fa-sort"></i></th>
@@ -135,8 +135,8 @@
                                                         <tr>
                                                             <c:forEach var="list" items="${list}">  
                                                                 <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idEvent}" />-<c:out value="${list.tittle}" />"/></td>
-                                                                <td class="center"><c:out value="${list.namePlace}" /></td>
                                                                 <td class="center"><c:out value="${list.idEvent}" /></td>
+                                                                <td class="center"><c:out value="${list.namePlace}" /></td>                                                                
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
                                                                 <td class="center">
                                                                     <c:if test="${list.request == 0}">Pendiente</c:if>
@@ -162,8 +162,8 @@
                                                     <tfoot>
                                                         <tr>
                                                             <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button></th>
-                                                            <th>Plaza </th>
-                                                            <th>id</th>
+                                                            <th>ID</th>
+                                                            <th>Lugar </th>                                                            
                                                             <th>Título Evento </th>
                                                             <th>Solicitud </th>
                                                             <th>Código Vestir </th>
