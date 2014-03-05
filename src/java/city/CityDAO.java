@@ -4,6 +4,8 @@
  */
 package city;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,19 +43,26 @@ public class CityDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 City reg = new City();
-
+                /* obtener resultset */
                 reg.setIdCity(result.getInt("id_city"));
                 reg.setNameCity(result.getString("name_city"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
-            //5 let free resources        
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, getAll() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -79,18 +88,26 @@ public class CityDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 City reg = new City();
-
+                /* obtener resulset */
                 reg.setIdCity(result.getInt("id_city"));
                 reg.setNameCity(result.getString("name_city"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, findbyName() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, findbyName() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, findbyName() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -120,10 +137,17 @@ public class CityDAO {
                 reg.setNameCity(result.getString("name_city"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, findbyIdCity() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, findbyIdCity() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, findbyIdCity() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, findbyIdCity() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, findbyIdCity() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, findbyIdCity() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -150,11 +174,17 @@ public class CityDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + city, ex);
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -163,7 +193,7 @@ public class CityDAO {
     }
 
     public void update(City city) {
-        
+
         PreparedStatement sentence = null;
 
         try {
@@ -176,11 +206,17 @@ public class CityDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + city, ex);
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -201,11 +237,17 @@ public class CityDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CityDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CityDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + id, ex);
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

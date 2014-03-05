@@ -1,5 +1,7 @@
 package category;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,9 +45,15 @@ public class CategoryDAO {
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, getAll() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -76,10 +84,17 @@ public class CategoryDAO {
                 find = true;
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, findbyName() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, findbyName() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, findbyName() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, findbyName() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -106,11 +121,17 @@ public class CategoryDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -133,11 +154,17 @@ public class CategoryDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -158,11 +185,17 @@ public class CategoryDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + idCategory, ex);
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -187,10 +220,17 @@ public class CategoryDAO {
                 reg.setNameCategory(result.getString("name_category"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
