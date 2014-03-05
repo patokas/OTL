@@ -4,6 +4,8 @@
  */
 package placeCategory;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,20 +45,27 @@ public class PlaceCategoryDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 PlaceCategory reg = new PlaceCategory();
-
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
                 reg.setNameCity(result.getString("name_city"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceCategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceCategoryDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceCategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceCategoryDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PlaceCategoryDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceCategoryDAO, getAll() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -84,8 +93,9 @@ public class PlaceCategoryDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 reg = new PlaceCategory();
-
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdCategory(result.getInt("id_category"));
@@ -93,9 +103,15 @@ public class PlaceCategoryDAO {
                 reg.setNameCity(result.getString("name_city"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceCategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceCategoryDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceCategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceCategoryDAO, findById() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PlaceCategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceCategoryDAO, findById() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -125,12 +141,17 @@ public class PlaceCategoryDAO {
 
             sentence.executeUpdate();
 
-
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceCategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceCategoryDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceCategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceCategoryDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en PlaceCategoryDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceCategoryDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -153,12 +174,17 @@ public class PlaceCategoryDAO {
 
             sentence.executeUpdate();
 
-
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceCategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceCategoryDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceCategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceCategoryDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en PlaceCategoryDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceCategoryDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

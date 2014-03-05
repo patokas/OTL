@@ -4,6 +4,8 @@
  */
 package orderCard;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,9 +43,9 @@ public class OrderCardDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
-                /* instanciar registro de orderCard */
+                /* instanciar objetos */
                 OrderCard reg = new OrderCard();
-                /* establecer valores */
+                /* obtener resultset */
                 reg.setIdOrder(result.getInt("id_order"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -56,9 +58,15 @@ public class OrderCardDAO {
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en OrderCardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en OrderCardDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en OrderCardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en OrderCardDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en OrderCardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en OrderCardDAO, getAll() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -88,7 +96,7 @@ public class OrderCardDAO {
             while (result.next()) {
                 /* definir objeto */
                 reg = new OrderCard();
-
+                /* obtener resultset */
                 reg.setIdOrder(result.getInt("id_order"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -99,9 +107,15 @@ public class OrderCardDAO {
                 reg.setLastName(result.getString("last_name"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en OrderCardDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en OrderCardDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en OrderCardDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en OrderCardDAO, findById() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en OrderCardDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en OrderCardDAO, findById() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -128,15 +142,21 @@ public class OrderCardDAO {
             sentence.setInt(1, reg.getRut());
             sentence.setString(2, reg.getDv());
             sentence.setInt(3, reg.getTypeCard());
-            sentence.setInt(4, reg.getRequest());            
+            sentence.setInt(4, reg.getRequest());
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en OrderCardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en OrderCardDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en OrderCardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en OrderCardDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en OrderCardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en OrderCardDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -159,10 +179,15 @@ public class OrderCardDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en OrderCardDAO,update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en OrderCardDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en OrderCardDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en OrderCardDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en OrderCardDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en OrderCardDAO, update() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -185,10 +210,15 @@ public class OrderCardDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en OrderCardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en OrderCardDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en OrderCardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en OrderCardDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + id, ex);
+            System.out.println("MySQL Excepción inesperada en OrderCardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en OrderCardDAO, delete() : " + ex);
         } finally {
             /* liberar recursos */
             try {

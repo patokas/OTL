@@ -4,6 +4,8 @@
  */
 package exchangeable;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +43,9 @@ public class ExchangeableDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Exchangeable reg = new Exchangeable();
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdExchangeable(result.getInt("id_gift"));
@@ -49,14 +53,19 @@ public class ExchangeableDAO {
                 reg.setUrlImage(result.getString("g.url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
-
-                /* agregar a collection */
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, getAll() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -85,11 +94,17 @@ public class ExchangeableDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + exchange, ex);
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -110,20 +125,28 @@ public class ExchangeableDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Exchangeable reg = new Exchangeable();
+                /* obtener resultset */
                 reg.setIdExchangeable(result.getInt("id_gift"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setTittle(result.getString("tittle"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
-                /* asignar a la lista */
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, findByTittle() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, findByTittle() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, findByTittle() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -155,11 +178,17 @@ public class ExchangeableDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + exchange, ex);
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -180,7 +209,9 @@ public class ExchangeableDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* definir objeto */
                 reg = new Exchangeable();
+                /* obtener resultset */
                 reg.setIdExchangeable(result.getInt("id_gift"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -190,9 +221,15 @@ public class ExchangeableDAO {
                 reg.setRequest(result.getInt("request"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, findByExchangeable() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -224,11 +261,17 @@ public class ExchangeableDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + exchange, ex);
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

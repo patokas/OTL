@@ -4,7 +4,8 @@
  */
 package point;
 
-import event.Event;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class PointDAO {
     }
 
     public Collection<Point> getAll() {
-        
+
         Statement sentence = null;
         ResultSet result = null;
 
@@ -45,8 +46,9 @@ public class PointDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Point reg = new Point();
-
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setNameCity(result.getString("name_city"));
@@ -55,13 +57,19 @@ public class PointDAO {
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
                 reg.setPoints(result.getInt("points"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PointDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, getAll() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -90,11 +98,17 @@ public class PointDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + point, ex);
+            System.out.println("MySQL Excepción inesperada en PointDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -107,7 +121,6 @@ public class PointDAO {
         PreparedStatement sentence = null;
 
         try {
-
             String sql = "insert into point (id_place, rut, dv, points) values (?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
@@ -119,12 +132,17 @@ public class PointDAO {
 
             sentence.executeUpdate();
 
-
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + point, ex);
+            System.out.println("MySQL Excepción inesperada en PointDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -145,8 +163,9 @@ public class PointDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* liberar recursos */
                 reg = new Point();
-
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setRut(result.getInt("rut"));
@@ -154,9 +173,15 @@ public class PointDAO {
                 reg.setPoints(result.getInt("points"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, findByPoint() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, findByPoint() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -186,11 +211,17 @@ public class PointDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + point, ex);
+            System.out.println("MySQL Excepción inesperada en PointDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -213,11 +244,17 @@ public class PointDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, updatePointUp() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, updatePointUp() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, updatePointUp() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, updatePointUp() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en PointDAO, updatePointUp() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, updatePointUp() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

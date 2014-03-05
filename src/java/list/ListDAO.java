@@ -4,6 +4,8 @@
  */
 package list;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +43,9 @@ public class ListDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 List reg = new List();
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdEvent(result.getInt("id_event"));
@@ -54,14 +58,21 @@ public class ListDAO {
                 reg.setDateBegin(result.getString("date_begin_card"));
                 reg.setDateEnd(result.getString("date_end_card"));
                 reg.setCreateTime(result.getString("create_time"));
+                /* agregar a la lista */
                 list.add(reg);
             }
 
-            //5 let free resources        
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ListDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ListDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ListDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ListDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en ListDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ListDAO, getAll() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -75,6 +86,7 @@ public class ListDAO {
     }
 
     public void insert(List reg) {
+
         PreparedStatement sentence = null;
 
         try {
@@ -90,11 +102,17 @@ public class ListDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ListDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ListDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ListDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ListDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en ListDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ListDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -118,11 +136,17 @@ public class ListDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ListDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ListDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ListDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ListDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("DAO.eliminar: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en ListDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ListDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {

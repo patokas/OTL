@@ -4,6 +4,8 @@
  */
 package event;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,8 +44,9 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Event reg = new Event();
-
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -56,13 +59,19 @@ public class EventDAO {
                 reg.setRequest(result.getInt("request"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, getAll() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -90,7 +99,9 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Event reg = new Event();
+                /* obtener resultset */
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -100,13 +111,19 @@ public class EventDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByTittle() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByTittle() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByTittle() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -142,10 +159,15 @@ public class EventDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + event, ex);
+            System.out.println("MySQL Excepción inesperada en EventDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, insert() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -177,10 +199,15 @@ public class EventDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + event, ex);
+            System.out.println("MySQL Excepción inesperada en EventDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, update() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -204,10 +231,15 @@ public class EventDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + event, ex);
+            System.out.println("MySQL Excepción inesperada en EventDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, delete() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -231,6 +263,7 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -241,13 +274,19 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("e.url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -274,7 +313,9 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Event reg = new Event();
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -287,13 +328,19 @@ public class EventDAO {
                 reg.setRequest(result.getInt("request"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByPlace() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlace() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlace() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlace() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -320,7 +367,9 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Event reg = new Event();
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -333,13 +382,19 @@ public class EventDAO {
                 reg.setRequest(result.getInt("request"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByRangeDatePlace() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -366,7 +421,9 @@ public class EventDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Event reg = new Event();
+                /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdEvent(result.getInt("id_event"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -379,13 +436,19 @@ public class EventDAO {
                 reg.setRequest(result.getInt("request"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setIdDressCode(result.getInt("id_dress_code"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
         } finally {
             /* liberar recursos */
             try {
