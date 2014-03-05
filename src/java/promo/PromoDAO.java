@@ -4,6 +4,8 @@
  */
 package promo;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +44,9 @@ public class PromoDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Promo reg = new Promo();
+                /* obtener resultSet */
                 reg.setIdPromo(result.getInt("id_promo"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -51,14 +55,21 @@ public class PromoDAO {
                 reg.setDateBegin(result.getString("date_begin"));
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setPoints(result.getInt("points"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findByTittle() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -84,7 +95,9 @@ public class PromoDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Promo reg = new Promo();
+                /* obtener resultSet */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setIdPromo(result.getInt("id_promo"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -94,13 +107,19 @@ public class PromoDAO {
                 reg.setDateEnd(result.getString("date_end"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
-
+                /* agregar a la lista */
                 list.add(reg);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PromoDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, getAll() : " + ex);
         } finally {
             /* liberar los recursos */
             try {
@@ -129,11 +148,17 @@ public class PromoDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + promo, ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -146,7 +171,6 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-
             String sql = "insert into promo_gift (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
@@ -161,11 +185,17 @@ public class PromoDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + promo, ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -194,11 +224,17 @@ public class PromoDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + promo, ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -219,6 +255,7 @@ public class PromoDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* obtener resultSet */
                 reg.setIdPromo(result.getInt("id_promo"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
@@ -231,10 +268,17 @@ public class PromoDAO {
                 reg.setRequest(result.getInt("request"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, findbyPromo() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findbyPromo() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, findbyPromo() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findbyPromo() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en PromoDAO, findbyPromo() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findbyPromo() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -280,17 +324,28 @@ public class PromoDAO {
                         sentence.executeUpdate();
                     }
                 }
+            } catch (MySQLSyntaxErrorException ex) {
+                System.out.println("Error de sintaxis en PromoDAO, insert(), insert into client_promo : " + ex);
+                throw new RuntimeException("MySQL Syntax Exception en PromoDAO, insert(), insert into client_promo  : " + ex);
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+                System.out.println("MySQL Excepción de integridad en PromoDAO, insert(), insert into client_promo  : " + ex);
+                throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, insert(), insert into client_promo : " + ex);
             } catch (SQLException ex) {
-                // todo Gestionar mejor esta exception
-                ex.printStackTrace();
-                throw new RuntimeException("regDAO.add: " + listUC, ex);
+                System.out.println("MySQL Excepción inesperada en PromoDAO, PromoDAO, insert(), insert into client_promo  : " + ex);
+                throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert(), insert into client_promo : " + ex);
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + promo, ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
