@@ -42,6 +42,7 @@ public class ClientPromoDAO {
 
             while (result.next()) {
                 ClientPromo reg = new ClientPromo();
+
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setIdPromo(result.getInt("id_promo"));
@@ -166,48 +167,6 @@ public class ClientPromoDAO {
         }
     }
 
-    Collection<ClientPromo> findByPlacePromo(ClientPromo promo) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<ClientPromo> list = new ArrayList<ClientPromo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift_list pgl, place pl, promo_gift pg where pgl.id_place = " + promo.getIdPlace() + " and pgl.id_promo = " + promo.getIdPromo() + " and pgl.id_place = pl.id_place and pgl.id_promo = pg.id_promo and pgl.id_place = pg.id_place group by pgl.id_place";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                ClientPromo reg = new ClientPromo();
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittlePromo(result.getString("tittle"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setPoints(result.getInt("points"));
-
-
-                list.add(reg);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     Collection<ClientPromo> findByPlace(ClientPromo promo) {
 
         Statement sentence = null;
@@ -248,86 +207,5 @@ public class ClientPromoDAO {
         }
         return list;
 
-    }
-
-    Collection<ClientPromo> findByGenre(int genre) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<ClientPromo> list = new ArrayList<ClientPromo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift_list pgl, place pl, promo_gift pg, user_card uc where uc.genre = " + genre + " and pgl.id_place = pl.id_place and pgl.id_promo = pg.id_promo and pgl.id_place = pg.id_place order by pgl.id_promo desc";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                ClientPromo reg = new ClientPromo();
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittlePromo(result.getString("tittle"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setPoints(result.getInt("points"));
-                list.add(reg);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    Collection<ClientPromo> findByStatus(ClientPromo promo) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<ClientPromo> list = new ArrayList<ClientPromo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift_list pgl, place pl, promo_gift pg where pgl.status = " + promo.getStatus() + " and pgl.id_place = pl.id_place and pgl.id_promo = pg.id_promo and pgl.id_place = pg.id_place order by pgl.id_promo desc";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                ClientPromo reg = new ClientPromo();
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittlePromo(result.getString("tittle"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setPoints(result.getInt("points"));
-
-                list.add(reg);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
     }
 }

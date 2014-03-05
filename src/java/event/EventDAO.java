@@ -119,17 +119,17 @@ public class EventDAO {
             }
         }
         return list;
-    }    
+    }
 
     public void insert(Event event) {
 
-        PreparedStatement sentence = null;        
+        PreparedStatement sentence = null;
 
         try {
 
             String sql = "insert into event (id_place, tittle, details, date_begin, date_end, url_image, points, request, id_dress_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
-            
+
             sentence.setInt(1, event.getIdPlace());
             sentence.setString(2, event.getTittle());
             sentence.setString(3, event.getDetails());
@@ -271,52 +271,6 @@ public class EventDAO {
         try {
             sentence = conexion.createStatement();
             String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + event.getIdPlace() + " and e.id_place = p.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                Event reg = new Event();
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                reg.setNameDressCode(result.getString("name_dress_code"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-
-                list.add(reg);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Event> findbyDate(String date1, String date2) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Event> list = new ArrayList<Event>();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin >= '" + date1 + "' and e.date_begin <= '" + date2 + "' and e.id_place = p.id_place ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {

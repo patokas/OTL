@@ -114,6 +114,7 @@ public class CardDAO {
 
             while (result.next()) {
                 Card reg = new Card();
+                
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -139,9 +140,12 @@ public class CardDAO {
     }
 
     public Card findOneByBarCode(int barcode) {
+        
         Statement sentence = null;
         ResultSet result = null;
+        
         Card reg = null;
+        
         try {
             sentence = conexion.createStatement();
             String sql = "select * from card where bar_code = " + barcode + " ";
@@ -242,39 +246,6 @@ public class CardDAO {
                 sentence.close();
             } catch (Exception noGestionar) {
             }
-        }
-        return reg;
-    }
-
-    public UserCard findbyRutJoin1(int rut) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-        
-        UserCard reg = null;
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from user_card  where rut = " + rut + " ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                reg = new UserCard();
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setFirstName(result.getString("first_name"));
-                reg.setLastName(result.getString("last_name"));
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-
         }
         return reg;
     }

@@ -71,47 +71,6 @@ public class PromoDAO {
         return list;
     }
 
-    public Collection<Promo> findByPlace(Promo promo) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-        Collection<Promo> list = new ArrayList<Promo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where pr.id_place = pl.id_place and pr.id_place = " + promo.getIdPlace() + " order by pr.id_promo desc";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                Promo reg = new Promo();
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setPoints(result.getInt("points"));
-
-                list.add(reg);
-            }
-
-        } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
-        } finally {
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     public Collection<Promo> getAll() {
 
         Statement sentence = null;

@@ -29,10 +29,10 @@ public class UserCardDAO {
     }
 
     public Collection<UserCard> findByRut(int rut) {
-        
+
         Statement sentence = null;
         ResultSet result = null;
-        
+
         Collection<UserCard> list = new ArrayList<UserCard>();
         try {
             sentence = conexion.createStatement();
@@ -68,12 +68,12 @@ public class UserCardDAO {
         }
         return list;
     }
-    
+
     public UserCard findOneByRut(int rut) {
-        
+
         Statement sentence = null;
         ResultSet result = null;
-        
+
         UserCard reg = null;
         try {
             sentence = conexion.createStatement();
@@ -87,7 +87,7 @@ public class UserCardDAO {
                 reg.setIdCity(result.getInt("id_city"));
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
-                reg.setEmail(result.getString("email"));                
+                reg.setEmail(result.getString("email"));
                 reg.setTelephone(result.getInt("tel"));
                 reg.setGenre(result.getInt("genre"));
             }
@@ -183,7 +183,7 @@ public class UserCardDAO {
             }
         }
         return list;
-    } 
+    }
 
     public void insert(UserCard reg) {
 
@@ -284,6 +284,7 @@ public class UserCardDAO {
     }
 
     public void update(UserCard user) {
+
         PreparedStatement sentence = null;
 
         try {
@@ -312,7 +313,7 @@ public class UserCardDAO {
     }
 
     public void updatePassword(UserCard user) {
-        
+
         PreparedStatement sentence = null;
 
         try {
@@ -338,12 +339,12 @@ public class UserCardDAO {
     }
 
     public Collection<UserCard> findByGender(int gender) {
-     
+
         Statement sentence = null;
         ResultSet result = null;
-        
+
         Collection<UserCard> list = new ArrayList<UserCard>();
-        
+
         try {
             sentence = conexion.createStatement();
             String sql = "select * from user_card where genre = " + gender + "";

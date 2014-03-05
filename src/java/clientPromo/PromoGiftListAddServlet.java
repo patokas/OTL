@@ -105,7 +105,7 @@ public class PromoGiftListAddServlet extends HttpServlet {
                         boolean error = false;
 
                         if (btnAdd == null) {
-                            request.setAttribute("msg", "Ingrese una promoción o regalo para un cliente.");
+                            request.setAttribute("msg", "Ingrese una promoción para un cliente.");
                         } else {
                             /* comprobar id place */
                             if (sidPlace == null || sidPlace.trim().equals("")) {
@@ -176,11 +176,11 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                     ClientPromo aux = pglDAO.findbyPromoGiftList(pglReg);
                                     if (aux != null) {
                                         System.out.println("existe promo o regalo para el cliente");
-                                        request.setAttribute("msgErrorDup", "Error: ya existe esta Promo/Regalo para el usuario.");
+                                        request.setAttribute("msgErrorDup", "Error: ya existe esta Promoción para el cliente.");
                                         error = true;
                                     }
                                 } else {
-                                    request.setAttribute("msgErrorFound", "Error: No existe promo o gift en Place.");
+                                    request.setAttribute("msgErrorFound", "Error: No existe esta promoción en este lugar.");
                                     error = true;
                                 }
                             }
@@ -189,7 +189,7 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                     pglDAO.insert(pglReg);
                                     request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
                                 } catch (Exception sqlException) {
-                                    request.setAttribute("msgErrorDup", "Error de inserción: ya existe esta Promo/Regalo para el usuario.");
+                                    request.setAttribute("msgErrorDup", "Error de inserción: ya existe esta Promoción para el cliente.");
                                 }
                             }
                         }
