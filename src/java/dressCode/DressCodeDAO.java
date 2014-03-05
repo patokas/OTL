@@ -4,6 +4,8 @@
  */
 package dressCode;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,20 +45,24 @@ public class DressCodeDAO {
             while (result.next()) {
                 /* instanciar objeto */
                 DressCode reg = new DressCode();
-
                 /* obtener resultSet */
                 reg.setIdDressCode(result.getInt("id_dress_code"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setMenDetails(result.getString("men_details"));
                 reg.setWomenDetails(result.getString("women_details"));
                 reg.setUrlImage(result.getString("url_image"));
-
                 /* agregar a la lista */
                 list.add(reg);
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, getAll() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -76,7 +82,6 @@ public class DressCodeDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        /* declarar objeto */
         DressCode reg = null;
 
         try {
@@ -87,7 +92,6 @@ public class DressCodeDAO {
             while (result.next()) {
                 /* definir objeto */
                 reg = new DressCode();
-
                 /* obtener resultSet */
                 reg.setIdDressCode(result.getInt("id_dress_code"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
@@ -95,9 +99,15 @@ public class DressCodeDAO {
                 reg.setWomenDetails(result.getString("women_details"));
                 reg.setUrlImage(result.getString("url_image"));
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, findById() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, findById() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -128,9 +138,15 @@ public class DressCodeDAO {
             while (result.next()) {
                 find = true;
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, findByName() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, findByName() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, findByName() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, findByName() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, findByName() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, findByName() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -150,7 +166,6 @@ public class DressCodeDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        /* declarar y definir variables */
         boolean find = false;
 
         try {
@@ -161,9 +176,15 @@ public class DressCodeDAO {
             while (result.next()) {
                 find = true;
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, findByIdName() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, findByIdName() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, findByIdName() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, findByIdName() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, findByIdName() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, findByIdName() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -195,10 +216,15 @@ public class DressCodeDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, insert() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -225,10 +251,15 @@ public class DressCodeDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("RegDAO.update: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, update() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -251,11 +282,17 @@ public class DressCodeDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en DressCodeDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en DressCodeDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en DressCodeDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en DressCodeDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.eliminar: " + id, ex);
+            System.out.println("MySQL Excepción inesperada en DressCodeDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en DressCodeDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
