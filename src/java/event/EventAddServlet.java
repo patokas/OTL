@@ -110,6 +110,8 @@ public class EventAddServlet extends HttpServlet {
 
                         /* comprobar si recibe formulario */
                         if (btnAdd != null) {
+                            request.setAttribute("msg", "Ingrese un evento.");
+                        } else {
 
                             /* comprobar id place */
                             if (sidPlace == null || sidPlace.trim().equals("")) {
@@ -196,25 +198,6 @@ public class EventAddServlet extends HttpServlet {
                                 }
                             }
 
-                            /* tittle */
-                            if (!error) {
-                                Collection<Event> list = eventDAO.findByTittle(event);
-                                if (list.size() > 0) {
-                                    String d = event.getDateBegin(); //guardar fecha antes de editar
-                                    for (Event aux : list) {
-                                        aux.setDateEnd(aux.getDateEnd().replace(".0", "")); //editar fecha para comparar
-                                        event.setDateBegin(event.getDateBegin().replace("T", " ")); //editar fecha para comparar
-                                    /*  si poseen el mismo idPlace y poseen fechas coincidentes, entonces error */
-                                        if (event.getDateBegin().compareTo(aux.getDateEnd()) <= 0 && aux.getIdPlace() == event.getIdPlace()) {
-                                            request.setAttribute("msgErrorEvent", "Error: El evento '" + event.getTittle() + "', ya existe para la plaza seleccionada. Compruebe utilizando otro título u otro rango de fechas.");
-                                            error = true;
-                                        }
-                                        System.out.println("place: " + event.getIdPlace() + " " + event.getDateBegin().compareTo(aux.getDateEnd()) + " date begin :" + event.getDateBegin() + " date end: " + aux.getDateEnd());
-                                    }
-                                    event.setDateBegin(d);
-                                }
-                            }
-
                             /* comprobar id dress code */
                             if (sidDressCode == null || sidDressCode.trim().equals("")) {
                                 error = true;
@@ -226,18 +209,26 @@ public class EventAddServlet extends HttpServlet {
                                 }
                             }
 
+                            ////////////////////////////////////////////
+                            // EJECUTAR LÓGICA DE NEGOCIO
+                            ////////////////////////////////////////////
+                            
                             if (!error) {
-                                /* insertar nuevo evento */
-                                try {
-                                    eventDAO.insert(event);
-                                    request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                } catch (Exception ex) {
-                                    request.setAttribute("msgErrorEvent", "Error al insertar el evento, verifique coincidencias.");
-                                    ex.printStackTrace();
+                                /* comprobar registros duplicados */
+                                boolean find = eventDAO.findDuplicate(event);
+                                if (find) {
+                                    request.setAttribute("msgErrorEvent", "Error: ya existe este evento. Compruebe utilizando otro título u otro rango de fechas.");
+                                } else {
+                                    /* insertar nuevo evento */
+                                    try {
+                                        eventDAO.insert(event);
+                                        request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                    } catch (Exception ex) {
+                                        request.setAttribute("msgErrorEvent", "Error al insertar el evento, verifique coincidencias.");
+                                        ex.printStackTrace();
+                                    }
                                 }
                             }
-                        } else {
-                            request.setAttribute("msg", "Ingrese un evento.");
                         }
 
                         /* obtener lista de lugares */

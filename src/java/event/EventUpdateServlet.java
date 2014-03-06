@@ -24,7 +24,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "EventUpdateServlet", urlPatterns = {"/EventUpdateServlet"})
 public class EventUpdateServlet extends HttpServlet {
-    
+
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -46,17 +46,17 @@ public class EventUpdateServlet extends HttpServlet {
 
         /* definir conexion */
         Connection conexion = null;
-        
+
         try {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             ///////////////////////////////////////// 
 
             conexion = ds.getConnection();
-            
+
             EventDAO eventDAO = new EventDAO();
             eventDAO.setConexion(conexion);
-            
+
             DressCodeDAO dressCodeDAO = new DressCodeDAO();
             dressCodeDAO.setConexion(conexion);
 
@@ -85,7 +85,7 @@ public class EventUpdateServlet extends HttpServlet {
                     ////////////////////////////////////////
 
                     Event event = new Event();
-                    
+
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
@@ -102,7 +102,7 @@ public class EventUpdateServlet extends HttpServlet {
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("eventRequest");
                         String sidDressCode = request.getParameter("idDressCode");
-                        
+
                         boolean error = false;
 
                         /* comprobar id place */
@@ -214,25 +214,13 @@ public class EventUpdateServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-                        
+
                         if (!error) {
-                            /* traer todos los registros con el mismo tittle */
-                            Collection<Event> list = eventDAO.findByTittle(event);
-                            if (list.size() > 0) {
-                                String d = event.getDateBegin(); //guardar fecha antes de editar
-                                for (Event aux : list) {
-                                    aux.setDateEnd(aux.getDateEnd().replace(".0", "")); //editar fecha para comparar
-                                    event.setDateBegin(event.getDateBegin().replace("T", " ")); //editar fecha para comparar
-                                    /*  si el registro encontrado pertenece al mismo place, pero posee idEvent diferente, entonces error */
-                                    if (event.getDateBegin().compareTo(aux.getDateEnd()) <= 0 && aux.getIdPlace() == event.getIdPlace() && aux.getIdEvent() != event.getIdEvent()) {
-                                        error = true;
-                                        request.setAttribute("msgErrorDupEvent", "Error: El evento '" + event.getTittle() + "', ya existe para la plaza " + event.getNamePlace() + ". Compruebe utilizando otro título u otro rango de fechas.");
-                                    }
-                                    System.out.println("place " + aux.getIdPlace() + " event: " + aux.getIdEvent() + " comparar fechas: " + event.getDateBegin().compareTo(aux.getDateEnd()));
-                                }
-                                event.setDateBegin(d);
-                            }
-                            if (!error) {
+                            /* comprobar registros duplicados */
+                            boolean find = eventDAO.findDuplicate(event);
+                            if (find) {
+                                request.setAttribute("msgErrorEvent", "Error: ya existe este evento. Compruebe utilizando otro título u otro rango de fechas.");
+                            } else {
                                 /* comprobar existencia */
                                 Collection<Event> listAux = eventDAO.findByPlaceEvent(event);
                                 if (listAux.size() > 0) {
@@ -251,9 +239,9 @@ public class EventUpdateServlet extends HttpServlet {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-                        
+
                         request.setAttribute("event", event);
-                        
+
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/event/eventUpdate.jsp").forward(request, response);

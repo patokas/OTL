@@ -199,33 +199,18 @@ public class PromoUpdateServlet extends HttpServlet {
                         }
 
                         if (!error) {
-                            /* traer todos los registros con el mismo tittle */
-                            Collection<Promo> list = promoDAO.findByTittle(promo);
-                            if (list.size() > 0) {
-                                System.out.println("existe titulo repetido");
-                                /* guardar fecha antes de editar */
-                                String d = promo.getDateBegin();
-                                for (Promo aux : list) {
-                                    /* editar fechas para comparar */
-                                    aux.setDateEnd(aux.getDateEnd().replace(".0", ""));
-                                    promo.setDateBegin(promo.getDateBegin().replace("T", " "));
-                                    /*  si pertenecen al mismo place y poseen idPromo diferentes, error */
-                                    System.out.println("id place: " + promo.getIdPlace() + " id promo: " + promo.getIdPromo() + " fechas comparación: " + promo.getDateBegin().compareTo(aux.getDateEnd()));
-                                    if (promo.getDateBegin().compareTo(aux.getDateEnd()) != 1 && aux.getIdPlace() == promo.getIdPlace() && aux.getIdPromo() != promo.getIdPromo()) {
-                                        error = true;
-                                        request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
-                                    }
-                                }
-                                promo.setDateBegin(d);
-                            }
-                        }
-                        if (!error) {
-                            Promo aux = promoDAO.findbyPromo(promo);
-                            if (aux.getIdPlace() > 0) {
-                                promoDAO.update(promo);
-                                request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
+                            /* comprobar registros duplicados */
+                            boolean find = promoDAO.findDuplicate(promo);
+                            if (find) {
+                                request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
                             } else {
-                                request.setAttribute("msgErrorFound", "Error: El registro no existe o ha sido mientras se actualizaba.");
+                                Promo aux = promoDAO.findbyPromo(promo);
+                                if (aux.getIdPlace() > 0) {
+                                    promoDAO.update(promo);
+                                    request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
+                                } else {
+                                    request.setAttribute("msgErrorFound", "Error: El registro no existe o ha sido mientras se actualizaba.");
+                                }
                             }
                         }
                         request.setAttribute("promo", promo);

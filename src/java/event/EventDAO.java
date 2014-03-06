@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
-import userCard.UserCard;
 
 /**
  *
@@ -84,6 +83,46 @@ public class EventDAO {
             }
         }
         return list;
+    }
+
+    public boolean findDuplicate(Event reg) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from event where id_place = " + reg.getIdPlace() + " and id_event <> " + reg.getIdEvent() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* obtener resultSet */
+                find = true;
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findDuplicate : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return find;
     }
 
     public Collection<Event> findByTittle(Event event) {

@@ -96,8 +96,8 @@ public class PromoDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
-                /* obtener resultSet */
-                find = true;
+                /* obtener resultSet */                
+                find = true;              
             }
 
         } catch (MySQLSyntaxErrorException ex) {

@@ -100,7 +100,7 @@ public class PromoAddServlet extends HttpServlet {
                         boolean error = false;
 
                         if (btnAdd == null) {
-                            request.setAttribute("msg", "Ingrese una promo o regalo.");
+                            request.setAttribute("msg", "Ingrese una promoción.");
                         } else {
                             /* comprobar send to */
                             int sent = 9; // 9 == null
@@ -190,82 +190,70 @@ public class PromoAddServlet extends HttpServlet {
                                 }
                             }
 
-                            /* verificar duplicaciones */
+                            //////////////////////////////////////////////
+                            // EJECUTAR lÓGICA DE NEGOCIO
+                            //////////////////////////////////////////////
+
                             if (!error) {
-                                Collection<Promo> list = promoDAO.findByTittle(promo);
-                                if (list.size() > 0) {
-                                    /* guardar fecha antes de editar */
-                                    String d = promo.getDateBegin();
-                                    for (Promo aux : list) {
-                                        /* editar fechas para comparar */
-                                        aux.setDateEnd(aux.getDateEnd().replace(".0", ""));
-                                        promo.setDateBegin(promo.getDateBegin().replace("T", " "));
-                                        /* si pertenecen al mismo place y poseen idPromo diferentes, error */
-                                        if (promo.getDateBegin().compareTo(aux.getDateEnd()) != 1 && aux.getIdPlace() == promo.getIdPlace()) {
-                                            error = true;
-                                            request.setAttribute("msgErrorDup", "Error: Ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
-                                        }
-                                        System.out.println("place: " + promo.getIdPlace() + " " + promo.getDateBegin().compareTo(aux.getDateEnd()) + " date begin :" + promo.getDateBegin() + " date end: " + aux.getDateEnd());
+                                /* comprobar registros duplicados */
+                                boolean find = promoDAO.findDuplicate(promo);
+                                if (find) {
+                                    request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
+                                } else {
+                                    Collection<UserCard> listUC;
+                                    int gender = sent - 2;
+
+                                    switch (sent) {
+                                        case 1:
+                                            /* obtener todos */
+                                            listUC = usercardDAO.getAll();
+                                            try {
+                                                promoDAO.insert(promo, listUC);
+                                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                            } catch (Exception insertException) {
+                                                System.out.println("error no se pudo insertar promocion");
+                                            }
+                                            break;
+                                        case 2:
+                                            /* obtener sólo hombres */
+                                            listUC = usercardDAO.findByGender(gender);
+                                            try {
+                                                promoDAO.insert(promo, listUC);
+                                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                            } catch (Exception insertException) {
+                                                System.out.println("error no se pudo insertar promocion");
+                                            }
+                                            break;
+                                        case 3:
+                                            /* obtener sólo mujeres */
+                                            listUC = usercardDAO.findByGender(gender);
+                                            try {
+                                                promoDAO.insert(promo, listUC);
+                                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                            } catch (Exception insertException) {
+                                                System.out.println("error no se pudo insertar promocion");
+                                            }
+                                            break;
+                                        case 4:
+                                            /* obtener sólo cumpleañeros */
+                                            listUC = usercardDAO.findByBirthDay();
+                                            try {
+                                                promoDAO.insert(promo, listUC);
+                                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                            } catch (Exception insertException) {
+                                                System.out.println("error no se pudo insertar promocion");
+                                            }
+                                            break;
+                                        case 5:
+                                            /* registrar sólo evento */
+                                            try {
+                                                promoDAO.insert(promo);
+                                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                            } catch (Exception insertException) {
+                                                System.out.println("error no se pudo insertar promocion");
+                                            }
+                                            break;
                                     }
-                                    promo.setDateBegin(d);
-                                }
-                            }
-
-                            if (!error) {
-
-                                Collection<UserCard> listUC;
-                                int gender = sent - 2;
-
-                                switch (sent) {
-                                    case 1:
-                                        /* obtener todos */
-                                        listUC = usercardDAO.getAll();
-                                        try {
-                                            promoDAO.insert(promo, listUC);
-                                            request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                        } catch (Exception insertException) {
-                                            System.out.println("error no se pudo insertar promocion");
-                                        }
-                                        break;
-                                    case 2:
-                                        /* obtener sólo hombres */
-                                        listUC = usercardDAO.findByGender(gender);
-                                        try {
-                                            promoDAO.insert(promo, listUC);
-                                            request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                        } catch (Exception insertException) {
-                                            System.out.println("error no se pudo insertar promocion");
-                                        }
-                                        break;
-                                    case 3:
-                                        /* obtener sólo mujeres */
-                                        listUC = usercardDAO.findByGender(gender);
-                                        try {
-                                            promoDAO.insert(promo, listUC);
-                                            request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                        } catch (Exception insertException) {
-                                            System.out.println("error no se pudo insertar promocion");
-                                        }
-                                        break;
-                                    case 4:
-                                        /* obtener sólo cumpleañeros */
-                                        listUC = usercardDAO.findByBirthDay();
-                                        try {
-                                            promoDAO.insert(promo, listUC);
-                                            request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                        } catch (Exception insertException) {
-                                            System.out.println("error no se pudo insertar promocion");
-                                        }
-                                        break;
-                                    case 5:
-                                        /* registrar sólo evento */
-                                        try {
-                                            promoDAO.insert(promo);
-                                            request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                                        } catch (Exception insertException) {
-                                            System.out.println("error no se pudo insertar promocion");
-                                        }
-                                        break;
                                 }
                             }
                         }
@@ -274,8 +262,13 @@ public class PromoAddServlet extends HttpServlet {
                         // ESTABLECER ATRIBUTOS AL REQUEST
                         /////////////////////////////////////////
 
-                        Collection<Place> listPlace = placeDAO.getAll();
-                        request.setAttribute("listPlace", listPlace);
+                        try {
+                            Collection<Place> listPlace = placeDAO.getAll();
+                            request.setAttribute("listPlace", listPlace);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+
                         request.setAttribute("promo", promo);
 
                     } catch (Exception parameterException) {
