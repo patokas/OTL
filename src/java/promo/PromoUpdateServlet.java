@@ -213,7 +213,7 @@ public class PromoUpdateServlet extends HttpServlet {
                                     System.out.println("id place: " + promo.getIdPlace() + " id promo: " + promo.getIdPromo() + " fechas comparación: " + promo.getDateBegin().compareTo(aux.getDateEnd()));
                                     if (promo.getDateBegin().compareTo(aux.getDateEnd()) != 1 && aux.getIdPlace() == promo.getIdPlace() && aux.getIdPromo() != promo.getIdPromo()) {
                                         error = true;
-                                        request.setAttribute("msgErrorDup", "Error: ya existe esta promo o regalo. Compruebe utilizando otro título u otro rango de fechas.");
+                                        request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
                                     }
                                 }
                                 promo.setDateBegin(d);

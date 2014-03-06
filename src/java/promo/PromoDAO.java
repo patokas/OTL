@@ -31,57 +31,6 @@ public class PromoDAO {
         this.conexion = conexion;
     }
 
-    public Collection<Promo> findByTittle(Promo promo) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Promo> list = new ArrayList<Promo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where tittle like '" + promo.getTittle() + "%' and pr.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Promo reg = new Promo();
-                /* obtener resultSet */
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setPoints(result.getInt("points"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findByTittle() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     public Collection<Promo> getAll() {
 
         Statement sentence = null;
@@ -134,112 +83,95 @@ public class PromoDAO {
         return list;
     }
 
-    public void delete(Promo promo) {
+    public boolean findDuplicate(Promo reg) {
 
-        PreparedStatement sentence = null;
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
 
         try {
-            String sql = "delete from promo_gift where id_place = ? and id_promo = ? ";
+            sentence = conexion.createStatement();
+            String sql = "select * from promo_gift where id_place = " + reg.getIdPlace() + " and id_promo <> " + reg.getIdPromo() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
+            result = sentence.executeQuery(sql);
 
-            sentence = conexion.prepareStatement(sql);
-
-            sentence.setInt(1, promo.getIdPlace());
-            sentence.setInt(2, promo.getIdPromo());
-
-            sentence.executeUpdate();
+            while (result.next()) {
+                /* obtener resultSet */
+                find = true;
+            }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, delete() : " + ex);
+            System.out.println("Error de sintaxis en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findDuplicate : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
+            System.out.println("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
         } finally {
             /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
             }
         }
+        return find;
     }
 
-    public void insert(Promo promo) {
+    public Collection<Promo> findByTittle(Promo promo) {
 
-        PreparedStatement sentence = null;
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Collection<Promo> list = new ArrayList<Promo>();
 
         try {
-            String sql = "insert into promo_gift (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
-            sentence = conexion.prepareStatement(sql);
+            sentence = conexion.createStatement();
+            String sql = "select * from promo_gift pr, place pl where tittle like '" + promo.getTittle() + "%' and pr.id_place = pl.id_place ";
+            result = sentence.executeQuery(sql);
 
-            sentence.setInt(1, promo.getIdPlace());
-            sentence.setString(2, promo.getTittle());
-            sentence.setString(3, promo.getDetails());
-            sentence.setString(4, promo.getDateBegin());
-            sentence.setString(5, promo.getDateEnd());
-            sentence.setString(6, promo.getUrlImage());
-            sentence.setInt(7, promo.getPoints());
-            sentence.setInt(8, promo.getRequest());
-
-            sentence.executeUpdate();
+            while (result.next()) {
+                /* instanciar objeto */
+                Promo reg = new Promo();
+                /* obtener resultSet */
+                reg.setIdPromo(result.getInt("id_promo"));
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setDetails(result.getString("details"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
+                reg.setPoints(result.getInt("points"));
+                /* agregar a la lista */
+                list.add(reg);
+            }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, insert() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, insert() : " + ex);
+            System.out.println("Error de sintaxis en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findByTittle() : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
+            System.out.println("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
         } finally {
             /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
             }
         }
-    }
-
-    public void update(Promo promo) {
-
-        PreparedStatement sentence = null;
-
-        try {
-            String sql = "update promo_gift set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_promo = ? ";
-
-            sentence = conexion.prepareStatement(sql);
-
-            sentence.setString(1, promo.getTittle());
-            sentence.setString(2, promo.getDetails());
-            sentence.setString(3, promo.getDateBegin());
-            sentence.setString(4, promo.getDateEnd());
-            sentence.setString(5, promo.getUrlImage());
-            sentence.setInt(6, promo.getPoints());
-            sentence.setInt(7, promo.getRequest());
-            sentence.setInt(8, promo.getIdPlace());
-            sentence.setInt(9, promo.getIdPromo());
-
-            sentence.executeUpdate();
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, update() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, update() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
+        return list;
     }
 
     public Promo findbyPromo(Promo promo) {
@@ -344,6 +276,114 @@ public class PromoDAO {
         } catch (SQLException ex) {
             System.out.println("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
             throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
+    public void delete(Promo promo) {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "delete from promo_gift where id_place = ? and id_promo = ? ";
+
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.setInt(1, promo.getIdPlace());
+            sentence.setInt(2, promo.getIdPromo());
+
+            sentence.executeUpdate();
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, delete() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, delete() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
+    public void insert(Promo promo) {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "insert into promo_gift (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.setInt(1, promo.getIdPlace());
+            sentence.setString(2, promo.getTittle());
+            sentence.setString(3, promo.getDetails());
+            sentence.setString(4, promo.getDateBegin());
+            sentence.setString(5, promo.getDateEnd());
+            sentence.setString(6, promo.getUrlImage());
+            sentence.setInt(7, promo.getPoints());
+            sentence.setInt(8, promo.getRequest());
+
+            sentence.executeUpdate();
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, insert() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, insert() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
+    public void update(Promo promo) {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "update promo_gift set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_promo = ? ";
+
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.setString(1, promo.getTittle());
+            sentence.setString(2, promo.getDetails());
+            sentence.setString(3, promo.getDateBegin());
+            sentence.setString(4, promo.getDateEnd());
+            sentence.setString(5, promo.getUrlImage());
+            sentence.setInt(6, promo.getPoints());
+            sentence.setInt(7, promo.getRequest());
+            sentence.setInt(8, promo.getIdPlace());
+            sentence.setInt(9, promo.getIdPromo());
+
+            sentence.executeUpdate();
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, update() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, update() : " + ex);
         } finally {
             /* liberar recursos */
             try {

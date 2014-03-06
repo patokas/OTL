@@ -176,7 +176,7 @@ public class EventAddServlet extends HttpServlet {
                                     } else {
                                         /* comparar fechas */
                                         if (event.getDateBegin().compareTo(event.getDateEnd()) >= 0) {
-                                            request.setAttribute("msgErrorDate", "Error: La fecha de término debe ser mayor a la fecha de inicio");
+                                            request.setAttribute("msgErrorDate", "Error: La fecha de inicio no puede ser mayor que la de término.");
                                             error = true;
                                         }
                                     }

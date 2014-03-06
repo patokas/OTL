@@ -55,69 +55,71 @@ public class LoginServlet extends HttpServlet {
             AdminDAO adminDAO = new AdminDAO();
             adminDAO.setConexion(conexion);
 
-            try {
-                //////////////////////////////////////////////
-                // RECIBIR Y COMPROBAR PARAMETROS
-                /////////////////////////////////////////////
-                
-                String btnLogin = request.getParameter("btnLogin");
+            //////////////////////////////////////////////
+            // RECIBIR Y COMPROBAR PARAMETROS
+            /////////////////////////////////////////////
 
-                if (btnLogin == null) {
-                    System.out.println("1° vez login");
-                    /* mostrar login por 1° vez */
-                    request.getRequestDispatcher("/login/login.jsp").forward(request, response);
-                } else {
-                    /* recibir parametros desde formulario login */
-                    String username = request.getParameter("username");
-                    String password = request.getParameter("password");
+            String btnLogin = request.getParameter("btnLogin");
 
-                    boolean error = false;
+            if (btnLogin == null) {
+                /* mostrar login por 1° vez */
+                request.getRequestDispatcher("/login/login.jsp").forward(request, response);
+            } else {
+                /* recibir parametros desde formulario login */
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
 
-                    /* comprobar username */
-                    if (username == null || username.trim().equals("")) {
-                        error = true;
-                    }
+                boolean error = false;
 
-                    /* comprobar password */
-                    if (password == null || password.trim().equals("")) {
-                        error = true;
-                    }
-
-                    if (!error) {
-                        try {
-                            /* encriptar password */
-                            String pwdCrypted = StringMD.getStringMessageDigest(password, StringMD.MD5);
-
-                            /* comprobar si existe */
-                            Admin admin = adminDAO.findByUserPass(username, pwdCrypted);
-                            System.out.println("encontro el admin");
-
-                            /* crear session */
-                            HttpSession session = request.getSession(true);
-
-                            /* asignar 10000 ms de expiracion ante inactividad */
-                            session.setMaxInactiveInterval(10000);
-
-                            /* asignar valores a session */
-                            session.setAttribute("username", username);
-
-                            String access = "" + admin.getTypeAdmin();
-                            session.setAttribute("access", access);
-                            session.setAttribute("idUser", "" + admin.getIdAdmin());
-
-                            request.getRequestDispatcher("/AdminMainServlet").forward(request, response);
-                        } catch (Exception sessionStartException) {
-                            System.out.println("no encontro el admin, error username o password");
-                            request.setAttribute("msgErrorLogin", "ERROR AL INGRESAR USERNAME O PASSWORD.");
-                            request.getRequestDispatcher("/login/login.jsp").forward(request, response);
-                        }
-                    }
+                /* comprobar username */
+                if (username == null || username.trim().equals("")) {
+                    error = true;
                 }
-            } catch (Exception parameterException) {
+
+                /* comprobar password */
+                if (password == null || password.trim().equals("")) {
+                    error = true;
+                }
+
+
+                /* encriptar password */
+                String pwdCrypted = StringMD.getStringMessageDigest(password, StringMD.MD5);
+
+                /* comprobar si existe */
+                try {
+                    Admin admin = adminDAO.findByUserPass(username, pwdCrypted);
+
+                    if (admin != null) {
+                        System.out.println("iniciar sesion de admin");
+
+                        /* crear session */
+                        HttpSession session = request.getSession(true);
+
+                        /* asignar 10000 ms de expiracion ante inactividad */
+                        session.setMaxInactiveInterval(10000);
+
+                        /* asignar valores a session */
+                        session.setAttribute("username", username);
+
+                        String access = "" + admin.getTypeAdmin();
+                        session.setAttribute("access", access);
+                        session.setAttribute("idUser", "" + admin.getIdAdmin());
+
+                        request.getRequestDispatcher("/AdminMainServlet").forward(request, response);
+                    } else {
+                        System.out.println("error username o password");
+                        request.setAttribute("msgErrorLogin", "ERROR AL INGRESAR USERNAME O PASSWORD.");
+                        request.getRequestDispatcher("/login/login.jsp").forward(request, response);
+                    }
+                } catch (Exception ex) {
+                    request.setAttribute("msgErrorLogin", "ERROR DE CONEXION.");
+                    request.getRequestDispatcher("/login/login.jsp").forward(request, response);
+                }
             }
         } catch (Exception connectionException) {
             connectionException.printStackTrace();
         } finally {
+            /* cerrar conexion */
             try {
                 conexion.close();
             } catch (Exception noGestionar) {
