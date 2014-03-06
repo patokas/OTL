@@ -75,37 +75,31 @@ public class CityDAO {
         return list;
     }
 
-    public Collection<City> findByName(City city) {
+    public boolean validateDuplicateName(City reg) {
 
         Statement sentence = null;
         ResultSet result = null;
 
-        Collection<City> list = new ArrayList<City>();
+        boolean find = false;
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from city where name_city like '" + city.getNameCity() + "%'";
+            String sql = "select * from city where id_city <> " + reg.getIdCity() + " and name_city = '" + reg.getNameCity() + "'";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
-                /* instanciar objeto */
-                City reg = new City();
-                /* obtener resulset */
-                reg.setIdCity(result.getInt("id_city"));
-                reg.setNameCity(result.getString("name_city"));
-                /* agregar a la lista */
-                list.add(reg);
+                find = true;
             }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en CityDAO, findbyName() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en CityDAO, findbyName() : " + ex);
+            System.out.println("Error de sintaxis en CityDAO, validateDuplicateName() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CityDAO, validateDuplicateName() : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en CityDAO, findbyName() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, findbyName() : " + ex);
+            System.out.println("MySQL Excepción de integridad en CityDAO, validateDuplicateName() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CityDAO, validateDuplicateName() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, findbyName() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, findbyName() : " + ex);
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, validateDuplicateName() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CityDAO, validateDuplicateName() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -117,7 +111,7 @@ public class CityDAO {
             } catch (Exception noGestionar) {
             }
         }
-        return list;
+        return find;
     }
 
     public City findbyIdCity(City city) {

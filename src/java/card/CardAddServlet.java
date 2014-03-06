@@ -127,8 +127,9 @@ public class CardAddServlet extends HttpServlet {
                                     error = true;
                                 } else {
                                     /* comprobar duplicados */
-                                    Collection<Card> list = cardDAO.findByBarCode(card.getBarCode());
-                                    if (list.size() > 0) {
+                                    Card aux = cardDAO.findByBarCode(card.getBarCode());
+
+                                    if (aux != null) {
                                         request.setAttribute("msgErrorBarCode", "Error: ya existe esta tarjeta asociada a un cliente.");
                                         error = true;
                                     }

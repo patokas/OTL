@@ -86,12 +86,9 @@ public class AdminGetServlet extends HttpServlet {
                             request.setAttribute("msgErrorId", "Error al recibir id Admin.");
                         } else {
                             int id = Integer.parseInt(sid);
-                            Collection<Admin> list = adminDAO.findById(id);
-                            if (list.size() > 0) {
-                                for (Admin aux : list) {
-                                    admin = aux;
-                                    request.setAttribute("msgOk", "Se encontró el registro!");
-                                }
+                            Admin reg = adminDAO.findById(id);
+                            if (reg != null) {
+                                request.setAttribute("msgOk", "Se encontró el registro!");
                             } else {
                                 request.setAttribute("msgErrorFound", "Error: No se encontró el registro.");
                             }

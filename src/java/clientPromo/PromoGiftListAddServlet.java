@@ -5,7 +5,6 @@
 package clientPromo;
 
 import Helpers.Format;
-import Helpers.Rut;
 import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
@@ -162,12 +161,12 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                 promoReg.setIdPromo(pglReg.getIdPromo());
 
                                 /* verificar si existe el user_card */
-                                Collection<UserCard> listUserCard = usercardDAO.findByRut(pglReg.getRut());
-                                if (listUserCard.isEmpty()) {
+                                UserCard reg = usercardDAO.findByRut(pglReg.getRut());
+                                if (reg == null) {
                                     request.setAttribute("msgErrorUserFound", "Error: No existe este usuario. ");
                                     error = true;
-                                    System.out.println("no existe el usuario");
                                 }
+                                
                                 /* verificar si existe promo_gift */
                                 Promo pgReg = promoDAO.findbyPromo(promoReg);
                                 if (pgReg.getIdPlace() > 0) {

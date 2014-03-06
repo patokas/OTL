@@ -190,13 +190,13 @@ public class PromoAddServlet extends HttpServlet {
                                 }
                             }
 
-                            //////////////////////////////////////////////
-                            // EJECUTAR lÓGICA DE NEGOCIO
-                            //////////////////////////////////////////////
+                            //////////////////////////////////
+                            // lOGICA DE NEGOCIO
+                            //////////////////////////////////
 
                             if (!error) {
                                 /* comprobar registros duplicados */
-                                boolean find = promoDAO.findDuplicate(promo);
+                                boolean find = promoDAO.validateDuplicate(promo);
                                 if (find) {
                                     request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
                                 } else {
@@ -262,6 +262,7 @@ public class PromoAddServlet extends HttpServlet {
                         // ESTABLECER ATRIBUTOS AL REQUEST
                         /////////////////////////////////////////
 
+                        /* obtener lista de lugares */
                         try {
                             Collection<Place> listPlace = placeDAO.getAll();
                             request.setAttribute("listPlace", listPlace);

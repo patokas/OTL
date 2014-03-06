@@ -104,12 +104,10 @@ public class AdminAddServlet extends HttpServlet {
                             } else {
                                 /* comprobar username duplicado */
                                 admin.setUsername(username);
-                                Collection<Admin> list = adminDAO.findByUsername(admin.getUsername());
-                                for (Admin adm : list) {
-                                    if (adm.getIdAdmin() > 0) {
-                                        request.setAttribute("msgErrorUsername", "Error: ya existe un administrador con ese username. ");
-                                        error = true;
-                                    }
+                                boolean find = adminDAO.validateDuplicateUsername(admin);
+                                if (find) {
+                                    request.setAttribute("msgErrorUsername", "Error: ya existe un administrador con ese username. ");
+                                    error = true;
                                 }
                             }
                             /* comprobar email */
@@ -119,13 +117,11 @@ public class AdminAddServlet extends HttpServlet {
                             } else {
                                 /* comprobar email duplicado */
                                 admin.setEmail(email);
-                                Collection<Admin> list = adminDAO.findByEmail(admin.getEmail());
-                                for (Admin adm : list) {
-                                    if (adm.getIdAdmin() > 0) {
-                                        request.setAttribute("msgErrorEmail", "Error: ya existe un administrador con ese email. ");
-                                        error = true;
-                                    }
-                                }
+                                boolean find = adminDAO.validateDuplicateEmail(admin);
+                                if (find) {
+                                    request.setAttribute("msgErrorEmail", "Error: ya existe un administrador con ese email. ");
+                                    error = true;
+                                }                                
                             }
 
                             /* comprobar type */

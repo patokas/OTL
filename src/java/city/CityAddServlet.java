@@ -70,31 +70,25 @@ public class CityAddServlet extends HttpServlet {
                 request.setAttribute("access", access);
 
                 /////////////////////////////////////////
-                // DECLARAR VARIABLES DE INSTANCIA
+                // RECIBIR Y COMPROBAR PARAMETROS
                 ////////////////////////////////////////
-
-                City city = new City();
-
                 try {
-                    /////////////////////////////////////////
-                    // RECIBIR Y COMPROBAR PARAMETROS
-                    ////////////////////////////////////////
-
                     String namecity = request.getParameter("nameCity");
                     String btnAdd = request.getParameter("add");
 
-                    if (btnAdd != null) {
+                    City city = new City();
+
+                    if (btnAdd == null) {
+                        request.setAttribute("msg", "Ingrese una ciudad.");
+                    } else {
                         if (namecity == null || namecity.trim().equals("")) {
                             request.setAttribute("msgErrorNameCity", "Error al recibir nombre de ciudad. ");
                         } else {
                             city.setNameCity(Format.capital(namecity));
-                            Collection<City> list = cityDAO.findByName(city);
-                            if (list.size() > 0) {
-                                for (City aux : list) {
-                                    if (aux.getIdCity() > 0) {
-                                        request.setAttribute("msgErrorDup", "Error: ya existe esta ciudad.");
-                                    }
-                                }
+                            /* comprobar ciudad duplicada */
+                            boolean find = cityDAO.validateDuplicateName(city);
+                            if (find) {
+                                request.setAttribute("msgErrorDup", "Error: ya existe una ciudad con este nombre. ");
                             } else {
                                 try {
                                     cityDAO.insert(city);
@@ -103,12 +97,12 @@ public class CityAddServlet extends HttpServlet {
                                 }
                             }
                         }
-                    } else {
-                        request.setAttribute("msg", "Ingrese una ciudad.");
                     }
+
+                    request.setAttribute("city", city);
+
                 } catch (Exception parameterException) {
                 } finally {
-                    request.setAttribute("city", city);
                     request.getRequestDispatcher("/city/cityAdd.jsp").forward(request, response);
                 }
             } catch (Exception sessionException) {

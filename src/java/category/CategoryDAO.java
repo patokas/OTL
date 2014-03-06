@@ -68,6 +68,46 @@ public class CategoryDAO {
         return list;
     }
 
+    public Category findById(int idCategory) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Category reg = new Category();
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from category where id_category = " + idCategory + "";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                reg.setIdCategory(result.getInt("id_category"));
+                reg.setNameCategory(result.getString("name_category"));
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return reg;
+    }
+
     public boolean findByName(int id, String name) {
 
         Statement sentence = null;
@@ -201,45 +241,5 @@ public class CategoryDAO {
             } catch (Exception noGestionar) {
             }
         }
-    }
-
-    public Category findById(int idCategory) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Category reg = new Category();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from category where id_category = " + idCategory + "";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                reg.setIdCategory(result.getInt("id_category"));
-                reg.setNameCategory(result.getString("name_category"));
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en CategoryDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en CategoryDAO, findById() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en CategoryDAO, findById() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en CategoryDAO, findById() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return reg;
     }
 }

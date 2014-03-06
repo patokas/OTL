@@ -95,7 +95,7 @@ public class ExchangeableAddServlet extends HttpServlet {
                         boolean error = false;
 
                         if (btnAdd == null) {
-                            request.setAttribute("msg", "Ingrese una promo o regalo.");
+                            request.setAttribute("msg", "Ingrese un producto canjeable.");
                         } else {
 
                             /* comprobar id place */
@@ -111,7 +111,7 @@ public class ExchangeableAddServlet extends HttpServlet {
 
                             /* comprobar tittle */
                             if (tittle == null || tittle.trim().equals("")) {
-                                request.setAttribute("msgErrorTittle", "Error: Debe ingresar un título a la promoción o regalo.");
+                                request.setAttribute("msgErrorTittle", "Error: Debe ingresar un título.");
                                 error = true;
                             } else {
                                 exchange.setTittle(tittle);
@@ -127,7 +127,7 @@ public class ExchangeableAddServlet extends HttpServlet {
 
                             /* comprobar points */
                             if (spoints == null || spoints.trim().equals("")) {
-                                request.setAttribute("msgErrorPoints", "Error: Debe ingresar puntos que acumula esta promoción.");
+                                request.setAttribute("msgErrorPoints", "Error: Debe ingresar puntos que se necesitan para canjear.");
                                 error = true;
                             } else {
                                 try {
@@ -161,36 +161,32 @@ public class ExchangeableAddServlet extends HttpServlet {
 
                             /* verificar duplicaciones */
                             if (!error) {
-                                Collection<Exchangeable> list = exDAO.findByTittle(exchange);
-                                for (Exchangeable aux : list) {
-                                    /* si pertenecen al mismo place, error */
-                                    if (aux.getIdPlace() == exchange.getIdPlace()) {
-                                        error = true;
-                                        request.setAttribute("msgErrorDup", "Error: Ya existe este producto. Compruebe utilizando otro título.");
+                                boolean find = exDAO.validateDuplicate(exchange);
+                                if (find) {
+                                    request.setAttribute("msgErrorDup", "Error: Ya existe este registro. Compruebe utilizando otro título.");
+                                } else {
+                                    try {
+                                        exDAO.insert(exchange);
+                                        request.setAttribute("msgOk", "El registro se ha ingresado exitosamente.");
+                                    } catch (Exception ex) {
+                                        request.setAttribute("msgErrorInsert", "Error al insertar.");
                                     }
                                 }
                             }
-                            /* insertar producto canjeable */
-                            if (!error) {
-                                try {
-                                    exDAO.insert(exchange);
-                                    request.setAttribute("msgOk", "El registro se ha ingresado exitosamente.");
-                                } catch (Exception ex) {
-                                    request.setAttribute("msgErrorInsert", "Error al insertar nuevo producto canjeable.");
-                                }
+
+                            /////////////////////////////////////////
+                            // ESTABLECER ATRIBUTOS AL REQUEST
+                            /////////////////////////////////////////
+
+                            /* obtener lista de lugares */
+                            try {
+                                Collection<Place> listPlace = placeDAO.getAll();
+                                request.setAttribute("listPlace", listPlace);
+                            } catch (Exception ex) {
                             }
+
+                            request.setAttribute("exchange", exchange);
                         }
-
-                        /////////////////////////////////////////
-                        // ESTABLECER ATRIBUTOS AL REQUEST
-                        /////////////////////////////////////////
-
-                        /* obtener lista de lugares */
-                        Collection<Place> listPlace = placeDAO.getAll();
-                        request.setAttribute("listPlace", listPlace);
-
-                        request.setAttribute("exchange", exchange);
-
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/exchangeable/exchangeableAdd.jsp").forward(request, response);

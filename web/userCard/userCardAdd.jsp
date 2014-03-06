@@ -108,13 +108,13 @@
                                 <c:when test="${msgErrorRut == null}">
                                     <div class="form-group">
                                         <label>Rut </label>
-                                        <input class="form-control" required="true" maxlength="12" name="rut" value="<c:out value="${reg.rut}" />-<c:out value="${reg.dv}" />">
+                                        <input class="form-control" required="true" maxlength="12" name="rut" value="<c:out value="${rut}" />">
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="form-group has-error">
                                         <label class="control-label" for="inputError">rut </label>
-                                        <input class="form-control" required="true" maxlength="12" name="rut" id="inputError" value="<c:out value="${reg.rut}" />-<c:out value="${reg.dv}" />">
+                                        <input class="form-control" required="true" maxlength="12" name="rut" id="inputError" value="<c:out value="${rut}" />">
                                     </div>
                                 </c:otherwise>
                             </c:choose>

@@ -177,6 +177,165 @@ public class EventDAO {
         return list;
     }
 
+    public Event findByPlaceEvent(Event event) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Event reg = null;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from event e, place p where e.id_place = " + event.getIdPlace() + " and e.id_event = " + event.getIdEvent() + " and e.id_place = p.id_place ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* instanciar objeto */
+                reg = new Event();
+                /* obtener resultset */
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setIdEvent(result.getInt("id_event"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setDetails(result.getString("details"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
+                reg.setUrlImage(result.getString("e.url_image"));
+                reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return reg;
+    }
+
+    public Collection<Event> findByPlaceEvent(int idPlace, int idEvent) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Collection<Event> list = new ArrayList<Event>();
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* instanciar objeto */
+                Event reg = new Event();
+                /* obtener resultset */
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setIdEvent(result.getInt("id_event"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setDetails(result.getString("details"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
+                reg.setUrlImage(result.getString("url_image"));
+                reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
+                /* agregar a la lista */
+                list.add(reg);
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return list;
+    }
+
+    public Collection<Event> findbyRangeDatePlace(String date1, int idPlace) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Collection<Event> list = new ArrayList<Event>();
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* instanciar objeto */
+                Event reg = new Event();
+                /* obtener resultset */
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setIdEvent(result.getInt("id_event"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setDetails(result.getString("details"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
+                reg.setUrlImage(result.getString("url_image"));
+                reg.setPoints(result.getInt("points"));
+                reg.setRequest(result.getInt("request"));
+                reg.setNameDressCode(result.getString("name_dress_code"));
+                reg.setIdDressCode(result.getInt("id_dress_code"));
+                /* agregar a la lista */
+                list.add(reg);
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByRangeDatePlace() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return list;
+    }
+
     public void insert(Event event) {
 
         PreparedStatement sentence = null;
@@ -286,219 +445,5 @@ public class EventDAO {
             } catch (Exception noGestionar) {
             }
         }
-    }
-
-    public Collection<Event> findByPlaceEvent(Event event) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Event reg = new Event();
-
-        Collection<Event> list = new ArrayList<Event>();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place p where e.id_place = " + event.getIdPlace() + " and e.id_event = " + event.getIdEvent() + " and e.id_place = p.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* obtener resultset */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setUrlImage(result.getString("e.url_image"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Event> findByPlace(Event event) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Event> list = new ArrayList<Event>();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + event.getIdPlace() + " and e.id_place = p.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Event reg = new Event();
-                /* obtener resultset */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                reg.setNameDressCode(result.getString("name_dress_code"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en EventDAO, findByPlace() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlace() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlace() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlace() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlace() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlace() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Event> findbyRangeDatePlace(String date1, int idPlace) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Event> list = new ArrayList<Event>();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Event reg = new Event();
-                /* obtener resultset */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                reg.setNameDressCode(result.getString("name_dress_code"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en EventDAO, findByRangeDatePlace() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByRangeDatePlace() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByRangeDatePlace() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByRangeDatePlace() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Event> findByPlaceEvent(int idPlace, int idEvent) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Event> list = new ArrayList<Event>();
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Event reg = new Event();
-                /* obtener resultset */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                reg.setNameDressCode(result.getString("name_dress_code"));
-                reg.setIdDressCode(result.getInt("id_dress_code"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByPlaceEvent() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByPlaceEvent() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByPlaceEvent() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
     }
 }

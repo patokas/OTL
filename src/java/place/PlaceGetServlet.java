@@ -4,12 +4,8 @@
  */
 package place;
 
-import category.Category;
-import category.CategoryDAO;
 import city.City;
 import city.CityDAO;
-import dressCode.DressCode;
-import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -102,14 +98,10 @@ public class PlaceGetServlet extends HttpServlet {
 
                         if (!error) {
                             /* buscar place */
-                            Collection<Place> list = dao.findById(id);
-                            if (list.size() > 0) {
-                                for (Place reg : list) {
-                                    if (reg.getIdPlace() > 0) {
-                                        request.setAttribute("place", reg);
-                                        request.setAttribute("msgOk", "Se encontró el registro!");
-                                    }
-                                }
+                            Place reg = dao.findById(id);
+                            if (reg != null) {
+                                request.setAttribute("place", reg);
+                                request.setAttribute("msgOk", "Se encontró el registro!");
                             } else {
                                 request.setAttribute("msgErrorFound", "Error: No se encontró el registro.");
                             }
@@ -119,13 +111,14 @@ public class PlaceGetServlet extends HttpServlet {
                         // ESTABLECER ATRIBUTOS AL REQUEST
                         /////////////////////////////////////////
 
+                        /* obtener listado de ciudades */
                         try {
                             Collection<City> listCity = cityDAO.getAll();
                             request.setAttribute("listCity", listCity);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-                        
+
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/place/placeUpdate.jsp").forward(request, response);

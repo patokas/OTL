@@ -4,8 +4,6 @@
  */
 package userCard;
 
-import Helpers.Format;
-import Helpers.Rut;
 import city.City;
 import city.CityDAO;
 import java.io.IOException;
@@ -52,11 +50,11 @@ public class UserCardGetServlet extends HttpServlet {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
-            
+
             conexion = ds.getConnection();
 
-            UserCardDAO dao = new UserCardDAO();
-            dao.setConexion(conexion);
+            UserCardDAO userCardDAO = new UserCardDAO();
+            userCardDAO.setConexion(conexion);
 
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
@@ -86,18 +84,23 @@ public class UserCardGetServlet extends HttpServlet {
                     /* comprobar rut */
                     if (rut == null || rut.trim().equals("")) {
                     } else {
-                        Collection<UserCard> list = dao.findByRut(Integer.parseInt(rut));
-                        Collection<City> listCity = cityDAO.getAll();
-                        for (UserCard reg : list) {
-                            if (reg.getRut() > 0) {
-                                request.setAttribute("reg", reg);
-                                request.setAttribute("listCity", listCity);
-                                request.setAttribute("msgOk", "Se encontró el registro!");
-                            } else {
-                                request.setAttribute("msgError1", "Error: No se encontró el registro.");
-                            }
+                        /* buscar cliente */
+                        UserCard reg = userCardDAO.findByRut(Integer.parseInt(rut));
+                        if (reg != null) {
+                            request.setAttribute("reg", reg);
+                            request.setAttribute("msgOk", "Se encontró el registro!");
+                        } else {
+                            request.setAttribute("msgError1", "Error: No se encontró el registro.");
                         }
                     }
+
+                    /* obtener lista de ciudades */
+                    try {
+                        Collection<City> listCity = cityDAO.getAll();
+                        request.setAttribute("listCity", listCity);
+                    } catch (Exception ex) {
+                    }
+
                 } catch (Exception parameterException) {
                     request.setAttribute("msgError1", "Error: No se recibió ningún parámetro.");
                 } finally {

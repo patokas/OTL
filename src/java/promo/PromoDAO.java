@@ -83,7 +83,7 @@ public class PromoDAO {
         return list;
     }
 
-    public boolean findDuplicate(Promo reg) {
+    public boolean validateDuplicate(Promo reg) {
 
         Statement sentence = null;
         ResultSet result = null;
@@ -96,19 +96,19 @@ public class PromoDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
-                /* obtener resultSet */                
-                find = true;              
+                /* obtener resultSet */
+                find = true;
             }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, findDuplicate : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findDuplicate : " + ex);
+            System.out.println("Error de sintaxis en PromoDAO, validateDuplicate : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, validateDuplicate : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findDuplicate : " + ex);
+            System.out.println("MySQL Excepción de integridad en PromoDAO, validateDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, validateDuplicate : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findDuplicate : " + ex);
+            System.out.println("MySQL Excepción inesperada en PromoDAO, validateDuplicate : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, validateDuplicate : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -121,57 +121,6 @@ public class PromoDAO {
             }
         }
         return find;
-    }
-
-    public Collection<Promo> findByTittle(Promo promo) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Promo> list = new ArrayList<Promo>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where tittle like '" + promo.getTittle() + "%' and pr.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Promo reg = new Promo();
-                /* obtener resultSet */
-                reg.setIdPromo(result.getInt("id_promo"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setPoints(result.getInt("points"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PromoDAO, findByTittle() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PromoDAO, findByTittle() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PromoDAO, findByTittle() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
     }
 
     public Promo findbyPromo(Promo promo) {
@@ -223,7 +172,7 @@ public class PromoDAO {
         return reg;
     }
 
-    void insert(Promo promo, Collection<UserCard> listUC) {
+    public void insert(Promo promo, Collection<UserCard> listUC) {
 
         PreparedStatement sentence = null;
 

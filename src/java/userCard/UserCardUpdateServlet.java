@@ -6,7 +6,6 @@ package userCard;
 
 import Helpers.Format;
 import Helpers.StringMD;
-import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import java.io.IOException;
@@ -106,11 +105,12 @@ public class UserCardUpdateServlet extends HttpServlet {
                     } else {
                         userCardReg.setRut(Format.getRut(srut));
                         userCardReg.setDv(Format.getDv(srut));
+
                         /* comprobar existencia */
-                        Collection<UserCard> listUC = usercardDAO.findByRut(userCardReg.getRut());
-                        if (listUC.isEmpty()) {
-                            error = true;
+                        UserCard aux = usercardDAO.findByRut(userCardReg.getRut());
+                        if (aux == null) {
                             request.setAttribute("msgErrorFound", "Error: El usuario no ha sido encontrado o ha sido eliminado mientras se actualizaba");
+                            error = true;
                         }
                     }
 
@@ -136,15 +136,8 @@ public class UserCardUpdateServlet extends HttpServlet {
                         error = true;
                     } else {
                         userCardReg.setEmail(email);
-                        try {
-                            Collection<UserCard> list = usercardDAO.findByEmailRepeat(userCardReg.getEmail());
-                            for (UserCard aux : list) {
-                                if (aux.getRut() != userCardReg.getRut() && aux.getEmail().equals(userCardReg.getEmail())) {
-                                    request.setAttribute("msgErrorEmail", "Error: ya existe un usuario con ese email. ");
-                                    error = true;
-                                }
-                            }
-                        } catch (Exception ex) {
+                        boolean find = usercardDAO.validateDuplicateEmail(userCardReg);
+                        if (find) {
                             request.setAttribute("msgErrorEmail", "Error: ya existe un usuario con ese email. ");
                             error = true;
                         }

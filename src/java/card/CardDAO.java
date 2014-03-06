@@ -79,60 +79,12 @@ public class CardDAO {
         return list;
     }
 
-    public Collection<Card> findByRut(int rut) {
+    public Card findByBarCode(int barcode) {
 
         Statement sentence = null;
         ResultSet result = null;
 
-        Collection<Card> list = new ArrayList<Card>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from card where rut = " + rut + " ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Card reg = new Card();
-                /* obtener resultset */
-                reg.setBarCode(result.getInt("bar_code"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setCardType(result.getInt("card_type"));
-                reg.setDateBeginCard(result.getString("date_begin_card"));
-                reg.setDateEndCard(result.getString("date_end_card"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en CardDAO, findByRut() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findByRut() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en CardDAO, findByRut() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findByRut() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en CardDAO, findByRut() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findByRut() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Card> findByBarCode(int barcode) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Card> list = new ArrayList<Card>();
+        Card reg = null;
         try {
             sentence = conexion.createStatement();
             String sql = "select * from card where bar_code = " + barcode + " ";
@@ -140,7 +92,7 @@ public class CardDAO {
 
             while (result.next()) {
                 /* instanciar objetos */
-                Card reg = new Card();
+                reg = new Card();
                 /* obtener resultset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
@@ -148,8 +100,6 @@ public class CardDAO {
                 reg.setCardType(result.getInt("card_type"));
                 reg.setDateBeginCard(result.getString("date_begin_card"));
                 reg.setDateEndCard(result.getString("date_end_card"));
-                /* agregar a la lista */
-                list.add(reg);
             }
         } catch (MySQLSyntaxErrorException ex) {
             System.out.println("Error de sintaxis en CardDAO, findByBarCode() : " + ex);
@@ -171,52 +121,6 @@ public class CardDAO {
             } catch (Exception noGestionar) {
             }
         }
-        return list;
-    }
-
-    public Card findOneByBarCode(int barcode) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Card reg = null;
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from card where bar_code = " + barcode + " ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objetos */
-                reg = new Card();
-                /* obtener resultset */
-                reg.setBarCode(result.getInt("bar_code"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setCardType(result.getInt("card_type"));
-                reg.setDateBeginCard(result.getString("date_begin_card"));
-                reg.setDateEndCard(result.getString("date_end_card"));
-            }
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en CardDAO, findOneByBarCode() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findOneByBarCode() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en CardDAO, findOneByBarCode() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findOneByBarCode() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en CardDAO, findOneByBarCode() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findOneByBarCode() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
         return reg;
     }
 
@@ -225,7 +129,7 @@ public class CardDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        Card reg = new Card();
+        Card reg = null;
 
         try {
             sentence = conexion.createStatement();
@@ -233,6 +137,9 @@ public class CardDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
+                reg = new Card();
+                /* obtener resultset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));

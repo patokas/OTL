@@ -103,21 +103,10 @@ public class CityUpdateServlet extends HttpServlet {
 
                     if (!error) {
                         /* comprobar ciudad duplicada */
-                        Collection<City> list = cityDAO.findByName(city);
-                        if (list.size() > 0) {
-                            for (City aux : list) {
-                                System.out.println("aux: " + aux.getIdCity() + " " + aux.getNameCity());
-                                System.out.println("city: " + city.getIdCity() + " " + city.getNameCity());
-                                if (city.getIdCity() != aux.getIdCity() && aux.getNameCity().equals(city.getNameCity())) {
-                                    request.setAttribute("msgErrorDup", "Error: ya existe una ciudad con este nombre. ");
-                                    error = true;
-                                }
-                            }
+                        boolean find = cityDAO.validateDuplicateName(city);
+                        if (find) {
+                            request.setAttribute("msgErrorDup", "Error: ya existe una ciudad con este nombre. ");
                         } else {
-                            error = false;
-                        }
-
-                        if (!error) {
                             /* comprobar existencia */
                             City aux = cityDAO.findbyIdCity(city);
                             if (aux.getIdCity() > 0) {

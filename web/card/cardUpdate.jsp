@@ -48,31 +48,7 @@
                     <ol class="breadcrumb">
                         <li><a href="CardMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
                         <li class="active"><i class="fa fa-edit"></i> Actualizar</li>
-                    </ol>
-                    <c:if test="${msgError1 != null}" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgError1}" /></strong></br>
-                        </div>
-                    </c:if> 
-                    <c:if test="${msgError2 != null}" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgError2}" /></strong></br>
-                        </div>
-                    </c:if> 
-                    <c:if test="${msgError3 != null}" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgError3}" /></strong></br>
-                        </div>
-                    </c:if>
-                    <c:if test="${msgError4 != null}" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgError4}" /></strong></br>
-                        </div>
-                    </c:if>
+                    </ol>                                        
                     <c:if test="${msgErrorRut != null}" >
                         <div class="alert alert-dismissable alert-danger">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>

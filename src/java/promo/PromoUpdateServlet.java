@@ -200,7 +200,7 @@ public class PromoUpdateServlet extends HttpServlet {
 
                         if (!error) {
                             /* comprobar registros duplicados */
-                            boolean find = promoDAO.findDuplicate(promo);
+                            boolean find = promoDAO.validateDuplicate(promo);
                             if (find) {
                                 request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
                             } else {

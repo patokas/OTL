@@ -181,8 +181,8 @@ public class CardUpdateServlet extends HttpServlet {
                     
                     if (!error) {
                         /* comprobar existencia */
-                        Card aux = cardDAO.findOneByBarCode(card.getBarCode());                        
-                        if (aux.getBarCode() > 0) {
+                        Card aux = cardDAO.findByBarCode(card.getBarCode());                        
+                        if (aux != null) {
                             cardDAO.update(card);
                             request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                         } else {

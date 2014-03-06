@@ -4,9 +4,7 @@
  */
 package userCard;
 
-import Helpers.Console;
 import Helpers.Format;
-import Helpers.Rut;
 import Helpers.StringMD;
 import java.io.IOException;
 import java.sql.Connection;
@@ -57,8 +55,8 @@ public class UserCardAddServlet extends HttpServlet {
 
             conexion = ds.getConnection();
 
-            UserCardDAO dao = new UserCardDAO();
-            dao.setConexion(conexion);
+            UserCardDAO userCardDAO = new UserCardDAO();
+            userCardDAO.setConexion(conexion);
 
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
@@ -76,20 +74,12 @@ public class UserCardAddServlet extends HttpServlet {
 
                 /* obtener los valores de session y asignar valores a la jsp */
                 request.setAttribute("userJsp", user); // username
-                request.setAttribute("access", access); // nivel de acceso                    
+                request.setAttribute("access", access); // nivel de acceso                              
 
                 ////////////////////////////////////////
-                // DECLARAR VARIABLES DE INSTANCIA
-                ///////////////////////////////////////                 
-
-                UserCard reg = new UserCard();
-
+                // RECIBIR Y COMPROBAR PARAMETROS
+                ////////////////////////////////////////
                 try {
-
-                    /////////////////////////////////////////
-                    // RECIBIR Y COMPROBAR PARAMETROS
-                    ////////////////////////////////////////
-
                     String btnAdd = request.getParameter("add");
                     String srut = request.getParameter("rut");
                     String email = request.getParameter("email");
@@ -98,6 +88,8 @@ public class UserCardAddServlet extends HttpServlet {
                     String genre = request.getParameter("genre");
                     String sidCity = request.getParameter("idCity");
                     String telephone = request.getParameter("telephone");
+
+                    UserCard reg = new UserCard();
 
                     boolean error = false;
 
@@ -110,22 +102,29 @@ public class UserCardAddServlet extends HttpServlet {
                             request.setAttribute("msgErrorRut", "Error al recibir rut. Parametro no recibido.");
                             error = true;
                         } else {
-                            ValidationRut helper = new ValidationRut();
-                            reg.setRut(Format.getRut(srut));
-                            reg.setDv(Format.getDv(srut));
+                            request.setAttribute("rut", srut);
                             /* validar rut */
-                            if (helper.validarRut(srut)) {
+                            try {
+                                if (ValidationRut.validateRut(srut)) {
+                                    /* asignar rut y dv */
+                                    reg.setRut(Format.getRut(srut));
+                                    reg.setDv(Format.getDv(srut));
 
-                                Collection<UserCard> list = dao.findByRut(reg.getRut());
-                                /* comprobar si existen duplicaciones */
-                                if (list.size() > 0) {
-                                    request.setAttribute("msgErrorRut", "Error: ya existe un usuario con ese rut. ");
-                                    error = true;
+                                    /* buscar cliente */
+                                    UserCard aux = userCardDAO.findByRut(reg.getRut());
+                                    /* comprobar si existen duplicaciones */
+                                    if (aux != null) {
+                                        request.setAttribute("msgErrorRut", "Error: ya existe un usuario con ese rut. ");
+                                        error = true;
+                                    } else {
+                                        /* encriptar password y setear */
+                                        reg.setPassword(StringMD.getStringMessageDigest(srut, StringMD.MD5));
+                                    }
                                 } else {
-                                    /* encriptar password y setear */
-                                    reg.setPassword(StringMD.getStringMessageDigest(srut, StringMD.MD5));
+                                    request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
+                                    error = true;
                                 }
-                            } else {
+                            } catch (Exception ex) {
                                 request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                                 error = true;
                             }
@@ -137,12 +136,10 @@ public class UserCardAddServlet extends HttpServlet {
                             error = true;
                         } else {
                             reg.setEmail(email);
-                            Collection<UserCard> list = dao.findByEmail(reg.getEmail());
-                            for (UserCard aux : list) {
-                                if (aux.getRut() > 0) {
-                                    request.setAttribute("msgErrorEmail", "Error: ya existe un usuario con ese email. ");
-                                    error = true;
-                                }
+                            boolean find = userCardDAO.validateDuplicateEmail(reg);
+                            if (find) {
+                                request.setAttribute("msgErrorEmail", "Error: ya existe un usuario con ese email. ");
+                                error = true;
                             }
                         }
 
@@ -202,15 +199,24 @@ public class UserCardAddServlet extends HttpServlet {
                         ////////////////////////////////////////
 
                         if (!error) {
-                            dao.insert(reg);
-                            request.setAttribute("msgAdd", "Registro ingresado exitosamente! ");
+                            try {
+                                userCardDAO.insert(reg);
+                                request.setAttribute("msgAdd", "Registro ingresado exitosamente! ");
+                            } catch (Exception ex) {
+                            }
                         }
                     }
+
+                    /* obtener lista de ciudades */
+                    try {
+                        Collection<City> listCity = cityDAO.getAll();
+                        request.setAttribute("listCity", listCity);
+                    } catch (Exception ex) {
+                    }
+                    request.setAttribute("reg", reg);
+
                 } catch (Exception parameterException) {
                 } finally {
-                    Collection<City> listCity = cityDAO.getAll();
-                    request.setAttribute("listCity", listCity);
-                    request.setAttribute("reg", reg);
                     request.getRequestDispatcher("/userCard/userCardAdd.jsp").forward(request, response);
                 }
             } catch (Exception sessionException) {

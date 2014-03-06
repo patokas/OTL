@@ -179,11 +179,18 @@ public class PlaceAddServlet extends HttpServlet {
                         }
 
                         if (!error) {
-                            try {
-                                placeDAO.insert(place);
-                                request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
-                            } catch (Exception ex) {
-                                request.setAttribute("msgErrorDup", "Error: ya existe esta plaza. ");
+                            /* comprobar duplicaciones */
+                            boolean find = placeDAO.validateDuplicate(place);
+                            if (find) {
+                                request.setAttribute("msgErrorDup", "Error: ya existe este registro. ");
+                            } else {
+                                /* insertar registro */
+                                try {
+                                    placeDAO.insert(place);
+                                    request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
+                                } catch (Exception ex) {
+                                    request.setAttribute("msgErrorDup", "Error: ya existe este registro. ");
+                                }
                             }
                         }
                     }
@@ -192,6 +199,7 @@ public class PlaceAddServlet extends HttpServlet {
                     // ESTABLECER ATRIBUTOS AL REQUEST
                     /////////////////////////////////////////
 
+                    /* obtener lista de ciudades */
                     try {
                         Collection<City> listCity = cityDAO.getAll();
                         request.setAttribute("listCity", listCity);

@@ -80,36 +80,91 @@ public class ExchangeableDAO {
         return list;
     }
 
-    public void delete(Exchangeable exchange) {
+    public Exchangeable findByExchange(Exchangeable exchange) {
 
-        PreparedStatement sentence = null;
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Exchangeable reg = null;
 
         try {
-            String sql = "delete from gift where id_place = ? and id_gift = ? ";
+            sentence = conexion.createStatement();
+            String sql = "select * from gift g, place pl where g.id_place = " + exchange.getIdPlace() + " and g.id_gift = " + exchange.getIdExchangeable() + " and g.id_place = pl.id_place ";
+            result = sentence.executeQuery(sql);
 
-            sentence = conexion.prepareStatement(sql);
-
-            sentence.setInt(1, exchange.getIdPlace());
-            sentence.setInt(2, exchange.getIdExchangeable());
-
-            sentence.executeUpdate();
+            while (result.next()) {
+                /* definir objeto */
+                reg = new Exchangeable();
+                /* obtener resultset */
+                reg.setIdExchangeable(result.getInt("id_gift"));
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setTittle(result.getString("tittle"));
+                reg.setPoints(result.getInt("points"));
+                reg.setUrlImage(result.getString("url_image"));
+                reg.setRequest(result.getInt("request"));
+            }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en ExchangeableDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, delete() : " + ex);
+            System.out.println("Error de sintaxis en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, findByExchangeable() : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
         } finally {
             /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
             }
         }
+        return reg;
+    }
+
+    public boolean validateDuplicate(Exchangeable exchange) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from gift g, place pl where g.id_place = " + exchange.getIdPlace() + " and g.id_gift <> " + exchange.getIdExchangeable() + " and tittle = '" + exchange.getTittle() + "' and g.id_place = pl.id_place ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                find = true;
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, validateDuplicate() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, validateDuplicate() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, validateDuplicate() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return find;
     }
 
     public Collection<Exchangeable> findByTittle(Exchangeable exchange) {
@@ -161,6 +216,38 @@ public class ExchangeableDAO {
         return list;
     }
 
+    public void delete(Exchangeable exchange) {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "delete from gift where id_place = ? and id_gift = ? ";
+
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.setInt(1, exchange.getIdPlace());
+            sentence.setInt(2, exchange.getIdExchangeable());
+
+            sentence.executeUpdate();
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, delete() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, delete() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
     public void insert(Exchangeable exchange) {
 
         PreparedStatement sentence = null;
@@ -194,54 +281,6 @@ public class ExchangeableDAO {
             } catch (Exception noGestionar) {
             }
         }
-    }
-
-    public Exchangeable findByExchange(Exchangeable exchange) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Exchangeable reg = null;
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from gift g, place pl where g.id_place = " + exchange.getIdPlace() + " and g.id_gift = " + exchange.getIdExchangeable() + " and g.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* definir objeto */
-                reg = new Exchangeable();
-                /* obtener resultset */
-                reg.setIdExchangeable(result.getInt("id_gift"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setPoints(result.getInt("points"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setRequest(result.getInt("request"));
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en ExchangeableDAO, findByExchangeable() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, findByExchangeable() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, findByExchangeable() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, findByExchangeable() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return reg;
     }
 
     public void update(Exchangeable exchange) {

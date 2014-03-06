@@ -73,22 +73,19 @@ public class AdminUpdateServlet extends HttpServlet {
                     request.setAttribute("userJsp", user);
                     request.setAttribute("access", access);
 
-                    ///////////////////////////////////////
-                    // DECLARAR VARIABLE DE INSTANCIA
-                    //////////////////////////////////////
-
-                    Admin admin = new Admin();
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
                         //////////////////////////////////////// 
-                        
+
                         String chk = request.getParameter("chk");
                         String sid = request.getParameter("id");
                         String username = request.getParameter("username");
                         String email = request.getParameter("email");
                         String pwd1 = request.getParameter("pwd1");
                         String pwd2 = request.getParameter("pwd2");
+
+                        Admin admin = new Admin();
 
                         boolean error = false;
 
@@ -106,12 +103,11 @@ public class AdminUpdateServlet extends HttpServlet {
                             error = true;
                         } else {
                             admin.setUsername(username);
-                            Collection<Admin> list = adminDAO.findByUsername(admin.getUsername());
-                            for (Admin adm : list) {
-                                if (adm.getIdAdmin() > 0 && adm.getIdAdmin() != admin.getIdAdmin()) {
-                                    request.setAttribute("msgErrorUsername", "Error: ya existe un administrador con ese username. ");
-                                    error = true;
-                                }
+                            /* comprobar username duplicado */
+                            boolean find = adminDAO.validateDuplicateUsername(admin);
+                            if (find) {
+                                request.setAttribute("msgErrorUsername", "Error: ya existe un administrador con ese username. ");
+                                error = true;
                             }
                         }
                         /* comprobar email */
@@ -119,15 +115,20 @@ public class AdminUpdateServlet extends HttpServlet {
                             request.setAttribute("msgErrorEmail", "Error al recibir email.");
                             error = true;
                         } else {
+                            /* comprobar email duplicado */
                             admin.setEmail(email);
-                            Collection<Admin> list = adminDAO.findByEmail(admin.getEmail());
-                            for (Admin adm : list) {
-                                if (adm.getIdAdmin() > 0 && adm.getIdAdmin() != admin.getIdAdmin()) {
-                                    request.setAttribute("msgErrorEmail", "Error: ya existe un administrador con ese email. ");
-                                    error = true;
-                                }
+                            boolean find = adminDAO.validateDuplicateEmail(admin);
+                            if (find) {
+                                request.setAttribute("msgErrorEmail", "Error: ya existe un administrador con ese email. ");
+                                error = true;
                             }
                         }
+                        //////////////////////////////////////
+                        // EJECUTAR LÓGICA DE NEGOCIO
+                        /////////////////////////////////////
+
+                        /* buscar admin */
+                        Admin reg = adminDAO.findById(admin.getIdAdmin());
 
                         if (chk != null) {
                             /* comprobar pwd1 */
@@ -152,23 +153,21 @@ public class AdminUpdateServlet extends HttpServlet {
 
                                     if (!error) {
                                         admin.setPassword(StringMD.getStringMessageDigest(pwd1, StringMD.MD5));
-                                        /* buscar admin */
-                                        Collection<Admin> list = adminDAO.findById(admin.getIdAdmin());
-                                        if (list.size() > 0) {
+                                        /* si admin fue encontrado */
+                                        if (reg != null) {
                                             /* actualizar password */
                                             adminDAO.updatePassword(admin);
                                             request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                                         } else {
-                                            request.setAttribute("msgErrorId", "Error: No se encontró el administrador o ha sido eliminado mientras se actualizaba.");
+                                            request.setAttribute("msgErrorId", "Error: No se encontró el registro o ha sido eliminado mientras se actualizaba.");
                                         }
                                     }
                                 }
                             }
                         } else {
                             if (!error) {
-                                /* buscar admin */
-                                Collection<Admin> list = adminDAO.findById(admin.getIdAdmin());
-                                if (list.size() > 0) {
+                                /* si admin fue encontrado */
+                                if (reg != null) {
                                     /* no actualizar password */
                                     adminDAO.update(admin);
                                     request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
@@ -177,9 +176,11 @@ public class AdminUpdateServlet extends HttpServlet {
                                 }
                             }
                         }
+
+                        request.setAttribute("admin", admin);
+
                     } catch (Exception parameterException) {
                     } finally {
-                        request.setAttribute("admin", admin);
                         request.getRequestDispatcher("/admin/adminUpdate.jsp").forward(request, response);
                     }
                 }
@@ -191,6 +192,7 @@ public class AdminUpdateServlet extends HttpServlet {
         } catch (Exception connectionException) {
             connectionException.printStackTrace();
         } finally {
+            /* cerrar conexion */
             try {
                 conexion.close();
             } catch (Exception noGestionar) {

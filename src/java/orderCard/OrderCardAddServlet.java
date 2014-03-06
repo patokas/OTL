@@ -131,7 +131,7 @@ System.out.println(error);
                                     orderCard.setDv(Format.getDv(srut));
 
                                     /* buscar usuario */
-                                    UserCard auxUC = userCardDAO.findOneByRut(orderCard.getRut());
+                                    UserCard auxUC = userCardDAO.findByRut(orderCard.getRut());
                                     if (auxUC == null) {
                                         request.setAttribute("msgErrorExist", "Error: No existe cliente.");
                                         error = true;

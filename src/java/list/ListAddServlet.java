@@ -192,7 +192,7 @@ public class ListAddServlet extends HttpServlet {
                             ////////////////////////////////////
                             if (!error) {
                                 /* comprobar existencia tarjeta */
-                                Card card = cardDAO.findOneByBarCode(entry.getBarCode());
+                                Card card = cardDAO.findByBarCode(entry.getBarCode());
 
                                 if (card == null) {
                                     request.setAttribute("msgErrorCardNotFound", "ACCESSO PROHIBIDO: Tarjeta inválida, verifique código nuevamente o comuniquese con soporte técnico.");
@@ -207,7 +207,7 @@ public class ListAddServlet extends HttpServlet {
                                         /* si encuentra evento */
                                         if (listEvent.size() > 0) {
                                             /* buscar datos del cliente */
-                                            UserCard usercard = usercardDAO.findOneByRut(card.getRut());
+                                            UserCard usercard = usercardDAO.findByRut(card.getRut());
 
                                             /* mostrar datos del cliente */
                                             if (usercard != null) {

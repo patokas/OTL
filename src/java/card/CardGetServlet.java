@@ -83,17 +83,17 @@ public class CardGetServlet extends HttpServlet {
                     card.setBarCode(Integer.parseInt(request.getParameter("barCode")));
                     card.setRut(Integer.parseInt(request.getParameter("rut")));
                     Card reg = dao.findbyBarCodeJoin(card);
-                    if (reg.getRut() > 0) {
+                    if (reg != null) {
                         reg.setDateBeginCard(Format.date(reg.getDateBeginCard()));
                         reg.setDateEndCard(Format.date(reg.getDateEndCard()));
                         request.setAttribute("reg", reg);
                         request.setAttribute("msgOk", "Se encontró el registro!");
                     } else {
-                        request.setAttribute("msgError1", "Error: No se encontró el registro.");
+                        request.setAttribute("msgErrorFound", "Error: No se encontró el registro.");
                     }
 
                 } catch (Exception ex) {
-                    request.setAttribute("msgError1", "Error: No se recibió ningún parámetro.");
+                    request.setAttribute("msgErrorFound", "Error: No se recibió ningún parámetro.");
                 } finally {
                     request.getRequestDispatcher("/card/cardUpdate.jsp").forward(request, response);
                 }
@@ -105,6 +105,7 @@ public class CardGetServlet extends HttpServlet {
         } catch (Exception connectionException) {
             connectionException.printStackTrace();
         } finally {
+            /* cerrar conexion */
             try {
                 conexion.close();
             } catch (Exception noGestionar) {

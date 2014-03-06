@@ -30,109 +30,6 @@ public class PlaceDAO {
         this.conexion = conexion;
     }
 
-    public Collection<Place> findById(int id) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Place> list = new ArrayList<Place>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci where id_place = " + id + " and pl.id_city = ci.id_city";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Place reg = new Place();
-                /* obtener resultSet */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setAddress(result.getString("address"));
-                reg.setStatus(result.getInt("status"));
-                reg.setContact(result.getInt("contact"));
-                reg.setIdCity(result.getInt("id_city"));
-                reg.setNameCity(result.getString("name_city"));
-                reg.setDescription(result.getString("description"));
-                reg.setUrlImage(result.getString("url_image"));
-                reg.setUrlLogo(result.getString("url_logo"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PlaceDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PlaceDAO, findById() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PlaceDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PlaceDAO, findById() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PlaceDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PlaceDAO, findById(): " + id, ex);
-        } finally {
-            /* liberar los recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Place> findByName(String name) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Place> list = new ArrayList<Place>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from place pl, city ci where name_place like '" + name + "%' and pl.id_city = ci.id_city ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Place reg = new Place();
-                /* obtener resultSet */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setAddress(result.getString("address"));
-                reg.setStatus(result.getInt("status"));
-                reg.setContact(result.getInt("contact"));
-                reg.setIdCity(result.getInt("id_city"));
-                reg.setNameCity(result.getString("name_city"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PlaceDAO, findByName() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PlaceDAO, findByName() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PlaceDAO, findByName() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en PlaceDAO, findByName() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PlaceDAO, findByName() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PlaceDAO, findByName(): " + name, ex);
-        } finally {
-            /* liberar los recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     public Collection<Place> getAll() {
 
         Statement sentence = null;
@@ -181,6 +78,96 @@ public class PlaceDAO {
             }
         }
         return list;
+    }
+
+    public Place findById(int id) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Place reg = null;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from place pl, city ci where id_place = " + id + " and pl.id_city = ci.id_city";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* instanciar objeto */
+                reg = new Place();
+                /* obtener resultSet */
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setAddress(result.getString("address"));
+                reg.setStatus(result.getInt("status"));
+                reg.setContact(result.getInt("contact"));
+                reg.setIdCity(result.getInt("id_city"));
+                reg.setNameCity(result.getString("name_city"));
+                reg.setDescription(result.getString("description"));
+                reg.setUrlImage(result.getString("url_image"));
+                reg.setUrlLogo(result.getString("url_logo"));
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceDAO, findById() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PlaceDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceDAO, findById(): " + id, ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return reg;
+    }
+
+    public boolean validateDuplicate(Place reg) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from place where name_place = '" + reg.getNamePlace() + "' and id_place <> " + reg.getIdPlace() + "";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                find = true;
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PlaceDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PlaceDAO, validateDuplicate() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PlaceDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en PlaceDAO, validateDuplicate() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PlaceDAO, validateDuplicate() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PlaceDAO, validateDuplicate(): " + ex);
+        } finally {
+            /* liberar los recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return find;
     }
 
     public void delete(int id) {

@@ -4,12 +4,8 @@
  */
 package place;
 
-import category.Category;
-import category.CategoryDAO;
 import city.City;
 import city.CityDAO;
-import dressCode.DressCode;
-import dressCode.DressCodeDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -191,26 +187,25 @@ public class PlaceUpdateServlet extends HttpServlet {
                         place.setUrlLogo(urlLogo);
                     }
 
+                    ///////////////////////////////////
+                    // LOGICA DE NEGOCIO
+                    ///////////////////////////////////
+
                     if (!error) {
                         /* comprobar duplicaciones */
-                        Collection<Place> list = placeDAO.findByName(place.getNamePlace());
-                        if (list.size() > 0) {
-                            for (Place aux : list) {
-                                if (aux.getIdPlace() != place.getIdPlace()) {
-                                    request.setAttribute("msgErrorDup", "Error: ya existe esta plaza. ");
-                                    error = true;
-                                }
-                            }
-                        }
-                    }
-                    if (!error) {
-                        /* comprobar existencia */
-                        Collection list = placeDAO.findById(place.getIdPlace());
-                        if (list.size() > 0) {
-                            placeDAO.update(place);
-                            request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
+                        boolean find = placeDAO.validateDuplicate(place);
+
+                        if (find) {
+                            request.setAttribute("msgErrorDup", "Error: ya existe este registro. ");
                         } else {
-                            request.setAttribute("msgErrorFound", "Error: No existe la plaza o ha sido eliminada mientras se actualizaba. ");
+                            /* comprobar existencia */
+                            Place reg = placeDAO.findById(place.getIdPlace());
+                            if (reg != null) {
+                                placeDAO.update(place);
+                                request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
+                            } else {
+                                request.setAttribute("msgErrorFound", "Error: No existe el registro o ha sido eliminado mientras se actualizaba. ");
+                            }
                         }
                     }
 
@@ -218,6 +213,7 @@ public class PlaceUpdateServlet extends HttpServlet {
                     // ESTABLECER ATRIBUTOS AL REQUEST
                     /////////////////////////////////////////
 
+                    /* obtener listado de ciudades */
                     try {
                         Collection<City> listCity = cityDAO.getAll();
                         request.setAttribute("listCity", listCity);

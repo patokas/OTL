@@ -171,30 +171,24 @@ public class ExchangeableUpdateServlet extends HttpServlet {
                         /////////////////////////////////////////
 
                         if (!error) {
-                            /* traer todos los registros con el mismo tittle */
-                            Collection<Exchangeable> list = exDAO.findByTittle(exchange);
-                            if (list.size() > 0) {
-                                System.out.println("existe titulo repetido");
-                                for (Exchangeable aux : list) {
-                                    /*  si poseen el mismo idPlace y poseen idExchangeable diferentes, error */
-                                    if (aux.getIdPlace() == exchange.getIdPlace() && aux.getIdExchangeable() != exchange.getIdExchangeable()) {
-                                        request.setAttribute("msgErrorDup", "Error: ya existe este producto canjeable.");
-                                        error = true;
-                                    }
+                            /* verificar registro duplicado */
+                            boolean find = exDAO.validateDuplicate(exchange);
+                            if (find) {
+                                request.setAttribute("msgErrorDup", "Error: ya existe este producto canjeable.");
+                            } else {
+                                /* verificar si existe antes de actualizar */
+                                Exchangeable aux = exDAO.findByExchange(exchange);
+                                if (aux.getIdPlace() > 0) {
+                                    exDAO.update(exchange);
+                                    request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
+                                } else {
+                                    request.setAttribute("msgErrorFound", "Error: El registro no existe o ha sido mientras se actualizaba.");
                                 }
                             }
                         }
-                        if (!error) {
-                            /* verificar si existe antes de actualizar */
-                            Exchangeable aux = exDAO.findByExchange(exchange);
-                            if (aux.getIdPlace() > 0) {
-                                exDAO.update(exchange);
-                                request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
-                            } else {
-                                request.setAttribute("msgErrorFound", "Error: El registro no existe o ha sido mientras se actualizaba.");
-                            }
-                        }
+
                         request.setAttribute("exchange", exchange);
+
                     } catch (Exception ex) {
                     } finally {
                         request.getRequestDispatcher("/exchangeable/exchangeableUpdate.jsp").forward(request, response);

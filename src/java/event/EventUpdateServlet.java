@@ -222,8 +222,8 @@ public class EventUpdateServlet extends HttpServlet {
                                 request.setAttribute("msgErrorEvent", "Error: ya existe este evento. Compruebe utilizando otro título u otro rango de fechas.");
                             } else {
                                 /* comprobar existencia */
-                                Collection<Event> listAux = eventDAO.findByPlaceEvent(event);
-                                if (listAux.size() > 0) {
+                                Event aux = eventDAO.findByPlaceEvent(event);
+                                if (aux != null) {
                                     eventDAO.update(event);
                                     request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                                 } else {

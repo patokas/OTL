@@ -88,7 +88,7 @@ public class EventGetServlet extends HttpServlet {
                     // DECLARAR VARIABLES DE INSTANCIA
                     /////////////////////////////////////////
 
-                    Event reg = null;                    
+                    Event reg = null;
 
                     try {
                         /////////////////////////////////////////
@@ -127,19 +127,14 @@ public class EventGetServlet extends HttpServlet {
                         }
 
                         if (!error) {
-                            Collection<Event> listEvent = eventDAO.findByPlaceEvent(event);
-
-                            if (listEvent.size() > 0) {
-                                for (Event aux : listEvent) {
-                                    if (aux.getIdPlace() > 0) {
-                                        reg = aux;
-                                        reg.setDateBegin(Format.dateYYYYMMDD(reg.getDateBegin()));
-                                        reg.setDateEnd(Format.dateYYYYMMDD(reg.getDateEnd()));
-                                        request.setAttribute("msgOk", "Se encontró el registro!");
-                                    }
-                                }
+                            Event aux = eventDAO.findByPlaceEvent(event);
+                            if (aux != null) {
+                                reg = aux;
+                                reg.setDateBegin(Format.dateYYYYMMDD(reg.getDateBegin()));
+                                reg.setDateEnd(Format.dateYYYYMMDD(reg.getDateEnd()));
+                                request.setAttribute("msgOk", "Se encontró el registro!");
                             } else {
-                                request.setAttribute("msgErrorFound", "Error: No se encontró el Evento.");
+                                request.setAttribute("msgErrorFound", "Error: No se encontró el registro.");
                             }
                         }
 

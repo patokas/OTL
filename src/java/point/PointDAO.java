@@ -84,6 +84,52 @@ public class PointDAO {
         return list;
     }
 
+    public Point findByPoint(Point point) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Point reg = null;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from point pt, place pl where pt.id_place = " + point.getIdPlace() + " and pt.rut = " + point.getRut() + " and pt.id_place = pl.id_place ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* liberar recursos */
+                reg = new Point();
+                /* obtener resultset */
+                reg.setIdPlace(result.getInt("id_place"));
+                reg.setNamePlace(result.getString("name_place"));
+                reg.setRut(result.getInt("rut"));
+                reg.setDv(result.getString("dv"));
+                reg.setPoints(result.getInt("points"));
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, findByPoint() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, findByPoint() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return reg;
+    }
+
     public void delete(Point point) {
 
         PreparedStatement sentence = null;
@@ -148,52 +194,6 @@ public class PointDAO {
             } catch (Exception noGestionar) {
             }
         }
-    }
-
-    public Point findByPoint(Point point) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Point reg = null;
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from point pt, place pl where pt.id_place = " + point.getIdPlace() + " and pt.rut = " + point.getRut() + " and pt.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* liberar recursos */
-                reg = new Point();
-                /* obtener resultset */
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setRut(result.getInt("rut"));
-                reg.setDv(result.getString("dv"));
-                reg.setPoints(result.getInt("points"));
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en PointDAO, findByPoint() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en PointDAO, findByPoint() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en PointDAO, findByPoint() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, findByPoint() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, findByPoint() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return reg;
     }
 
     public void update(Point point) {

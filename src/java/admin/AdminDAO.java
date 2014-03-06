@@ -30,151 +30,6 @@ public class AdminDAO {
         this.conexion = conexion;
     }
 
-    public Collection<Admin> findById(int id) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Admin> list = new ArrayList<Admin>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from admin where id_admin = " + id + " ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Admin reg = new Admin();
-                /* obtener resultset */
-                reg.setIdAdmin(result.getInt("id_admin"));
-                reg.setUsername(result.getString("username"));
-                reg.setEmail(result.getString("email"));
-                reg.setTypeAdmin(result.getInt("type_admin"));
-                reg.setCreateTime(result.getString("create_time"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en AdminDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, findById() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en AdminDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, findById() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en AdminDAO, findById() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, findById() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Admin> findByUsername(String username) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Admin> list = new ArrayList<Admin>();
-
-        try {
-
-            sentence = conexion.createStatement();
-            String sql = "select * from admin where username like '" + username + "%'";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Admin reg = new Admin();
-                /* obtener resultset */
-                reg.setIdAdmin(result.getInt("id_admin"));
-                reg.setUsername(result.getString("username"));
-                reg.setEmail(result.getString("email"));
-                reg.setTypeAdmin(result.getInt("type_admin"));
-                reg.setCreateTime(result.getString("create_time"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en AdminDAO, findByUsername() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, findByUsername() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en AdminDAO, findByUsername() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, findByUsername() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en AdminDAO, findByUsername() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, findByUsername() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public Collection<Admin> findByEmail(String email) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Admin> list = new ArrayList<Admin>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from admin where email like '" + email + "%'";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Admin reg = new Admin();
-                /* obtener resultset */
-                reg.setIdAdmin(result.getInt("id_admin"));
-                reg.setUsername(result.getString("username"));
-                reg.setEmail(result.getString("email"));
-                reg.setTypeAdmin(result.getInt("type_admin"));
-                reg.setCreateTime(result.getString("create_time"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en AdminDAO, findByEmail() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, findByEmail() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en AdminDAO, findByEmail() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, findByEmail() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en AdminDAO, findByEmail() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, findByEmail() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     public Collection<Admin> getAll() {
 
         Statement sentence = null;
@@ -221,6 +76,132 @@ public class AdminDAO {
             }
         }
         return list;
+    }
+
+    public Admin findById(int id) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        Admin reg = null;
+
+        try {
+            sentence = conexion.createStatement();
+            String sql = "select * from admin where id_admin = " + id + " ";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                /* instanciar objeto */
+                reg = new Admin();
+                /* obtener resultset */
+                reg.setIdAdmin(result.getInt("id_admin"));
+                reg.setUsername(result.getString("username"));
+                reg.setEmail(result.getString("email"));
+                reg.setTypeAdmin(result.getInt("type_admin"));
+                reg.setCreateTime(result.getString("create_time"));
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en AdminDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, findById() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en AdminDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, findById() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en AdminDAO, findById() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, findById() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return reg;
+    }
+
+    public boolean validateDuplicateUsername(Admin reg) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
+
+        try {
+
+            sentence = conexion.createStatement();
+            String sql = "select * from admin where id_admin <> " + reg.getIdAdmin() + " and username = '" + reg.getUsername() + "'";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                find = true;
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en AdminDAO, validateDuplicateUsername() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, validateDuplicateUsername() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en AdminDAO, validateDuplicateUsername() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, validateDuplicateUsername() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en AdminDAO, validateDuplicateUsername() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, validateDuplicateUsername() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return find;
+    }
+
+    public boolean validateDuplicateEmail(Admin reg) {
+
+        Statement sentence = null;
+        ResultSet result = null;
+
+        boolean find = false;
+
+        try {
+
+            sentence = conexion.createStatement();
+            String sql = "select * from admin where id_admin <> " + reg.getIdAdmin() + " and email = '" + reg.getEmail() + "'";
+            result = sentence.executeQuery(sql);
+
+            while (result.next()) {
+                find = true;
+            }
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en AdminDAO, validateDuplicateEmail() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en AdminDAO, validateDuplicateEmail() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en AdminDAO, validateDuplicateEmail() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en AdminDAO, validateDuplicateEmail() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en AdminDAO, validateDuplicateEmail() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en AdminDAO, validateDuplicateEmail() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                result.close();
+            } catch (Exception noGestionar) {
+            }
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+        return find;
     }
 
     public void delete(int id) {
