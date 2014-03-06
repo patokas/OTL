@@ -4,6 +4,8 @@
  */
 package card;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
-import userCard.UserCard;
 
 /**
  *
@@ -30,10 +31,11 @@ public class CardDAO {
     }
 
     public Collection<Card> getAll() {
-        Collection<Card> list = new ArrayList<Card>();
+
         Statement sentence = null;
         ResultSet result = null;
 
+        Collection<Card> list = new ArrayList<Card>();
 
         try {
             sentence = conexion.createStatement();
@@ -41,21 +43,30 @@ public class CardDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Card reg = new Card();
+                /* obtener resulset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
                 reg.setDateBeginCard(result.getString("date_begin_card"));
                 reg.setDateEndCard(result.getString("date_end_card"));
+                /* agregar a la lista */
                 list.add(reg);
             }
 
-            //5 let free resources        
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, getAll() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, getAll() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, getAll() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -69,28 +80,41 @@ public class CardDAO {
     }
 
     public Collection<Card> findByRut(int rut) {
+
         Statement sentence = null;
         ResultSet result = null;
+
         Collection<Card> list = new ArrayList<Card>();
+
         try {
             sentence = conexion.createStatement();
             String sql = "select * from card where rut = " + rut + " ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Card reg = new Card();
+                /* obtener resultset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
                 reg.setDateBeginCard(result.getString("date_begin_card"));
                 reg.setDateEndCard(result.getString("date_end_card"));
+                /* agregar a la lista */
                 list.add(reg);
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, findByRut() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findByRut() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, findByRut() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findByRut() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, findByRut() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findByRut() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -104,8 +128,10 @@ public class CardDAO {
     }
 
     public Collection<Card> findByBarCode(int barcode) {
+
         Statement sentence = null;
         ResultSet result = null;
+
         Collection<Card> list = new ArrayList<Card>();
         try {
             sentence = conexion.createStatement();
@@ -113,20 +139,29 @@ public class CardDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objetos */
                 Card reg = new Card();
-                
+                /* obtener resultset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
                 reg.setDateBeginCard(result.getString("date_begin_card"));
                 reg.setDateEndCard(result.getString("date_end_card"));
+                /* agregar a la lista */
                 list.add(reg);
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, findByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findByBarCode() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, findByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findByBarCode() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, findByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findByBarCode() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -140,19 +175,21 @@ public class CardDAO {
     }
 
     public Card findOneByBarCode(int barcode) {
-        
+
         Statement sentence = null;
         ResultSet result = null;
-        
+
         Card reg = null;
-        
+
         try {
             sentence = conexion.createStatement();
             String sql = "select * from card where bar_code = " + barcode + " ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objetos */
                 reg = new Card();
+                /* obtener resultset */
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
@@ -160,10 +197,17 @@ public class CardDAO {
                 reg.setDateBeginCard(result.getString("date_begin_card"));
                 reg.setDateEndCard(result.getString("date_end_card"));
             }
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, findOneByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findOneByBarCode() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, findOneByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findOneByBarCode() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, findOneByBarCode() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findOneByBarCode() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -199,10 +243,17 @@ public class CardDAO {
                 reg.setLastName(result.getString("last_name"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, findbyBarCodeJoin() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findbyBarCodeJoin() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, findbyBarCodeJoin() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findbyBarCodeJoin() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, findbyBarCodeJoin() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findbyBarCodeJoin() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -234,10 +285,17 @@ public class CardDAO {
                 reg.setLastName(result.getString("last_name"));
             }
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, findbyRutJoin() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, findbyRutJoin() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, findbyRutJoin() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, findbyRutJoin() : " + ex);
         } catch (SQLException ex) {
-            // Gestionar mejor esta exception
-            ex.printStackTrace();
+            System.out.println("MySQL Excepción inesperada en CardDAO, findbyRutJoin() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, findbyRutJoin() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 result.close();
             } catch (Exception noGestionar) {
@@ -251,6 +309,7 @@ public class CardDAO {
     }
 
     public void update(Card card) {
+
         PreparedStatement sentence = null;
 
         try {
@@ -265,11 +324,17 @@ public class CardDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, update() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, update() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("CardDAO.update: " + card, ex);
+            System.out.println("MySQL Excepción inesperada en CardDAO, update() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, update() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -294,11 +359,17 @@ public class CardDAO {
             sentence.setString(6, reg.getDateEndCard());
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, insert() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, insert() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("regDAO.add: " + reg, ex);
+            System.out.println("MySQL Excepción inesperada en CardDAO, insert() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, insert() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
@@ -319,11 +390,17 @@ public class CardDAO {
 
             sentence.executeUpdate();
 
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en CardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en CardDAO, delete() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en CardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en CardDAO, delete() : " + ex);
         } catch (SQLException ex) {
-            // todo Gestionar mejor esta exception
-            ex.printStackTrace();
-            throw new RuntimeException("CardDAO.eliminar: " + barcode, ex);
+            System.out.println("MySQL Excepción inesperada en CardDAO, delete() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en CardDAO, delete() : " + ex);
         } finally {
+            /* liberar recursos */
             try {
                 sentence.close();
             } catch (Exception noGestionar) {
