@@ -127,7 +127,6 @@ public class DressCodeDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        /* declarar y definir variables */
         boolean find = false;
 
         try {

@@ -119,7 +119,7 @@ public class CityDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        City reg = new City();
+        City reg = null;
 
         try {
             sentence = conexion.createStatement();
@@ -127,6 +127,9 @@ public class CityDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
+                reg = new City();
+                /* obtener resultset */
                 reg.setIdCity(result.getInt("id_city"));
                 reg.setNameCity(result.getString("name_city"));
             }

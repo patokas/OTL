@@ -104,7 +104,7 @@ public class CategoryUpdateServlet extends HttpServlet {
                         } else {
                             /* comprobar existencia */
                             Category aux = categoryDAO.findById(category.getIdCategory());
-                            if (aux.getIdCategory() > 0) {
+                            if (aux != null) {
                                 categoryDAO.update(category);
                                 request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                             } else {

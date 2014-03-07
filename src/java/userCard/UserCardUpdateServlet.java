@@ -6,6 +6,7 @@ package userCard;
 
 import Helpers.Format;
 import Helpers.StringMD;
+import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import java.io.IOException;
@@ -103,13 +104,24 @@ public class UserCardUpdateServlet extends HttpServlet {
                         request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                         error = true;
                     } else {
-                        userCardReg.setRut(Format.getRut(srut));
-                        userCardReg.setDv(Format.getDv(srut));
+                        request.setAttribute("rut", srut);
+                        try {
+                            if (!ValidationRut.validateRut(srut)) {
+                                error = true;
+                                request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
+                            } else {
+                                userCardReg.setRut(Format.getRut(srut));
+                                userCardReg.setDv(Format.getDv(srut));
 
-                        /* comprobar existencia */
-                        UserCard aux = usercardDAO.findByRut(userCardReg.getRut());
-                        if (aux == null) {
-                            request.setAttribute("msgErrorFound", "Error: El usuario no ha sido encontrado o ha sido eliminado mientras se actualizaba");
+                                /* comprobar existencia */
+                                UserCard aux = usercardDAO.findByRut(userCardReg.getRut());
+                                if (aux == null) {
+                                    request.setAttribute("msgErrorFound", "Error: El usuario no ha sido encontrado o ha sido eliminado mientras se actualizaba");
+                                    error = true;
+                                }
+                            }
+                        } catch (Exception ex) {
+                            request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                             error = true;
                         }
                     }
@@ -181,7 +193,6 @@ public class UserCardUpdateServlet extends HttpServlet {
                     /////////////////////////////////////////
                     // ACTUALIZAR REGISTRO 
                     ////////////////////////////////////////
-
 
                     /* comprobar checkbox password */
                     if (chkPwd != null) {

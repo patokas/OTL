@@ -39,9 +39,12 @@ public class CategoryDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
                 Category reg = new Category();
+                /* obtener resultset */
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
+                /* agregar a la lista */
                 list.add(reg);
             }
 
@@ -73,7 +76,7 @@ public class CategoryDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        Category reg = new Category();
+        Category reg = null;
 
         try {
             sentence = conexion.createStatement();
@@ -81,6 +84,9 @@ public class CategoryDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
+                reg = new Category();
+                /* obtener resultset */
                 reg.setIdCategory(result.getInt("id_category"));
                 reg.setNameCategory(result.getString("name_category"));
             }

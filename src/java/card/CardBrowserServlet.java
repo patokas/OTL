@@ -5,7 +5,6 @@
 package card;
 
 import Helpers.Format;
-import Helpers.Rut;
 import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
@@ -85,7 +84,7 @@ public class CardBrowserServlet extends HttpServlet {
                     String srut = request.getParameter("rut"); // rut + dv
 
                     Card card = new Card();
-                    
+
                     /* Verificación de rut  */
                     if (ValidationRut.validateRut(srut)) {
                         card.setRut(Format.getRut(srut));

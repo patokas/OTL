@@ -86,9 +86,9 @@ public class CityGetServlet extends HttpServlet {
                         request.setAttribute("msgErrorId", "Error al recibir id Ciudad.");
                     } else {
                         city.setIdCity(Integer.parseInt(sidCity));
+                        /* comprobar existencia */
                         City aux = cityDAO.findbyIdCity(city);
-
-                        if (aux.getIdCity() > 0) {
+                        if (aux != null) {
                             request.setAttribute("city", aux);
                             request.setAttribute("msgOk", "Se encontró el registro!");
                         } else {

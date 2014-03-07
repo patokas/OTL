@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import point.PointDAO;
 
 /**
  *
@@ -58,6 +59,9 @@ public class PlaceAddServlet extends HttpServlet {
 
             PlaceDAO placeDAO = new PlaceDAO();
             placeDAO.setConexion(conexion);
+
+            PointDAO pointDAO = new PointDAO();
+            pointDAO.setConexion(conexion);
 
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
@@ -187,6 +191,9 @@ public class PlaceAddServlet extends HttpServlet {
                                 /* insertar registro */
                                 try {
                                     placeDAO.insert(place);
+                                    /* insertar puntos de place y todos los clientes */
+                                    pointDAO.insertAllUsersByLastPlace();
+
                                     request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
                                 } catch (Exception ex) {
                                     request.setAttribute("msgErrorDup", "Error: ya existe este registro. ");

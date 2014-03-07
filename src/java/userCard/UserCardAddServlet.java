@@ -99,14 +99,15 @@ public class UserCardAddServlet extends HttpServlet {
                     } else {
                         /* comprobar rut */
                         if (srut == null || srut.trim().equals("")) {
-                            request.setAttribute("msgErrorRut", "Error al recibir rut. Parametro no recibido.");
+                            request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                             error = true;
                         } else {
                             request.setAttribute("rut", srut);
-                            /* validar rut */
                             try {
-                                if (ValidationRut.validateRut(srut)) {
-                                    /* asignar rut y dv */
+                                if (!ValidationRut.validateRut(srut)) {
+                                    error = true;
+                                    request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
+                                } else {
                                     reg.setRut(Format.getRut(srut));
                                     reg.setDv(Format.getDv(srut));
 
@@ -120,9 +121,6 @@ public class UserCardAddServlet extends HttpServlet {
                                         /* encriptar password y setear */
                                         reg.setPassword(StringMD.getStringMessageDigest(srut, StringMD.MD5));
                                     }
-                                } else {
-                                    request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
-                                    error = true;
                                 }
                             } catch (Exception ex) {
                                 request.setAttribute("msgErrorRut", "Error: Rut inválido. ");

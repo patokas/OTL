@@ -85,7 +85,7 @@ public class CategoryGetServlet extends HttpServlet {
                         /* buscar registro */
                         Category aux = categoryDAO.findById(category.getIdCategory());
 
-                        if (aux.getIdCategory() > 0) {
+                        if (aux != null) {
                             request.setAttribute("category", aux);
                             request.setAttribute("msgOk", "Se encontró el registro!");
                         } else {

@@ -109,7 +109,7 @@ public class CityUpdateServlet extends HttpServlet {
                         } else {
                             /* comprobar existencia */
                             City aux = cityDAO.findbyIdCity(city);
-                            if (aux.getIdCity() > 0) {
+                            if (aux != null) {
                                 cityDAO.update(city);
                                 request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                             } else {

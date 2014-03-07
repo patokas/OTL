@@ -196,6 +196,35 @@ public class PointDAO {
         }
     }
 
+    public void insertAllUsersByLastPlace() {
+
+        PreparedStatement sentence = null;
+
+        try {
+            String sql = "INSERT INTO point(id_place, rut, dv) SELECT (SELECT max(id_place) from place) as max_place, rut, dv from user_card";
+
+            sentence = conexion.prepareStatement(sql);
+
+            sentence.executeUpdate();
+
+        } catch (MySQLSyntaxErrorException ex) {
+            System.out.println("Error de sintaxis en PointDAO, insertAllUsersByLastPlace() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en PointDAO, insertAllUsersByLastPlace() : " + ex);
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            System.out.println("MySQL Excepción de integridad en PointDAO, insertAllUsersByLastPlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad enPointDAO, insertAllUsersByLastPlace() : " + ex);
+        } catch (SQLException ex) {
+            System.out.println("MySQL Excepción inesperada en PointDAO, insertAllUsersByLastPlace() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en PointDAO, insertAllUsersByLastPlace() : " + ex);
+        } finally {
+            /* liberar recursos */
+            try {
+                sentence.close();
+            } catch (Exception noGestionar) {
+            }
+        }
+    }
+
     public void update(Point point) {
 
         PreparedStatement sentence = null;
