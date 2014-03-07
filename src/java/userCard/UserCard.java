@@ -20,7 +20,7 @@ public class UserCard implements java.io.Serializable {
     public Date dateCreate;
     public String password;
     public int telephone;
-    public int genre;
+    public int gender;
     public String email;
     public String pwd1;
     public String pwd2;
@@ -116,11 +116,11 @@ public class UserCard implements java.io.Serializable {
         this.password = password;
     }
 
-    public int getGenre() {
-        return genre;
+    public int getGender() {
+        return gender;
     }
 
-    public void setGenre(int genre) {
-        this.genre = genre;
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }

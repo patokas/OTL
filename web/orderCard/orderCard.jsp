@@ -116,13 +116,13 @@
                                                             <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idOrder}" />"/></td>                                            
                                                             <td class="center"><c:out value="${list.idOrder}" /></td>                                                                                                                       
                                                             <td class="center">
-                                                                <c:if test="${list.typeCard == 1 }" >
+                                                                <c:if test="${list.cardType == 1 }" >
                                                                     BASIC
                                                                 </c:if>
-                                                                <c:if test="${list.typeCard == 2 }" >
+                                                                <c:if test="${list.cardType == 2 }" >
                                                                     SILVER
                                                                 </c:if>
-                                                                <c:if test="${list.typeCard == 3 }" >
+                                                                <c:if test="${list.cardType == 3 }" >
                                                                     GOLD
                                                                 </c:if>
                                                             </td>

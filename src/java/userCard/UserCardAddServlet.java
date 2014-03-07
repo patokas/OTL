@@ -85,7 +85,7 @@ public class UserCardAddServlet extends HttpServlet {
                     String email = request.getParameter("email");
                     String firstname = request.getParameter("firstName");
                     String lastname = request.getParameter("lastName");
-                    String genre = request.getParameter("genre");
+                    String gender = request.getParameter("gender");
                     String sidCity = request.getParameter("idCity");
                     String telephone = request.getParameter("telephone");
 
@@ -158,11 +158,11 @@ public class UserCardAddServlet extends HttpServlet {
                             reg.setLastName(lastname);
                         }
 
-                        if (genre == null || genre.trim().equals("")) {
+                        if (gender == null || gender.trim().equals("")) {
                             error = true;
                         } else {
                             try {
-                                reg.setGenre(Integer.parseInt(genre));
+                                reg.setGender(Integer.parseInt(gender));
                             } catch (NumberFormatException n) {
                                 error = true;
                             }

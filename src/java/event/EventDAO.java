@@ -228,7 +228,8 @@ public class EventDAO {
         return reg;
     }
 
-    public Collection<Event> findByPlaceEvent(int idPlace, int idEvent) {
+    
+    public Collection<Event> findByEvent(int idEvent) {
 
         Statement sentence = null;
         ResultSet result = null;
@@ -236,7 +237,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = " + idPlace + " and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
+            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -415,17 +416,16 @@ public class EventDAO {
         }
     }
 
-    public void delete(Event event) {
+    public void delete(int id) {
 
         PreparedStatement sentence = null;
 
         try {
-            String sql = "delete from event where id_place = ? and id_event = ? ";
+            String sql = "delete from event where id_event = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, event.getIdPlace());
-            sentence.setInt(2, event.getIdEvent());
+            sentence.setInt(1, id);
 
             sentence.executeUpdate();
 

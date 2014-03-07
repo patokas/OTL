@@ -98,10 +98,10 @@
                         </c:if>                                                
                         <div class="form-group">
                             <label>Tipo Tarjeta</label>
-                            <select class="form-control" name="typeCard">
-                                <option value="1" <c:if test="${orderCard.typeCard == 1 || orderCard.typeCard == null}" >checked</c:if> >BASIC</option>
-                                <option value="2" <c:if test="${orderCard.typeCard == 2}" >checked</c:if>>SILVER</option>
-                                <option value="3" <c:if test="${orderCard.typeCard == 3}" >checked</c:if>>GOLDEN</option>                              
+                            <select class="form-control" name="cardType">
+                                <option value="1" <c:if test="${orderCard.cardType == 1 || orderCard.cardType == null}" >checked</c:if> >BASIC</option>
+                                <option value="2" <c:if test="${orderCard.cardType == 2}" >checked</c:if>>SILVER</option>
+                                <option value="3" <c:if test="${orderCard.cardType == 3}" >checked</c:if>>GOLDEN</option>                              
                                 </select>
                             </div>
                             <div class="form-group">

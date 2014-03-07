@@ -126,7 +126,7 @@
                                                     <tbody>
                                                         <c:forEach var="list" items="${list}">  
                                                             <tr>
-                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idPromo}" />"/></td>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPromo}" />"/></td>
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>
                                                                 <td class="center"><c:out value="${list.idPromo}" /></td>
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
@@ -143,8 +143,7 @@
                                                                 </td>
                                                                 <td class="center">
                                                                     <form action="PromoGiftMainServlet" method="post">
-                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>
-                                                                        <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />"/>                                                                        
+                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>                                                                        
                                                                         <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
                                                                     </form>
                                                                 </td>

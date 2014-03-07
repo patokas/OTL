@@ -39,7 +39,7 @@ public class ExchangeableDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from gift g, place p where g.id_place = p.id_place order by g.id_gift desc";
+            String sql = "select * from exchangeable ex, place pl where ex.id_place = pl.id_place order by ex.id_exchangeable desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -48,9 +48,9 @@ public class ExchangeableDAO {
                 /* obtener resultset */
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
-                reg.setIdExchangeable(result.getInt("id_gift"));
+                reg.setIdExchangeable(result.getInt("id_exchangeable"));
                 reg.setTittle(result.getString("tittle"));
-                reg.setUrlImage(result.getString("g.url_image"));
+                reg.setUrlImage(result.getString("ex.url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
                 /* agregar a la lista */
@@ -89,19 +89,19 @@ public class ExchangeableDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from gift g, place pl where g.id_place = " + exchange.getIdPlace() + " and g.id_gift = " + exchange.getIdExchangeable() + " and g.id_place = pl.id_place ";
+            String sql = "select * from exchangeable ex, place pl where ex.id_exchangeable = " + exchange.getIdExchangeable() + " and ex.id_place = pl.id_place ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
                 /* definir objeto */
                 reg = new Exchangeable();
                 /* obtener resultset */
-                reg.setIdExchangeable(result.getInt("id_gift"));
+                reg.setIdExchangeable(result.getInt("id_exchangeable"));
                 reg.setIdPlace(result.getInt("id_place"));
                 reg.setNamePlace(result.getString("name_place"));
                 reg.setTittle(result.getString("tittle"));
                 reg.setPoints(result.getInt("points"));
-                reg.setUrlImage(result.getString("url_image"));
+                reg.setUrlImage(result.getString("ex.url_image"));
                 reg.setRequest(result.getInt("request"));
             }
 
@@ -137,7 +137,7 @@ public class ExchangeableDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from gift g, place pl where g.id_place = " + exchange.getIdPlace() + " and g.id_gift <> " + exchange.getIdExchangeable() + " and tittle = '" + exchange.getTittle() + "' and g.id_place = pl.id_place ";
+            String sql = "select * from exchangeable ex, place pl where ex.id_exchangeable <> " + exchange.getIdExchangeable() + " and ex.tittle = '" + exchange.getTittle() + "'";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -167,66 +167,16 @@ public class ExchangeableDAO {
         return find;
     }
 
-    public Collection<Exchangeable> findByTittle(Exchangeable exchange) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Exchangeable> list = new ArrayList<Exchangeable>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from gift g, place pl where tittle = '" + exchange.getTittle() + "' and g.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Exchangeable reg = new Exchangeable();
-                /* obtener resultset */
-                reg.setIdExchangeable(result.getInt("id_gift"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en ExchangeableDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en ExchangeableDAO, findByTittle() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en ExchangeableDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en ExchangeableDAO, findByTittle() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ExchangeableDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en ExchangeableDAO, findByTittle() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
-    public void delete(Exchangeable exchange) {
+    public void delete(int id) {
 
         PreparedStatement sentence = null;
 
         try {
-            String sql = "delete from gift where id_place = ? and id_gift = ? ";
+            String sql = "delete from exchangeable where id_exchangeable = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, exchange.getIdPlace());
-            sentence.setInt(2, exchange.getIdExchangeable());
+            sentence.setInt(1, id);
 
             sentence.executeUpdate();
 
@@ -254,7 +204,7 @@ public class ExchangeableDAO {
 
         try {
 
-            String sql = "insert into gift (id_place, tittle, url_image, points, request) values (?, ?, ?, ?, ?)";
+            String sql = "insert into exchangeable (id_place, tittle, url_image, points, request) values (?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, exchange.getIdPlace());
@@ -288,15 +238,14 @@ public class ExchangeableDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update gift set tittle = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_gift = ? ";
+            String sql = "update exchangeable set tittle = ?, url_image = ?, points = ?, request = ? where id_exchangeable = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, exchange.getTittle());
             sentence.setString(2, exchange.getUrlImage());
             sentence.setInt(3, exchange.getPoints());
             sentence.setInt(4, exchange.getRequest());
-            sentence.setInt(5, exchange.getIdPlace());
-            sentence.setInt(6, exchange.getIdExchangeable());
+            sentence.setInt(5, exchange.getIdExchangeable());
 
             sentence.executeUpdate();
 

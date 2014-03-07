@@ -81,22 +81,21 @@ public class ExchangeableMainServlet extends HttpServlet {
                         String btnDelRow = request.getParameter("btnDelRow");
                         String btnDelCol = request.getParameter("btnDelCol");
 
-                        Exchangeable exchange = new Exchangeable();
-
                         //////////////////////////////////////////
                         // ELIMINAR POR REGISTRO
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
                             /* recibir parametros */
-                            exchange.setIdPlace(Integer.parseInt(request.getParameter("idPlace")));
-                            exchange.setIdExchangeable(Integer.parseInt(request.getParameter("idExchangeable")));
-
-                            /* eliminar producto canjeable */
                             try {
-                                exDAO.delete(exchange);
-                                request.setAttribute("msgDel", "Un Registro ha sido eliminado");
-                            } catch (Exception referenceException) {
-                                request.setAttribute("msgErrorReference", "Error: No puede eliminar, existen referencias asociadas.");
+                                int id = Integer.parseInt(request.getParameter("idExchangeable"));
+                                /* eliminar producto canjeable */
+                                try {
+                                    exDAO.delete(id);
+                                    request.setAttribute("msgDel", "Un Registro ha sido eliminado");
+                                } catch (Exception referenceException) {
+                                    request.setAttribute("msgErrorReference", "Error: No puede eliminar, existen referencias asociadas.");
+                                }
+                            } catch (NumberFormatException n) {
                             }
                         }
 
@@ -106,16 +105,12 @@ public class ExchangeableMainServlet extends HttpServlet {
                         if (btnDelCol != null) {
                             try {
                                 String[] outerArray = request.getParameterValues("chk");
+
                                 int cont = 0;
                                 int i = 0;
                                 while (outerArray[i] != null) {
-                                    String string = outerArray[i];
-                                    String[] parts = string.split("-");
-                                    exchange.setIdPlace(Integer.parseInt(parts[0]));
-                                    exchange.setIdExchangeable(Integer.parseInt(parts[1]));
-
                                     try {
-                                        exDAO.delete(exchange);
+                                        exDAO.delete(Integer.parseInt(outerArray[i]));
                                         cont++;
                                         request.setAttribute("msgDel", cont + " registro(s) han sido eliminado(s).");
                                     } catch (Exception ex) {
@@ -128,16 +123,19 @@ public class ExchangeableMainServlet extends HttpServlet {
                         }
 
                         /* obtener productos canjeables */
-                        Collection<Exchangeable> list = exDAO.getAll();
-                        request.setAttribute("list", list);
+                        try {
+                            Collection<Exchangeable> list = exDAO.getAll();
+                            request.setAttribute("list", list);
 
-                        /* obtener en numero de registros encontrados */
-                        if (list.size() == 1) {
-                            request.setAttribute("msg", "1 registro encontrado en la base de datos.");
-                        } else if (list.size() > 1) {
-                            request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
-                        } else if (list.isEmpty()) {
-                            request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            /* obtener en numero de registros encontrados */
+                            if (list.size() == 1) {
+                                request.setAttribute("msg", "1 registro encontrado en la base de datos.");
+                            } else if (list.size() > 1) {
+                                request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
+                            } else if (list.isEmpty()) {
+                                request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            }
+                        } catch (Exception ex) {
                         }
 
                     } catch (Exception parameterException) {

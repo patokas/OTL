@@ -80,8 +80,6 @@ public class ExchangeableGetServlet extends HttpServlet {
                 // RECIBIR Y COMPROBAR PARAMETROS
                 /////////////////////////////////////////
                 try {
-
-                    String sidPlace = request.getParameter("idPlace");
                     String sidExchangeable = request.getParameter("idExchangeable");
 
                     Exchangeable exchange = new Exchangeable();
@@ -94,16 +92,6 @@ public class ExchangeableGetServlet extends HttpServlet {
                     } else {
                         try {
                             exchange.setIdExchangeable(Integer.parseInt(sidExchangeable));
-                        } catch (NumberFormatException n) {
-                            error = true;
-                        }
-                    }
-                    /* comprobar id place */
-                    if (sidPlace == null || sidPlace.trim().equals("")) {
-                        error = true;
-                    } else {
-                        try {
-                            exchange.setIdPlace(Integer.parseInt(sidPlace));
                         } catch (NumberFormatException n) {
                             error = true;
                         }

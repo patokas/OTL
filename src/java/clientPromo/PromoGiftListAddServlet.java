@@ -166,15 +166,13 @@ public class PromoGiftListAddServlet extends HttpServlet {
                                     request.setAttribute("msgErrorUserFound", "Error: No existe este usuario. ");
                                     error = true;
                                 }
-                                
-                                /* verificar si existe promo_gift */
+
+                                /* verificar si existe promo */
                                 Promo pgReg = promoDAO.findbyPromo(promoReg);
-                                if (pgReg.getIdPlace() > 0) {
-                                    System.out.println("existe promo_gift");
-                                    /* verificar si esta duplicada en tabla promo_gift_list */
-                                    ClientPromo aux = pglDAO.findbyPromoGiftList(pglReg);
+                                if (pgReg != null) {
+                                    /* verificar si esta duplicada en tabla client_promo */
+                                    ClientPromo aux = pglDAO.findbyRutIdPromo(pglReg);
                                     if (aux != null) {
-                                        System.out.println("existe promo o regalo para el cliente");
                                         request.setAttribute("msgErrorDup", "Error: ya existe esta Promoción para el cliente.");
                                         error = true;
                                     }

@@ -5,7 +5,6 @@
 package clientPromo;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import place.Place;
 import place.PlaceDAO;
 
 /**
@@ -95,7 +93,6 @@ public class ClientPromoGiftMainServlet extends HttpServlet {
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
                             /* recibir parametros */
-                            pglReg.setIdPlace(Integer.parseInt(request.getParameter("idPlace")));
                             pglReg.setIdPromo(Integer.parseInt(request.getParameter("idPromo")));
                             pglReg.setRut(Integer.parseInt(request.getParameter("rut")));
 
@@ -119,9 +116,8 @@ public class ClientPromoGiftMainServlet extends HttpServlet {
                                 while (outerArray[i] != null) {
                                     String string = outerArray[i];
                                     String[] parts = string.split("-");
-                                    pglReg.setIdPlace(Integer.parseInt(parts[0]));
-                                    pglReg.setIdPromo(Integer.parseInt(parts[1]));
-                                    pglReg.setRut(Integer.parseInt(parts[2]));
+                                    pglReg.setIdPromo(Integer.parseInt(parts[0]));
+                                    pglReg.setRut(Integer.parseInt(parts[1]));
 
                                     try {
                                         pglDAO.delete(pglReg);
@@ -140,19 +136,19 @@ public class ClientPromoGiftMainServlet extends HttpServlet {
                             }
                         }
 
-                        /* obtener promo-regalo de clientes */
-                        Collection<ClientPromo> list = pglDAO.getAll();
-                        request.setAttribute("list", list);
+                        /* obtener promo de clientes */
+                        try {
+                            Collection<ClientPromo> list = pglDAO.getAll();
+                            request.setAttribute("list", list);
 
-                        System.out.println("dps de pglDAO");
-                        System.out.println(list.size());
-
-                        if (list.size() == 1) {
-                            request.setAttribute("msg", "1 registro encontrado en la base de datos.");
-                        } else if (list.size() > 1) {
-                            request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
-                        } else if (list.isEmpty()) {
-                            request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            if (list.size() == 1) {
+                                request.setAttribute("msg", "1 registro encontrado en la base de datos.");
+                            } else if (list.size() > 1) {
+                                request.setAttribute("msg", list.size() + " registros encontrados en la base de datos.");
+                            } else if (list.isEmpty()) {
+                                request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
+                            }
+                        } catch (Exception ex) {
                         }
 
                     } catch (Exception parameterException) {

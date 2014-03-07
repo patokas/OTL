@@ -39,7 +39,7 @@ public class ListDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from list l, user_card uc, place p, event e, card c where l.rut = uc.rut and l.rut = c.rut and l.id_place = p.id_place and l.id_place = e.id_place and l.id_event = e.id_event group by l.id_place, l.id_event, l.rut order by l.create_time desc";
+            String sql = "select * from list l, user_card uc, place pl, event e, card c where l.rut = uc.rut and l.rut = c.rut and pl.id_place = e.id_place and l.id_event = e.id_event group by l.id_event, l.rut order by l.create_time desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -55,8 +55,8 @@ public class ListDAO {
                 reg.setBarCode(result.getInt("bar_code"));
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
-                reg.setDateBegin(result.getString("date_begin_card"));
-                reg.setDateEnd(result.getString("date_end_card"));
+                reg.setDateBegin(result.getString("date_begin"));
+                reg.setDateEnd(result.getString("date_end"));
                 reg.setCreateTime(result.getString("create_time"));
                 /* agregar a la lista */
                 list.add(reg);
@@ -90,15 +90,14 @@ public class ListDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into list (id_event, id_place, rut, dv, bar_code) values (?, ?, ?, ?, ?)";
+            String sql = "insert into list (id_event, rut, dv, bar_code) values (?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, reg.getIdEvent());
-            sentence.setInt(2, reg.getIdPlace());
-            sentence.setInt(3, reg.getRut());
-            sentence.setString(4, reg.getDv());
-            sentence.setInt(5, reg.getBarCode());
+            sentence.setInt(2, reg.getRut());
+            sentence.setString(3, reg.getDv());
+            sentence.setInt(4, reg.getBarCode());
 
             sentence.executeUpdate();
 

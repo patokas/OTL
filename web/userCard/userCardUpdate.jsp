@@ -154,10 +154,10 @@
                                 </c:otherwise>
                             </c:choose>
                             <div class="form-group">
-                                <label>Genero *</label>
-                                <select class="form-control" required="true" name="genre">
-                                    <option value="0"  <c:if test="${reg.genre == 0}" > selected </c:if>> Masculino</option>
-                                    <option value="1" <c:if test="${reg.genre == 1}" > selected </c:if>> Femenino</option>
+                                <label>Genero </label>
+                                <select class="form-control" required="true" name="gender">
+                                    <option value="0"  <c:if test="${reg.gender == 0}" > selected </c:if>> Masculino</option>
+                                    <option value="1" <c:if test="${reg.gender == 1}" > selected </c:if>> Femenino</option>
                                     </select>
                                 </div>
                             <c:choose>

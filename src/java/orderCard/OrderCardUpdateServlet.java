@@ -78,7 +78,7 @@ public class OrderCardUpdateServlet extends HttpServlet {
                     /////////////////////////////////////////
 
                     String sidOrderCard = request.getParameter("idOrder");
-                    String stypeCard = request.getParameter("typeCard");
+                    String sCardType = request.getParameter("cardType");
                     String srequest = request.getParameter("request");
 
                     OrderCard orderCard = new OrderCard();
@@ -96,12 +96,12 @@ public class OrderCardUpdateServlet extends HttpServlet {
                         }
                     }
 
-                    /* comprobar type card */
-                    if (sidOrderCard == null || sidOrderCard.trim().equals("")) {
+                    /* comprobar card type */
+                    if (sCardType == null || sCardType.trim().equals("")) {
                         error = true;
                     } else {
                         try {
-                            orderCard.setTypeCard(Integer.parseInt(stypeCard));
+                            orderCard.setCardType(Integer.parseInt(sCardType));
                         } catch (NumberFormatException n) {
                             error = true;
                         }

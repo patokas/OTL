@@ -109,7 +109,7 @@ public class EventAddServlet extends HttpServlet {
                         boolean error = false;
 
                         /* comprobar si recibe formulario */
-                        if (btnAdd != null) {
+                        if (btnAdd == null) {
                             request.setAttribute("msg", "Ingrese un evento.");
                         } else {
 

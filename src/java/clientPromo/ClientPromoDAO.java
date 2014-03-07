@@ -39,7 +39,7 @@ public class ClientPromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift_list pgl, place pl, promo_gift pg where pgl.id_place = pl.id_place and pg.id_promo = pgl.id_promo and pg.id_place = pl.id_place order by pgl.id_promo desc";
+            String sql = "select * from client_promo cp, place pl, promo pr where pr.id_promo = cp.id_promo and pr.id_place = pl.id_place order by cp.id_promo desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -80,7 +80,7 @@ public class ClientPromoDAO {
         return list;
     }
 
-    public ClientPromo findbyPromoGiftList(ClientPromo promoGiftList) {
+    public ClientPromo findbyRutIdPromo(ClientPromo clientPromo) {
 
         Statement sentence = null;
         ResultSet result = null;
@@ -89,7 +89,7 @@ public class ClientPromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift_list pgl, place pl, promo_gift pg where pgl.id_promo = " + promoGiftList.getIdPromo() + " and pgl.id_place = " + promoGiftList.getIdPlace() + " and pgl.rut = " + promoGiftList.getRut() + " and pgl.id_place = pg.id_place and pgl.id_place = pl.id_place and pgl.id_promo = pg.id_promo";
+            String sql = "select * from client_promo cp, place pl, promo pr where cp.id_promo = " + clientPromo.getIdPromo() + " and cp.rut = " + clientPromo.getRut() + " and cp.id_promo = pr.id_promo and pl.id_place = pr.id_place";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -107,14 +107,14 @@ public class ClientPromoDAO {
             }
 
         } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en ClientPromoDAO, findByClientPromo() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en ClientPromoDAO, findByClientPromo() : " + ex);
+            System.out.println("Error de sintaxis en ClientPromoDAO, findbyRutIdPromo() : " + ex);
+            throw new RuntimeException("MySQL Syntax Exception en ClientPromoDAO, findbyRutIdPromo() : " + ex);
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en ClientPromoDAO, findByClientPromo() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en ClientPromoDAO, findByClientPromo() : " + ex);
+            System.out.println("MySQL Excepción de integridad en ClientPromoDAO, findbyRutIdPromo() : " + ex);
+            throw new RuntimeException("MySQL Excepción de integridad en ClientPromoDAO, findbyRutIdPromo() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, findByClientPromo() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en ClientPromoDAO, findByClientPromo() : " + ex);
+            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, findbyRutIdPromo() : " + ex);
+            throw new RuntimeException("MySQL Excepción inesperada en ClientPromoDAO, findbyRutIdPromo() : " + ex);
         } finally {
             /* liberar recursos */
             try {
@@ -135,14 +135,13 @@ public class ClientPromoDAO {
 
         try {
 
-            String sql = "insert into promo_gift_list (id_promo, id_place, rut, dv) values (?, ?, ?, ?)";
+            String sql = "insert into client_promo (id_promo, rut, dv) values (?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, reg.getIdPromo());
-            sentence.setInt(2, reg.getIdPlace());
-            sentence.setInt(3, reg.getRut());
-            sentence.setString(4, reg.getDv());
+            sentence.setInt(1, reg.getIdPromo());            
+            sentence.setInt(2, reg.getRut());
+            sentence.setString(3, reg.getDv());
 
             sentence.executeUpdate();
 
@@ -169,13 +168,12 @@ public class ClientPromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "delete from promo_gift_list where id_place = ? and id_promo = ? and rut = ? ";
+            String sql = "delete from client_promo where id_promo = ? and rut = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, reg.getIdPlace());
-            sentence.setInt(2, reg.getIdPromo());
-            sentence.setInt(3, reg.getRut());
+            sentence.setInt(1, reg.getIdPromo());
+            sentence.setInt(2, reg.getRut());
 
             sentence.executeUpdate();
 

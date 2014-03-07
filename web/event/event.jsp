@@ -134,7 +134,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <c:forEach var="list" items="${list}">  
-                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idEvent}" />-<c:out value="${list.tittle}" />"/></td>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idEvent}" />"/></td>
                                                                 <td class="center"><c:out value="${list.idEvent}" /></td>
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>                                                                
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
@@ -143,16 +143,15 @@
                                                                     <c:if test="${list.request == 1}">Aceptada</c:if>
                                                                     <c:if test="${list.request == 2}">Rechazada</c:if>
                                                                     </td>
-                                                                     <td class="center"><c:out value="${list.nameDressCode}" /></td>
-                                                                    <td class="center"><c:out value="${list.dateBegin}" /></td>
+                                                                    <td class="center"><c:out value="${list.nameDressCode}" /></td>
+                                                                <td class="center"><c:out value="${list.dateBegin}" /></td>
                                                                 <td class="center"><c:out value="${list.dateEnd}" /></td>
                                                                 <td class="center">
                                                                     <a href="EventGetServlet?idPlace=<c:out value="${list.idPlace}" />&idEvent=<c:out value="${list.idEvent}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                                 </td>
                                                                 <td class="center">
                                                                     <form method="post" action="EventMainServlet">
-                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1"> ELIMINAR </font></strong></button>
-                                                                        <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />"/>
+                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1"> ELIMINAR </font></strong></button>                                                                        
                                                                         <input type="hidden" name="idEvent" value="<c:out value="${list.idEvent}" />"/>
                                                                     </form>
                                                                 </td>

@@ -173,20 +173,20 @@ public class ExchangeableAddServlet extends HttpServlet {
                                     }
                                 }
                             }
-
-                            /////////////////////////////////////////
-                            // ESTABLECER ATRIBUTOS AL REQUEST
-                            /////////////////////////////////////////
-
-                            /* obtener lista de lugares */
-                            try {
-                                Collection<Place> listPlace = placeDAO.getAll();
-                                request.setAttribute("listPlace", listPlace);
-                            } catch (Exception ex) {
-                            }
-
-                            request.setAttribute("exchange", exchange);
                         }
+                        /////////////////////////////////////////
+                        // ESTABLECER ATRIBUTOS AL REQUEST
+                        /////////////////////////////////////////
+
+                        /* obtener lista de lugares */
+                        try {
+                            Collection<Place> listPlace = placeDAO.getAll();
+                            request.setAttribute("listPlace", listPlace);
+                        } catch (Exception ex) {
+                        }
+
+                        request.setAttribute("exchange", exchange);
+
                     } catch (Exception parameterException) {
                     } finally {
                         request.getRequestDispatcher("/exchangeable/exchangeableAdd.jsp").forward(request, response);

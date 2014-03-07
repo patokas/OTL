@@ -49,7 +49,7 @@ public class OrderCardDAO {
                 reg.setIdOrder(result.getInt("id_order"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
-                reg.setTypeCard(result.getInt("type_card"));
+                reg.setCardType(result.getInt("card_type"));
                 reg.setRequest(result.getInt("request"));
                 reg.setOrderDate(result.getString("order_date"));
                 reg.setFirstName(result.getString("first_name"));
@@ -100,7 +100,7 @@ public class OrderCardDAO {
                 reg.setIdOrder(result.getInt("id_order"));
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
-                reg.setTypeCard(result.getInt("type_card"));
+                reg.setCardType(result.getInt("card_type"));
                 reg.setRequest(result.getInt("request"));
                 reg.setOrderDate(result.getString("order_date"));
                 reg.setFirstName(result.getString("first_name"));
@@ -135,13 +135,13 @@ public class OrderCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into order_card (rut, dv, type_card, request) values (?, ?, ?, ?)";
+            String sql = "insert into order_card (rut, dv, card_type, request) values (?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, reg.getRut());
             sentence.setString(2, reg.getDv());
-            sentence.setInt(3, reg.getTypeCard());
+            sentence.setInt(3, reg.getCardType());
             sentence.setInt(4, reg.getRequest());
 
             sentence.executeUpdate();
@@ -169,11 +169,11 @@ public class OrderCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update order_card set type_card = ?, request = ? where id_order = ? ";
+            String sql = "update order_card set card_type = ?, request = ? where id_order = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, reg.getTypeCard());
+            sentence.setInt(1, reg.getCardType());
             sentence.setInt(2, reg.getRequest());
             sentence.setInt(3, reg.getIdOrder());
 

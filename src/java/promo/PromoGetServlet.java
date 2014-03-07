@@ -80,7 +80,6 @@ public class PromoGetServlet extends HttpServlet {
                     /////////////////////////////////////////
 
                     String sidPromo = request.getParameter("idPromo");
-                    String sidPlace = request.getParameter("idPlace");
 
                     Promo promo = new Promo();
 
@@ -96,24 +95,14 @@ public class PromoGetServlet extends HttpServlet {
                             error = true;
                         }
                     }
-                    /* comprobar id place */
-                    if (sidPlace == null || sidPlace.trim().equals("")) {
-                        error = true;
-                    } else {
-                        try {
-                            promo.setIdPlace(Integer.parseInt(sidPlace));
-                        } catch (NumberFormatException n) {
-                            error = true;
-                        }
-                    }
 
                     if (!error) {
                         /* buscar promo */
                         Promo reg = promoDAO.findbyPromo(promo);
-                        if (reg.getIdPlace() > 0) {                           
+                        if (reg != null) {
                             reg.setDateBegin(Format.dateYYYYMMDD(reg.getDateBegin()));
                             reg.setDateEnd(Format.dateYYYYMMDD(reg.getDateEnd()));
-                            
+
                             request.setAttribute("promo", reg);
                             request.setAttribute("msgOk", "Se encontró el registro!");
                         } else {

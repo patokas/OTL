@@ -50,8 +50,8 @@ public class CardDAO {
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
-                reg.setDateBeginCard(result.getString("date_begin_card"));
-                reg.setDateEndCard(result.getString("date_end_card"));
+                reg.setDateBeginCard(result.getString("date_begin"));
+                reg.setDateEndCard(result.getString("date_end"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -98,8 +98,8 @@ public class CardDAO {
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
-                reg.setDateBeginCard(result.getString("date_begin_card"));
-                reg.setDateEndCard(result.getString("date_end_card"));
+                reg.setDateBeginCard(result.getString("date_begin"));
+                reg.setDateEndCard(result.getString("date_end"));
             }
         } catch (MySQLSyntaxErrorException ex) {
             System.out.println("Error de sintaxis en CardDAO, findByBarCode() : " + ex);
@@ -144,8 +144,8 @@ public class CardDAO {
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setCardType(result.getInt("card_type"));
-                reg.setDateBeginCard(result.getString("date_begin_card"));
-                reg.setDateEndCard(result.getString("date_end_card"));
+                reg.setDateBeginCard(result.getString("date_begin"));
+                reg.setDateEndCard(result.getString("date_end"));
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
             }
@@ -223,7 +223,7 @@ public class CardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update card set card_type = ?, date_begin_card = ?, date_end_card = ? where bar_code = ? ";
+            String sql = "update card set card_type = ?, date_begin = ?, date_end = ? where bar_code = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -257,7 +257,7 @@ public class CardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into card (rut, dv, bar_code, card_type, date_begin_card, date_end_card) values (?, ?, ?, ?, ?, ?)";
+            String sql = "insert into card (rut, dv, bar_code, card_type, date_begin, date_end) values (?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 

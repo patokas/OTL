@@ -90,20 +90,7 @@ public class PromoUpdateServlet extends HttpServlet {
 
                         Promo promo = new Promo();
 
-                        boolean error = false;
-
-                        /* comprobar id place */
-                        if (sidPlace == null || sidPlace.trim().equals("")) {
-                            request.setAttribute("msgErrorIdPlace", "Error al recibir id plaza.");
-                            error = true;
-                        } else {
-                            try {
-                                promo.setIdPlace(Integer.parseInt(sidPlace));
-                            } catch (NumberFormatException n) {
-                                request.setAttribute("msgErrorIdPlace", "Error al recibir id plaza.");
-                                error = true;
-                            }
-                        }
+                        boolean error = false;                    
 
                         /* comprobar id promo */
                         if (sidPromo == null || sidPromo.trim().equals("")) {

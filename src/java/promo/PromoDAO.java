@@ -40,7 +40,7 @@ public class PromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where pr.id_place = pl.id_place order by id_promo desc";
+            String sql = "select * from promo pr, place pl where pr.id_place = pl.id_place order by id_promo desc";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -92,7 +92,7 @@ public class PromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift where id_place = " + reg.getIdPlace() + " and id_promo <> " + reg.getIdPromo() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
+            String sql = "select * from promo where id_place = " + reg.getIdPlace() + " and id_promo <> " + reg.getIdPromo() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -128,14 +128,16 @@ public class PromoDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        Promo reg = new Promo();
+        Promo reg = null;
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo_gift pr, place pl where pr.id_place = pl.id_place and pr.id_promo = " + promo.getIdPromo() + " and pr.id_place = " + promo.getIdPlace() + "";
+            String sql = "select * from promo pr, place pl where pr.id_place = pl.id_place and pr.id_promo = " + promo.getIdPromo() + "";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
+                reg = new Promo();
                 /* obtener resultSet */
                 reg.setIdPromo(result.getInt("id_promo"));
                 reg.setIdPlace(result.getInt("id_place"));
@@ -177,7 +179,7 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into promo_gift (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into promo (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, promo.getIdPlace());
@@ -194,13 +196,12 @@ public class PromoDAO {
             try {
                 if (listUC.size() > 0) {
                     for (UserCard aux : listUC) {
-                        String sqlUser = "insert into promo_gift_list (rut, dv, id_place, id_promo) values (?, ?, ?, (select max(id_promo) from promo_gift))";
+                        String sqlUser = "insert into client_promo (id_promo, rut, dv) values ((select max(id_promo) from promo), ?, ?)";
 
                         sentence = conexion.prepareStatement(sqlUser);
 
                         sentence.setInt(1, aux.getRut());
                         sentence.setString(2, aux.getDv());
-                        sentence.setInt(3, promo.getIdPlace());
 
                         sentence.executeUpdate();
                     }
@@ -239,12 +240,11 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "delete from promo_gift where id_place = ? and id_promo = ? ";
+            String sql = "delete from promo where id_promo = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, promo.getIdPlace());
-            sentence.setInt(2, promo.getIdPromo());
+            sentence.setInt(1, promo.getIdPromo());
 
             sentence.executeUpdate();
 
@@ -271,7 +271,7 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into promo_gift (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into promo (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, promo.getIdPlace());
@@ -308,7 +308,7 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update promo_gift set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_place = ? and id_promo = ? ";
+            String sql = "update promo set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_promo = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -319,8 +319,7 @@ public class PromoDAO {
             sentence.setString(5, promo.getUrlImage());
             sentence.setInt(6, promo.getPoints());
             sentence.setInt(7, promo.getRequest());
-            sentence.setInt(8, promo.getIdPlace());
-            sentence.setInt(9, promo.getIdPromo());
+            sentence.setInt(8, promo.getIdPromo());
 
             sentence.executeUpdate();
 

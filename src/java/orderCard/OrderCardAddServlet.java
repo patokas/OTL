@@ -85,7 +85,7 @@ public class OrderCardAddServlet extends HttpServlet {
                 try {
 
                     String btnAdd = request.getParameter("add");
-                    String stypeCard = request.getParameter("typeCard");
+                    String sCardType = request.getParameter("cardType");
                     String srequest = request.getParameter("request");
                     String srut = request.getParameter("rut");
 
@@ -98,16 +98,16 @@ public class OrderCardAddServlet extends HttpServlet {
                     } else {
 
                         /* comprobar type card */
-                        if (stypeCard == null || stypeCard.trim().equals("")) {
+                        if (sCardType == null || sCardType.trim().equals("")) {
                             error = true;
                         } else {
                             try {
-                                orderCard.setTypeCard(Integer.parseInt(stypeCard));
+                                orderCard.setCardType(Integer.parseInt(sCardType));
                             } catch (NumberFormatException n) {
                                 error = true;
                             }
                         }
-System.out.println(error);
+
                         /* comprobar request */
                         if (srequest == null || srequest.trim().equals("")) {
                             error = true;
@@ -118,7 +118,7 @@ System.out.println(error);
                                 error = true;
                             }
                         }
-                        
+
                         /* comprobar rut */
                         if (srut == null || srut.trim().equals("")) {
                             request.setAttribute("msgErrorRut", "Debe ingresar un RUT.");
@@ -146,7 +146,7 @@ System.out.println(error);
                             }
                         }
 
-                        
+
                         if (!error) {
                             try {
                                 orderCardDAO.insert(orderCard);

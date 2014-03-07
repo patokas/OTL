@@ -179,7 +179,7 @@ public class ListAddServlet extends HttpServlet {
                                     try {
                                         entry.setIdEvent(Integer.parseInt(sidEvent));
                                         /* buscar el evento */
-                                        listEvent = eventDAO.findByPlaceEvent(entry.getIdPlace(), entry.getIdEvent());
+                                        listEvent = eventDAO.findByEvent(entry.getIdEvent());
                                     } catch (NumberFormatException n) {
                                         request.setAttribute("msgErrorIdEvent", "Error: El ID Evento debe ser numérico.");
                                         error = true;

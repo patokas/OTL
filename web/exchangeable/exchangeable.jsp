@@ -124,7 +124,7 @@
                                                     <tbody>
                                                         <c:forEach var="list" items="${list}">  
                                                             <tr>
-                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPlace}" />-<c:out value="${list.idExchangeable}" />"/></td>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idExchangeable}"/>"/></td>
                                                                 <td class="center"><c:out value="${list.namePlace}" /></td>
                                                                 <td class="center"><c:out value="${list.idExchangeable}" /></td>
                                                                 <td class="center"><c:out value="${list.tittle}" /></td>
@@ -135,12 +135,11 @@
                                                                     <c:if test="${list.request == 2}">Rechazada</c:if>
                                                                     </td>
                                                                     <td class="center">
-                                                                        <a href="ExchangeableGetServlet?idPlace=<c:out value="${list.idPlace}" />&idExchangeable=<c:out value="${list.idExchangeable}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
+                                                                        <a href="ExchangeableGetServlet?idExchangeable=<c:out value="${list.idExchangeable}"/>"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                                 </td>
                                                                 <td class="center">
                                                                     <form action="ExchangeableMainServlet" method="post">
-                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>
-                                                                        <input type="hidden" name="idPlace" value="<c:out value="${list.idPlace}" />"/>                                                                        
+                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>                                                                        
                                                                         <input type="hidden" name="idExchangeable" value="<c:out value="${list.idExchangeable}" />" />    
                                                                     </form>
                                                                 </td>

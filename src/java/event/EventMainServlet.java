@@ -87,13 +87,15 @@ public class EventMainServlet extends HttpServlet {
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
                             /* recibir parametros */
-                            event.setIdPlace(Integer.parseInt(request.getParameter("idPlace")));
-                            event.setIdEvent(Integer.parseInt(request.getParameter("idEvent")));
                             try {
-                                eventDAO.delete(event);
-                                request.setAttribute("msgDel", "Un registro ha sido eliminado.");
-                            } catch (Exception referenceException) {
-                                request.setAttribute("msgErrorReference", "Error: No puede eliminar el registro, existen referencias asociadas.");
+                                int id = Integer.parseInt(request.getParameter("idEvent"));
+                                try {
+                                    eventDAO.delete(id);
+                                    request.setAttribute("msgDel", "Un registro ha sido eliminado.");
+                                } catch (Exception referenceException) {
+                                    request.setAttribute("msgErrorReference", "Error: No puede eliminar el registro, existen referencias asociadas.");
+                                }
+                            } catch (NumberFormatException n) {
                             }
                         }
 
@@ -108,14 +110,8 @@ public class EventMainServlet extends HttpServlet {
                                 int cont = 0;
                                 int i = 0;
                                 while (outerArray[i] != null) {
-                                    String string = outerArray[i];
-                                    String[] parts = string.split("-");
-                                    event.setIdPlace(Integer.parseInt(parts[0]));
-                                    event.setIdEvent(Integer.parseInt(parts[1]));
-                                    event.setTittle(parts[2]);
-
                                     try {
-                                        eventDAO.delete(event);
+                                        eventDAO.delete(Integer.parseInt(outerArray[i]));
                                         cont++;
                                         if (cont == 1) {
                                             request.setAttribute("msgDel", "Un registro ha sido eliminado.");

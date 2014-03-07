@@ -6,7 +6,6 @@ package admin;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -72,13 +71,11 @@ public class AdminGetServlet extends HttpServlet {
                     request.setAttribute("userJsp", user);
                     request.setAttribute("access", access);
 
-                    Admin admin = null;
 
+                    /////////////////////////////////////////
+                    // RECIBIR Y COMPROBAR PARAMETROS
+                    ////////////////////////////////////////
                     try {
-                        /////////////////////////////////////////
-                        // RECIBIR Y COMPROBAR PARAMETROS
-                        ////////////////////////////////////////
-
                         String sid = request.getParameter("id");
 
                         /* comprobar id admin */
@@ -88,6 +85,7 @@ public class AdminGetServlet extends HttpServlet {
                             int id = Integer.parseInt(sid);
                             Admin reg = adminDAO.findById(id);
                             if (reg != null) {
+                                request.setAttribute("admin", reg);
                                 request.setAttribute("msgOk", "Se encontró el registro!");
                             } else {
                                 request.setAttribute("msgErrorFound", "Error: No se encontró el registro.");
@@ -95,7 +93,6 @@ public class AdminGetServlet extends HttpServlet {
                         }
                     } catch (Exception parameterException) {
                     } finally {
-                        request.setAttribute("admin", admin);
                         request.getRequestDispatcher("/admin/adminUpdate.jsp").forward(request, response);
                     }
                 }
@@ -107,6 +104,7 @@ public class AdminGetServlet extends HttpServlet {
         } catch (Exception connectionException) {
             connectionException.printStackTrace();
         } finally {
+            /* cerrar conexion */
             try {
                 conexion.close();
             } catch (Exception noGestionar) {

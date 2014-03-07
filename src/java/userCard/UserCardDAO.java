@@ -54,7 +54,7 @@ public class UserCardDAO {
                 reg.setEmail(result.getString("email"));
                 reg.setPassword(result.getString("password"));
                 reg.setTelephone(result.getInt("tel"));
-                reg.setGenre(result.getInt("genre"));
+                reg.setGender(result.getInt("gender"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -106,7 +106,7 @@ public class UserCardDAO {
                 reg.setEmail(result.getString("email"));
                 reg.setPassword(result.getString("password"));
                 reg.setTelephone(result.getInt("tel"));
-                reg.setGenre(result.getInt("genre"));
+                reg.setGender(result.getInt("gender"));
             }
         } catch (MySQLSyntaxErrorException ex) {
             System.out.println("Error de sintaxis en UserCardDAO, FindByRut() : " + ex);
@@ -194,7 +194,7 @@ public class UserCardDAO {
                 reg.setEmail(result.getString("email"));
                 reg.setPassword(result.getString("password"));
                 reg.setTelephone(result.getInt("tel"));
-                reg.setGenre(result.getInt("genre"));
+                reg.setGender(result.getInt("gender"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -230,7 +230,7 @@ public class UserCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into user_card (rut, dv, first_name, last_name, password, tel, genre, email, id_city) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into user_card (rut, dv, first_name, last_name, password, tel, gender, email, id_city) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -240,7 +240,7 @@ public class UserCardDAO {
             sentence.setString(4, reg.getLastName());
             sentence.setString(5, reg.getPassword());
             sentence.setInt(6, reg.getTelephone());
-            sentence.setInt(7, reg.getGenre());
+            sentence.setInt(7, reg.getGender());
             sentence.setString(8, reg.getEmail());
             sentence.setInt(9, reg.getIdCity());
             sentence.executeUpdate();
@@ -298,13 +298,13 @@ public class UserCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update user_card set id_city = ?, first_name = ?, last_name = ?, genre = ?, tel = ?, email = ? where rut = ? ";
+            String sql = "update user_card set id_city = ?, first_name = ?, last_name = ?, gender = ?, tel = ?, email = ? where rut = ? ";
 
             sentence = conexion.prepareStatement(sql);
             sentence.setInt(1, user.getIdCity());
             sentence.setString(2, user.getFirstName());
             sentence.setString(3, user.getLastName());
-            sentence.setInt(4, user.getGenre());
+            sentence.setInt(4, user.getGender());
             sentence.setInt(5, user.getTelephone());
             sentence.setString(6, user.getEmail());
             sentence.setInt(7, user.getRut());

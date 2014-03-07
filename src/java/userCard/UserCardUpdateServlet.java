@@ -88,7 +88,7 @@ public class UserCardUpdateServlet extends HttpServlet {
                     String telephone = request.getParameter("telephone");
                     String sidCity = request.getParameter("idCity");
                     String email = request.getParameter("email");
-                    String genre = request.getParameter("genre");
+                    String gender = request.getParameter("gender");
 
                     /* parametros para actualizar password */
                     String chkPwd = request.getParameter("chk");
@@ -156,11 +156,11 @@ public class UserCardUpdateServlet extends HttpServlet {
                     }
 
                     /* comprobar genero */
-                    if (genre == null || genre.trim().equals("")) {
+                    if (gender == null || gender.trim().equals("")) {
                         error = true;
                     } else {
                         try {
-                            userCardReg.setGenre(Integer.parseInt(genre));
+                            userCardReg.setGender(Integer.parseInt(gender));
                         } catch (NumberFormatException n) {
                             error = true;
                         }

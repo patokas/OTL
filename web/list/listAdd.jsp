@@ -126,20 +126,20 @@
                 </div>
                 <div class="col-lg-4">
                     <form role="form" action="ListAddServlet" method="POST" name="formAdd">  
-                        <div class="form-group">
-                            <label>Plaza</label>
-                            <select class="form-control" name="idPlace">
-                                <c:forEach var="listPlace" items="${listPlace}">  
-                                    <option value="<c:out value="${listPlace.idPlace}" />" <c:if test="${reg.idPlace == listPlace.idPlace}">selected</c:if>> <c:out value="${listPlace.namePlace}" /> </option>
-                                </c:forEach>
-                            </select>                                
-                        </div>   
                         <p><label>Ingresar Evento:</label></p>
                         <div class="form-group">
                             <input type="radio" name="optionEvent" value="1" <c:if test="${optionEvent == 1 || optionEvent == null}">checked</c:if> <label>Actual</label>
                             </div>
                             <div class="form-group">
-                                <input type="radio" name="optionEvent" value="2" <c:if test="${optionEvent == 2}">checked</c:if> /> 
+                                <label>Lugar</label>
+                                <select class="form-control" name="idPlace">
+                                <c:forEach var="listPlace" items="${listPlace}">  
+                                    <option value="<c:out value="${listPlace.idPlace}" />" <c:if test="${reg.idPlace == listPlace.idPlace}">selected</c:if>> <c:out value="${listPlace.namePlace}" /> </option>
+                                </c:forEach>
+                            </select>                                
+                        </div>   
+                        <div class="form-group">
+                            <input type="radio" name="optionEvent" value="2" <c:if test="${optionEvent == 2}">checked</c:if> /> 
                                 <label>Por ID Evento</label>
                                 <input class="form-control" type="number" maxlength="8" name="idEvent" value="<c:out value="${reg.idEvent}" />" />
                         </div>                        

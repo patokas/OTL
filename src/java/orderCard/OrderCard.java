@@ -13,7 +13,7 @@ public class OrderCard implements java.io.Serializable {
     public int idOrder;
     public int rut;
     public String dv;
-    public int typeCard;
+    public int cardType;
     public int request;
     public String orderDate;
     public String firstName;
@@ -46,12 +46,12 @@ public class OrderCard implements java.io.Serializable {
         this.dv = dv;
     }
 
-    public int getTypeCard() {
-        return typeCard;
+    public int getCardType() {
+        return cardType;
     }
 
-    public void setTypeCard(int typeCard) {
-        this.typeCard = typeCard;
+    public void setCardType(int cardType) {
+        this.cardType = cardType;
     }
 
     public int getRequest() {
