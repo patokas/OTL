@@ -48,21 +48,20 @@ public class CardBrowserServlet extends HttpServlet {
 
         Connection conexion = null;
 
+        ////////////////////////////////////////
+        //      ESTABLECER CONEXION
+        ////////////////////////////////////////
         try {
-            ////////////////////////////////////////
-            // ESTABLECER CONEXION
-            ////////////////////////////////////////
-
             conexion = ds.getConnection();
 
-            CardDAO dao = new CardDAO();
-            dao.setConexion(conexion);
+            CardDAO cardDAO = new CardDAO();
+            cardDAO.setConexion(conexion);
 
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
             //////////////////////////////////////////
-            // COMPROBAR SESSION
+            //        COMPROBAR SESSION
             /////////////////////////////////////////
             try {
                 /* recuperar sesion */
@@ -76,43 +75,67 @@ public class CardBrowserServlet extends HttpServlet {
                 request.setAttribute("userJsp", user);
                 request.setAttribute("access", access);
 
+                /////////////////////////////////////////
+                //   RECIBIR Y COMPROBAR PARAMETROS
+                /////////////////////////////////////////
                 try {
-                    /////////////////////////////////////////
-                    // RECIBIR Y COMPROBAR PARAMETROS
-                    /////////////////////////////////////////
-
-                    String srut = request.getParameter("rut"); // rut + dv
+                    String rut = request.getParameter("rut"); // rut + dv
 
                     Card card = new Card();
 
-                    /* Verificación de rut  */
-                    if (ValidationRut.validateRut(srut)) {
-                        card.setRut(Format.getRut(srut));
-                        card.setDv(Format.getDv(srut));
+                    boolean error = false;
 
-                        /* buscar card-usercard */
-                        Card aux = dao.findbyRutJoin(card);
-                        if (aux.getRut() > 0) {
-                            /* encuentra usercard */
-                            System.out.println("encuentra al usuario");
+                    /* comprobar rut */
+                    if (rut == null || rut.trim().equals("") || rut.length() < 3) {
+                        request.setAttribute("msgErrorRut", "Error: Debe ingresar RUT.");
+                        error = true;
+                    } else {
+                        request.setAttribute("rut", rut);
+                        try {
+                            if (!ValidationRut.validateRut(rut)) {
+                                request.setAttribute("msgErrorRut", "Error: RUT inválido.");
+                                error = true;
+                            } else {
+                                card.setRut(Format.getRut(rut));
+                                card.setDv(Format.getDv(rut));
+                            }
+                        } catch (Exception ex) {
+                            request.setAttribute("msgErrorRut", "Error: RUT inválido.");
+                            error = true;
+                        }
+                    }
+
+                    ////////////////////////////////////////
+                    //        LOGICA DE NEGOCIO
+                    ////////////////////////////////////////
+
+                    if (!error) {
+                        /* buscar card de usercard */
+                        Card aux = cardDAO.findbyRutJoin(card);
+
+                        if (aux != null) {
                             request.setAttribute("msgAdd", "El usuario está registrado. ");
                             request.setAttribute("reg", aux);
                             request.getRequestDispatcher("/card/cardAdd.jsp").forward(request, response);
                         } else {
-                            /* no encuentra card-usercard */
-                            System.out.println("no encuentra al usuario");
-                            Collection<City> listCity = cityDAO.getAll();
-                            request.setAttribute("listCity", listCity);
+                            /* obtener lista de ciudades */
+                            try {
+                                Collection<City> listCity = cityDAO.getAll();
+                                request.setAttribute("listCity", listCity);
+                            } catch (Exception ex) {
+                            }
+
                             /* instanciar usercard */
                             UserCard usercard = new UserCard();
+                            /* asignar rut */
                             usercard.setRut(card.getRut());
                             usercard.setDv(card.getDv());
+
                             request.setAttribute("reg", usercard);
+
                             request.getRequestDispatcher("/userCard/userCardAdd.jsp").forward(request, response);
                         }
                     } else {
-                        request.setAttribute("rut", srut);
-                        request.setAttribute("msgErrorRut", "Error: Rut inválido.");
                         request.getRequestDispatcher("/card/cardVerify.jsp").forward(request, response);
                     }
                 } catch (Exception parameterException) {

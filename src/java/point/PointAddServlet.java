@@ -86,7 +86,7 @@ public class PointAddServlet extends HttpServlet {
 
                         String btnAdd = request.getParameter("add");
                         String sidPlace = request.getParameter("idPlace");
-                        String srut = request.getParameter("rut");
+                        String rut = request.getParameter("rut");
                         String spoints = request.getParameter("points");
 
                         Point point = new Point();
@@ -106,13 +106,20 @@ public class PointAddServlet extends HttpServlet {
                             }
 
                             /* comprobar rut */
-                            if (srut == null || srut.trim().equals("") || srut.length() < 3) {
+                            if (rut == null || rut.trim().equals("") || rut.length() < 3) {
                                 request.setAttribute("msgErrorRut", "Error: Debe ingresar RUT.");
                                 error = true;
                             } else {
-                                point.setRut(Format.getRut(srut));
-                                point.setDv(Format.getDv(srut));
-                                if (!ValidationRut.validateRut(srut)) {
+                                request.setAttribute("rut", rut);
+                                try {
+                                    if (!ValidationRut.validateRut(rut)) {
+                                        request.setAttribute("msgErrorRut", "Error: RUT inválido.");
+                                        error = true;
+                                    } else {
+                                        point.setRut(Format.getRut(rut));
+                                        point.setDv(Format.getDv(rut));
+                                    }
+                                } catch (Exception ex) {
                                     request.setAttribute("msgErrorRut", "Error: RUT inválido.");
                                     error = true;
                                 }

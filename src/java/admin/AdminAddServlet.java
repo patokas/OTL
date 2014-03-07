@@ -44,10 +44,10 @@ public class AdminAddServlet extends HttpServlet {
 
         Connection conexion = null;
 
+        /////////////////////////////////////////
+        // ESTABLECER CONEXION
+        /////////////////////////////////////////
         try {
-            /////////////////////////////////////////
-            // ESTABLECER CONEXION
-            /////////////////////////////////////////
 
             conexion = ds.getConnection();
 
@@ -73,23 +73,18 @@ public class AdminAddServlet extends HttpServlet {
                     request.setAttribute("userJsp", user); // username
                     request.setAttribute("access", access); // nivel de acceso
 
-                    ////////////////////////////////////////
-                    // DECLARAR VARIABLES DE INSTANCIA
-                    ///////////////////////////////////////
-
-                    Admin admin = new Admin();
-
+                    /////////////////////////////////////////
+                    // RECIBIR Y COMPROBAR PARAMETROS
+                    //////////////////////////////////////// 
                     try {
-                        /////////////////////////////////////////
-                        // RECIBIR Y COMPROBAR PARAMETROS
-                        //////////////////////////////////////// 
-
                         String btnAdd = request.getParameter("add");
                         String username = request.getParameter("username");
                         String email = request.getParameter("email");
                         String type = request.getParameter("type_admin");
                         String pwd1 = request.getParameter("pwd1");
                         String pwd2 = request.getParameter("pwd2");
+
+                        Admin admin = new Admin();
 
                         boolean error = false;
 
@@ -121,7 +116,7 @@ public class AdminAddServlet extends HttpServlet {
                                 if (find) {
                                     request.setAttribute("msgErrorEmail", "Error: ya existe un administrador con ese email. ");
                                     error = true;
-                                }                                
+                                }
                             }
 
                             /* comprobar type */
@@ -164,7 +159,7 @@ public class AdminAddServlet extends HttpServlet {
                                     }
                                 }
                             }
-                            /////////////////////////////////////////
+                            ////////////////////////////////////////
                             // INSERTAR REGISTRO
                             ////////////////////////////////////////
                             if (!error) {
@@ -176,10 +171,11 @@ public class AdminAddServlet extends HttpServlet {
                                 }
                             }
                         }
+
+                        request.setAttribute("admin", admin);
+                        
                     } catch (Exception parameterException) {
                     } finally {
-                        /* despachar a la vista adminAdd */
-                        request.setAttribute("admin", admin);
                         request.getRequestDispatcher("/admin/adminAdd.jsp").forward(request, response);
                     }
                 }

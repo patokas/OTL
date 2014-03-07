@@ -178,7 +178,7 @@ public class CardDAO {
         Statement sentence = null;
         ResultSet result = null;
 
-        Card reg = new Card();
+        Card reg = null;
 
         try {
             sentence = conexion.createStatement();
@@ -186,6 +186,9 @@ public class CardDAO {
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
+                /* instanciar objeto */
+                reg = new Card();
+                /* obtener resultset */
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setFirstName(result.getString("first_name"));

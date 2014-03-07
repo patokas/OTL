@@ -90,7 +90,6 @@ public class PlaceAddServlet extends HttpServlet {
                 // RECIBIR Y COMPROBAR PARAMETROS
                 /////////////////////////////////////////
                 try {
-
                     String btnAdd = request.getParameter("add");
                     String sidCity = request.getParameter("idCity");
                     String snamePlace = request.getParameter("namePlace");
@@ -106,7 +105,7 @@ public class PlaceAddServlet extends HttpServlet {
                     boolean error = false;
 
                     if (btnAdd == null) {
-                        request.setAttribute("msg", "Ingrese una plaza.");
+                        request.setAttribute("msg", "Ingrese un lugar.");
                     } else {
                         /* comprobar id city */
                         if (sidCity == null || sidCity.trim().equals("")) {
@@ -182,6 +181,10 @@ public class PlaceAddServlet extends HttpServlet {
                             place.setUrlLogo(urlLogo);
                         }
 
+                        //////////////////////////////////
+                        // LOGICA DE NEGOCIO
+                        //////////////////////////////////
+
                         if (!error) {
                             /* comprobar duplicaciones */
                             boolean find = placeDAO.validateDuplicate(place);
@@ -193,7 +196,6 @@ public class PlaceAddServlet extends HttpServlet {
                                     placeDAO.insert(place);
                                     /* insertar puntos de place y todos los clientes */
                                     pointDAO.insertAllUsersByLastPlace();
-
                                     request.setAttribute("msgOk", "Registro ingresado exitosamente! ");
                                 } catch (Exception ex) {
                                     request.setAttribute("msgErrorDup", "Error: ya existe este registro. ");
@@ -201,10 +203,6 @@ public class PlaceAddServlet extends HttpServlet {
                             }
                         }
                     }
-
-                    /////////////////////////////////////////
-                    // ESTABLECER ATRIBUTOS AL REQUEST
-                    /////////////////////////////////////////
 
                     /* obtener lista de ciudades */
                     try {

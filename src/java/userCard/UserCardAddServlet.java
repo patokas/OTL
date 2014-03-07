@@ -105,8 +105,8 @@ public class UserCardAddServlet extends HttpServlet {
                             request.setAttribute("rut", srut);
                             try {
                                 if (!ValidationRut.validateRut(srut)) {
-                                    error = true;
                                     request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
+                                    error = true;
                                 } else {
                                     reg.setRut(Format.getRut(srut));
                                     reg.setDv(Format.getDv(srut));
@@ -128,7 +128,7 @@ public class UserCardAddServlet extends HttpServlet {
                             }
                         }
 
-                        /* comprobar email*/
+                        /* comprobar email */
                         if (email == null || email.trim().equals("")) {
                             request.setAttribute("msgErrorEmail", "Error al recibir email.");
                             error = true;
@@ -150,7 +150,7 @@ public class UserCardAddServlet extends HttpServlet {
 
                         }
 
-                        /* comprobar lastname*/
+                        /* comprobar lastname */
                         if (lastname == null || lastname.trim().equals("")) {
                             request.setAttribute("msgErrorLastName", "Error al recibir apellido.");
                             error = true;
@@ -165,7 +165,6 @@ public class UserCardAddServlet extends HttpServlet {
                                 reg.setGenre(Integer.parseInt(genre));
                             } catch (NumberFormatException n) {
                                 error = true;
-                                // ERROR AL RECIBIR UN VALOR NO NUMERICO
                             }
                         }
                         /* comprobar ciudad */
@@ -176,7 +175,6 @@ public class UserCardAddServlet extends HttpServlet {
                                 reg.setIdCity(Integer.parseInt(sidCity));
                             } catch (NumberFormatException n) {
                                 error = true;
-                                // ERROR AL RECIBIR UN VALOR NO NUMERICO
                             }
                         }
                         /* comprobar telefono */
@@ -187,20 +185,21 @@ public class UserCardAddServlet extends HttpServlet {
                             try {
                                 reg.setTelephone(Integer.parseInt(telephone));
                             } catch (NumberFormatException n) {
-                                request.setAttribute("msgErrorTelephone", "Error al recibir telefono, los valores deben ser numericos.");
+                                request.setAttribute("msgErrorTelephone", "Error al recibir telefono, debe ser numérico.");
                                 error = true;
                             }
                         }
 
-                        /////////////////////////////////////////
+                        //////////////////////////////////////
                         // INSERTAR REGISTRO
-                        ////////////////////////////////////////
+                        //////////////////////////////////////
 
                         if (!error) {
                             try {
                                 userCardDAO.insert(reg);
                                 request.setAttribute("msgAdd", "Registro ingresado exitosamente! ");
                             } catch (Exception ex) {
+                                request.setAttribute("msgErrorDup", "Error: ya existe este registro.");
                             }
                         }
                     }
@@ -211,6 +210,7 @@ public class UserCardAddServlet extends HttpServlet {
                         request.setAttribute("listCity", listCity);
                     } catch (Exception ex) {
                     }
+                    
                     request.setAttribute("reg", reg);
 
                 } catch (Exception parameterException) {
@@ -225,6 +225,7 @@ public class UserCardAddServlet extends HttpServlet {
         } catch (Exception connectionException) {
             connectionException.printStackTrace();
         } finally {
+            /* cerrar conexion */
             try {
                 conexion.close();
             } catch (Exception noGestionar) {

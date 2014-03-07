@@ -100,6 +100,12 @@
                                 <strong><c:out value="${msgErrorTelephone}" /></strong></br>
                             </div>
                         </c:if>
+                        <c:if test="${msgErrorDup != null}" >
+                            <div class="alert alert-dismissable alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong><c:out value="${msgErrorDup}" /></strong></br>
+                            </div>
+                        </c:if>
 
                     </div>
                     <div class="col-lg-4">
@@ -152,8 +158,8 @@
                                 <select class="form-control" required="true" name="genre">
                                     <option value="0"  <c:if test="${reg.genre == 0}" > selected </c:if>> Masculino</option>
                                     <option value="1" <c:if test="${reg.genre == 1}" > selected </c:if>> Femenino</option>
-                                </select>
-                            </div>
+                                    </select>
+                                </div>
                             <c:choose>
                                 <c:when test="${msgErrorEmail == null}">
                                     <div class="form-group input-group">
@@ -189,11 +195,8 @@
                                         <option value="<c:out value="${listCity.idCity}" />" > <c:out value="${listCity.nameCity}" /> </option>
                                     </c:forEach>
                                 </select>
-                            </div>
-
-                            
-                            <p><i>* : is required</strong></i></p>
-                            <button type="submit" name="add" class="btn btn-default">Add</button>
+                            </div>                                                       
+                            <button type="submit" name="add" class="btn btn-default">Agregar</button>
                             <button type="reset" class="btn btn-default">Reset</button> 
                         </form>
                     </div>

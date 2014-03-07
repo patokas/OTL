@@ -86,17 +86,25 @@
                 <div class="col-lg-4">
                     <form role="form" action="PointAddServlet" method="POST" name="formAdd">                        
                         <div class="form-group">
-                            <label>Plaza</label>
+                            <label>Lugar</label>
                             <select class="form-control" name="idPlace">
                                 <c:forEach var="listPlace" items="${listPlace}">  
                                     <option value="<c:out value="${listPlace.idPlace}" />" <c:if test="${point.idPlace == listPlace.idPlace}">selected</c:if>> <c:out value="${listPlace.namePlace}" /> </option>
                                 </c:forEach>
                             </select>                                
                         </div>  
-                        <div class="form-group">
-                            <label>Rut</label>
-                            <input type="text" class="form-control" maxlenth="12" name="rut" value="<c:out value="${point.rut}" />-<c:out value="${point.dv}" />">
-                        </div>
+                        <c:if test="${msgErrorRut == null }" >
+                            <div class="form-group">
+                                <label>Rut</label>
+                                <input type="text" class="form-control" maxlenth="12" name="rut" value="<c:out value="${rut}" />">
+                            </div>
+                        </c:if>
+                        <c:if test="${msgErrorRut != null }" >
+                            <div class="form-group has-error">
+                                <label class="control-label" for="inputError">Rut</label>
+                                <input type="text" class="form-control" maxlength="12" name="rut" id="inputError" value="<c:out value="${rut}" />">
+                            </div>
+                        </c:if>
                         <c:if test="${msgErrorPoints != null }" >
                             <div class="form-group has-error">
                                 <label class="control-label" for="inputError">Puntos</label>
