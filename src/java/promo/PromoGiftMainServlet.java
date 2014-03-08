@@ -92,12 +92,10 @@ public class PromoGiftMainServlet extends HttpServlet {
                         // ELIMINAR POR REGISTRO
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
-                            /* recibir parametros*/
-                            promo.setIdPlace(Integer.parseInt(request.getParameter("idPlace")));
-                            promo.setIdPromo(Integer.parseInt(request.getParameter("idPromo")));
-
+                            /* recibir parametros*/                                                        
+                            int id = Integer.parseInt(request.getParameter("idPromo"));
                             try {
-                                promoDAO.delete(promo);
+                                promoDAO.delete(id);
                                 request.setAttribute("msgDel", "Un Registro ha sido eliminado");
                             } catch (Exception referenceException) {
                                 request.setAttribute("msgErrorReference", "Error: No puede eliminar, existen clientes asociados.");
@@ -112,14 +110,9 @@ public class PromoGiftMainServlet extends HttpServlet {
                                 String[] outerArray = request.getParameterValues("chk");
                                 int cont = 0;
                                 int i = 0;
-                                while (outerArray[i] != null) {
-                                    String string = outerArray[i];
-                                    String[] parts = string.split("-");
-                                    promo.setIdPlace(Integer.parseInt(parts[0]));
-                                    promo.setIdPromo(Integer.parseInt(parts[1]));
-
+                                while (outerArray[i] != null) {                                  
                                     try {
-                                        promoDAO.delete(promo);
+                                        promoDAO.delete(Integer.parseInt(outerArray[i]));
                                         cont++;
                                         request.setAttribute("msgDel", cont + " registro(s) han sido eliminado(s).");
                                     } catch (Exception ex) {

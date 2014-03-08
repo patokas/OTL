@@ -59,7 +59,7 @@ public class CityDAO {
             System.out.println("MySQL Excepción de integridad en CityDAO, getAll() : " + ex);
             throw new RuntimeException("MySQL Excepción de integridad en CityDAO, getAll() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, getAll() : " + ex);
+            System.out.println("MySQL Excepción inesperada en CityDAO, CityDAO, getAll() : " + ex);
             throw new RuntimeException("MySQL Excepción inesperada en CityDAO, getAll() : " + ex);
         } finally {
             /* liberar recursos */
@@ -141,7 +141,7 @@ public class CityDAO {
             System.out.println("MySQL Excepción de integridad en CityDAO, findbyIdCity() : " + ex);
             throw new RuntimeException("MySQL Excepción de integridad en CityDAO, findbyIdCity() : " + ex);
         } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en ClientPromoDAO, CityDAO, findbyIdCity() : " + ex);
+            System.out.println("MySQL Excepción inesperada en CityDAO, findbyIdCity() : " + ex);
             throw new RuntimeException("MySQL Excepción inesperada en CityDAO, findbyIdCity() : " + ex);
         } finally {
             /* liberar recursos */

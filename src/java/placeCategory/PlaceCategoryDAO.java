@@ -89,7 +89,7 @@ public class PlaceCategoryDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from place_category pc, place pl, category ca where pc.id_place = pl.id_place and pc.id_category = ca.id_category and pc.id_place = " + idPlace + " and pc.id_category = " + idCategory + " pl.id_city = ci.id_city";
+            String sql = "select * from place_category pc, place pl, category ca, city ci where pc.id_place = pl.id_place and pc.id_category = ca.id_category and pc.id_place = " + idPlace + " and pc.id_category = " + idCategory + " and pl.id_city = ci.id_city";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {

@@ -26,9 +26,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> Mantenedores <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="ClientMainServlet">Clientes</a></li>
-                        <li><a href="OrderCardMainServlet">Solicitud Tarjetas</a></li>
-                        <li><a href="CardMainServlet">Tarjetas</a></li>                        
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PointMainServlet">Puntos Cliente</a></li></c:if>
+                        <li><a href="CardMainServlet">Tarjetas</a></li>  
+                        <li><a href="OrderCardMainServlet">Solicitud Tarjetas</a></li>                                                                  
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PromoGiftMainServlet">Promociones</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="ClientPromoGiftMainServlet">Promociones Cliente</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="ExchangeableMainServlet">Productos Canjebles</a></li></c:if>
@@ -36,9 +36,10 @@
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="EntryMainServlet">Registro Entradas</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="CategoryMainServlet">Categorías</a></li></c:if>
                     <c:if test="${access == 777 || access == 555 }" ><li><a href="PlaceCategoryMainServlet">Categorías Lugar</a></li></c:if>
-                        <li><a href="CityMainServlet">Ciudad</a></li>
                     <c:if test="${access == 777}" ><li><a href="PlaceMainServlet">Lugares</a></li></c:if>
+                    <c:if test="${access == 777}" ><li><a href="UniversityMainServlet">Universidades</a></li></c:if>
                     <c:if test="${access == 777}" ><li><a href="DressCodeMainServlet">Código Vestir</a></li></c:if>
+                        <li><a href="CityMainServlet">Ciudad</a></li>
                     <c:if test="${access == 777}" ><li><a href="AdminMainServlet">Admin</a></li></c:if>
                     </ul>
                 </li>

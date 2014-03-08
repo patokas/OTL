@@ -112,7 +112,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th><input class="check_all" type="checkbox" /></th>
-                                                            <th>Plaza <i class="fa fa-sort"></i></th>
+                                                            <th>Lugar <i class="fa fa-sort"></i></th>
                                                             <th>ID <i class="fa fa-sort"></i></th>
                                                             <th>Título Promoción <i class="fa fa-sort"></i></th>
                                                             <th>Puntos <i class="fa fa-sort"></i></th>

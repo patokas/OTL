@@ -235,7 +235,7 @@ public class PromoDAO {
         }
     }
 
-    public void delete(Promo promo) {
+    public void delete(int id) {
 
         PreparedStatement sentence = null;
 
@@ -244,7 +244,7 @@ public class PromoDAO {
 
             sentence = conexion.prepareStatement(sql);
 
-            sentence.setInt(1, promo.getIdPromo());
+            sentence.setInt(1, id);
 
             sentence.executeUpdate();
 
