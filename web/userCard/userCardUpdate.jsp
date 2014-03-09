@@ -110,6 +110,18 @@
                                 <strong><c:out value="${msgErrorPwd2}" /></strong></br>
                             </div>
                         </c:if>
+                        <c:if test="${msgErrorFacebook != null}" >
+                            <div class="alert alert-dismissable alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong><c:out value="${msgErrorFacebook}" /></strong></br>
+                            </div>
+                        </c:if>
+                        <c:if test="${msgErrorDateBirth != null}" >
+                            <div class="alert alert-dismissable alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong><c:out value="${msgErrorDateBirth}" /></strong></br>
+                            </div>
+                        </c:if>
                         <c:if test="${msgOk != null}" >
                             <div class="alert alert-dismissable alert-success">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -128,38 +140,68 @@
                             <c:choose>
                                 <c:when test="${msgErrorFirstName == null}">
                                     <div class="form-group">
-                                        <label>Nombre </label>
-                                        <input class="form-control" required="true" maxlength="30" name="firstName" value="<c:out value="${reg.firstName}" />">
+                                        <label>Nombres </label>
+                                        <input class="form-control" required="true" maxlength="50" name="firstName" value="<c:out value="${reg.firstName}" />">
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="form-group has-error">
-                                        <label class="control-label" for="inputError">Nombre </label>
-                                        <input class="form-control" required="true" maxlength="30" name="firstName" id="inputError" value="<c:out value="${reg.firstName}" />">
+                                        <label class="control-label" for="inputError">Nombres </label>
+                                        <input class="form-control" required="true" maxlength="50" name="firstName" id="inputError" value="<c:out value="${reg.firstName}" />">
                                     </div>
                                 </c:otherwise>
                             </c:choose>
                             <c:choose>
                                 <c:when test="${msgErrorLastName == null}">
                                     <div class="form-group">
-                                        <label>Apellido </label>
-                                        <input class="form-control" required="true" maxlength="30" name="lastName" value="<c:out value="${reg.lastName}" />">
+                                        <label>Apellidos </label>
+                                        <input class="form-control" required="true" maxlength="50" name="lastName" value="<c:out value="${reg.lastName}" />">
                                     </div>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="form-group has-error">
-                                        <label class="control-label" for="inputError">Apellido </label>
-                                        <input class="form-control" required="true" maxlength="30" name="lastName" id="inputError" value="<c:out value="${reg.lastName}" />">
+                                        <label class="control-label" for="inputError">Apellidos </label>
+                                        <input class="form-control" required="true" maxlength="50" name="lastName" id="inputError" value="<c:out value="${reg.lastName}" />">
                                     </div>
                                 </c:otherwise>
                             </c:choose>
                             <div class="form-group">
-                                <label>Genero </label>
+                                <label>Género </label>
                                 <select class="form-control" required="true" name="gender">
                                     <option value="0"  <c:if test="${reg.gender == 0}" > selected </c:if>> Masculino</option>
                                     <option value="1" <c:if test="${reg.gender == 1}" > selected </c:if>> Femenino</option>
                                     </select>
                                 </div>
+                            <c:choose>
+                                <c:when test="${msgErrorDateBirth == null}">
+                                    <div class="form-group">
+                                        <label>Fecha de Nacimiento </label>
+                                        <input class="form-control" type="date" required="true" name="dateBirth" value="<c:out value="${reg.dateBirth}" />">
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group has-error">
+                                        <label class="control-label" for="inputError">Fecha de Nacimiento </label>
+                                        <input class="form-control" type="date" required="true" name="dateBirth" id="inputError" value="<c:out value="${reg.dateBirth}" />">
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="form-group">
+                                <label>Cuidad</label>
+                                <select class="form-control" required="true" name="idCity">
+                                    <c:forEach var="listCity" items="${listCity}">
+                                        <option value="<c:out value="${listCity.idCity}" />" <c:if test="${reg.idCity == listCity.idCity}">selected</c:if>> <c:out value="${listCity.nameCity}" /> </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Universidad</label>
+                                <select class="form-control" required="true" name="idUniversity">
+                                    <c:forEach var="listUniversity" items="${listUniversity}">
+                                        <option value="<c:out value="${listUniversity.idUniversity}" />" <c:if test="${listUniversity.idUniversity == reg.idUniversity}">selected</c:if> > <c:out value="${listUniversity.nameUniversity}" /> </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
                             <c:choose>
                                 <c:when test="${msgErrorEmail == null}">
                                     <div class="form-group input-group">
@@ -187,15 +229,21 @@
                                         <input class="form-control" required="true" maxlength="10" name="telephone" id="inputError" value="<c:out value="${reg.telephone}" />">
                                     </div>
                                 </c:otherwise>
+                            </c:choose>                            
+                            <c:choose>
+                                <c:when test="${msgErrorFacebook == null}">
+                                    <div class="form-group">
+                                        <label>Facebook </label>
+                                        <input class="form-control" required="true" name="facebook" value="<c:out value="${reg.facebook}" />">
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="form-group has-error">
+                                        <label class="control-label" for="inputError">Facebook </label>
+                                        <input class="form-control" required="true" name="facebook" id="inputError" value="<c:out value="${reg.facebook}" />">
+                                    </div>
+                                </c:otherwise>
                             </c:choose>
-                            <div class="form-group">
-                                <label>Cuidad *</label>
-                                <select class="form-control" required="true" name="idCity">
-                                    <c:forEach var="listCity" items="${listCity}">
-                                        <option value="<c:out value="${listCity.idCity}" />" <c:if test="${reg.idCity == listCity.idCity}">selected</c:if>> <c:out value="${listCity.nameCity}" /> </option>
-                                    </c:forEach>
-                                </select>
-                            </div>
                             <div class="form-group">
                                 <label class="checkbox-inline">
                                     <input type="checkbox" name="chk" id="chk" onClick="changeDisplay();"/> Restablecer password

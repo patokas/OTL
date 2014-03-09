@@ -20,6 +20,8 @@ import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import javax.servlet.http.HttpSession;
+import univesity.University;
+import univesity.UniversityDAO;
 
 /**
  *
@@ -61,6 +63,9 @@ public class UserCardAddServlet extends HttpServlet {
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
+            UniversityDAO universityDAO = new UniversityDAO();
+            universityDAO.setConexion(conexion);
+
             //////////////////////////////////////////
             // COMPROBAR SESSION
             //////////////////////////////////////////
@@ -88,6 +93,9 @@ public class UserCardAddServlet extends HttpServlet {
                     String gender = request.getParameter("gender");
                     String sidCity = request.getParameter("idCity");
                     String telephone = request.getParameter("telephone");
+                    String facebook = request.getParameter("facebook");
+                    String dateBirth = request.getParameter("dateBirth");
+                    String sidUniversity = request.getParameter("idUniversity");
 
                     UserCard reg = new UserCard();
 
@@ -190,6 +198,38 @@ public class UserCardAddServlet extends HttpServlet {
                             }
                         }
 
+                        /* comprobar facebook */
+                        if (facebook == null || facebook.trim().equals("")) {
+                            request.setAttribute("msgErrorFacebook", "Error: Debe ingresar facebook.");
+                            error = true;
+                        } else {
+                            reg.setFacebook(facebook);
+                        }
+
+                        /* comprobar fecha de nacimiento */
+                        if (dateBirth == null || dateBirth.trim().equals("")) {
+                            request.setAttribute("msgErrorDateBirth", "Error: Debe ingresar fecha de nacimiento");
+                            error = true;
+                        } else {
+                            reg.setDateBirth(dateBirth);
+                            /* validar que la fecha de nacimiento no sea mayor que la fecha actual */                           
+                            if (dateBirth.compareTo(Format.currentDate()) > -1) {
+                                request.setAttribute("msgErrorDateBirth", "Error: La fecha de nacimiento no puede ser mayor que la fecha actual.");
+                                error = true;
+                            }
+                        }
+
+                        /* comprobar id university */
+                        if (sidUniversity == null || sidUniversity.trim().equals("")) {
+                            error = true;
+                        } else {
+                            try {
+                                reg.setIdUniversity(Integer.parseInt(sidUniversity));
+                            } catch (NumberFormatException n) {
+                                error = true;
+                            }
+                        }
+
                         //////////////////////////////////////
                         // INSERTAR REGISTRO
                         //////////////////////////////////////
@@ -210,7 +250,14 @@ public class UserCardAddServlet extends HttpServlet {
                         request.setAttribute("listCity", listCity);
                     } catch (Exception ex) {
                     }
-                    
+
+                    /* obtener lista de universidades */
+                    try {
+                        Collection<University> listUniversity = universityDAO.getAll();
+                        request.setAttribute("listUniversity", listUniversity);
+                    } catch (Exception ex) {
+                    }
+
                     request.setAttribute("reg", reg);
 
                 } catch (Exception parameterException) {

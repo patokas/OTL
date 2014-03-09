@@ -32,14 +32,14 @@ public class UserCardDAO {
 
     public Collection<UserCard> getAll() {
 
-        Collection<UserCard> list = new ArrayList<UserCard>();
-
         Statement sentence = null;
         ResultSet result = null;
 
+        Collection<UserCard> list = new ArrayList<UserCard>();
+
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from user_card";
+            String sql = "select * from user_card uc, university un where uc.id_university = un.id_university ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -55,6 +55,10 @@ public class UserCardDAO {
                 reg.setPassword(result.getString("password"));
                 reg.setTelephone(result.getInt("tel"));
                 reg.setGender(result.getInt("gender"));
+                reg.setDateBirth(result.getString("date_birth"));
+                reg.setFacebook(result.getString("facebook"));
+                reg.setIdUniversity(result.getInt("id_university"));
+                reg.setNameUniversity(result.getString("name_university"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -91,7 +95,7 @@ public class UserCardDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from user_card where rut = " + rut + " ";
+            String sql = "select * from user_card uc, university un where rut = " + rut + " and uc.id_university = un.id_university ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -107,6 +111,10 @@ public class UserCardDAO {
                 reg.setPassword(result.getString("password"));
                 reg.setTelephone(result.getInt("tel"));
                 reg.setGender(result.getInt("gender"));
+                reg.setDateBirth(result.getString("date_birth"));
+                reg.setFacebook(result.getString("facebook"));
+                reg.setIdUniversity(result.getInt("id_university"));
+                reg.setNameUniversity(result.getString("name_university"));
             }
         } catch (MySQLSyntaxErrorException ex) {
             System.out.println("Error de sintaxis en UserCardDAO, FindByRut() : " + ex);
@@ -230,7 +238,7 @@ public class UserCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into user_card (rut, dv, first_name, last_name, password, tel, gender, email, id_city) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into user_card (rut, dv, first_name, last_name, password, tel, gender, email, id_city, facebook, date_birth, id_university) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -243,6 +251,10 @@ public class UserCardDAO {
             sentence.setInt(7, reg.getGender());
             sentence.setString(8, reg.getEmail());
             sentence.setInt(9, reg.getIdCity());
+            sentence.setString(10, reg.getFacebook());
+            sentence.setString(11, reg.getDateBirth());
+            sentence.setInt(12, reg.getIdUniversity());
+
             sentence.executeUpdate();
 
         } catch (MySQLSyntaxErrorException ex) {
@@ -298,7 +310,7 @@ public class UserCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update user_card set id_city = ?, first_name = ?, last_name = ?, gender = ?, tel = ?, email = ? where rut = ? ";
+            String sql = "update user_card set id_city = ?, first_name = ?, last_name = ?, gender = ?, tel = ?, email = ?, facebook = ?, date_birth = ?, id_university = ? where rut = ? ";
 
             sentence = conexion.prepareStatement(sql);
             sentence.setInt(1, user.getIdCity());
@@ -307,7 +319,11 @@ public class UserCardDAO {
             sentence.setInt(4, user.getGender());
             sentence.setInt(5, user.getTelephone());
             sentence.setString(6, user.getEmail());
-            sentence.setInt(7, user.getRut());
+            sentence.setString(7, user.getFacebook());
+            sentence.setString(8, user.getDateBirth());
+            sentence.setInt(9, user.getIdUniversity());
+            sentence.setInt(10, user.getRut());
+            
             sentence.executeUpdate();
 
         } catch (MySQLSyntaxErrorException ex) {

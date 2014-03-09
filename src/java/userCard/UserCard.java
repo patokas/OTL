@@ -24,8 +24,44 @@ public class UserCard implements java.io.Serializable {
     public String email;
     public String pwd1;
     public String pwd2;
+    public int idUniversity;
+    public String nameUniversity;
+    public String facebook;
+    public String dateBirth;
 
     public UserCard() {
+    }
+
+    public int getIdUniversity() {
+        return idUniversity;
+    }
+
+    public void setIdUniversity(int idUniversity) {
+        this.idUniversity = idUniversity;
+    }
+
+    public String getNameUniversity() {
+        return nameUniversity;
+    }
+
+    public void setNameUniversity(String nameUniversity) {
+        this.nameUniversity = nameUniversity;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(String dateBirth) {
+        this.dateBirth = dateBirth;
     }
 
     public String getPwd1() {

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import univesity.University;
+import univesity.UniversityDAO;
 
 /**
  *
@@ -59,6 +61,9 @@ public class UserCardGetServlet extends HttpServlet {
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
+            UniversityDAO universityDAO = new UniversityDAO();
+            universityDAO.setConexion(conexion);
+
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -98,6 +103,13 @@ public class UserCardGetServlet extends HttpServlet {
                     try {
                         Collection<City> listCity = cityDAO.getAll();
                         request.setAttribute("listCity", listCity);
+                    } catch (Exception ex) {
+                    }
+
+                    /* obtener lista de universidades */
+                    try {
+                        Collection<University> listUniversity = universityDAO.getAll();
+                        request.setAttribute("listUniversity", listUniversity);
                     } catch (Exception ex) {
                     }
 

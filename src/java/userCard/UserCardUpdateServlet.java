@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import univesity.University;
+import univesity.UniversityDAO;
 
 /**
  *
@@ -61,6 +63,9 @@ public class UserCardUpdateServlet extends HttpServlet {
             CityDAO cityDAO = new CityDAO();
             cityDAO.setConexion(conexion);
 
+            UniversityDAO universityDAO = new UniversityDAO();
+            universityDAO.setConexion(conexion);
+
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -89,6 +94,9 @@ public class UserCardUpdateServlet extends HttpServlet {
                     String sidCity = request.getParameter("idCity");
                     String email = request.getParameter("email");
                     String gender = request.getParameter("gender");
+                    String facebook = request.getParameter("facebook");
+                    String dateBirth = request.getParameter("dateBirth");
+                    String sidUniversity = request.getParameter("idUniversity");
 
                     /* parametros para actualizar password */
                     String chkPwd = request.getParameter("chk");
@@ -190,6 +198,40 @@ public class UserCardUpdateServlet extends HttpServlet {
                         }
                     }
 
+                    /* comprobar facebook */
+                    if (facebook == null || facebook.trim().equals("")) {
+                        request.setAttribute("msgErrorFacebook", "Error: Debe ingresar facebook.");
+                        error = true;
+                    } else {
+                        userCardReg.setFacebook(facebook);
+                    }
+
+                    /* comprobar fecha de nacimiento */
+                    if (dateBirth == null || dateBirth.trim().equals("")) {
+                        request.setAttribute("msgErrorDateBirth", "Error: Debe ingresar fecha de nacimiento");
+                        error = true;
+                    } else {
+                        userCardReg.setDateBirth(dateBirth);
+                        /* validar que la fecha de nacimiento no sea mayor que la fecha actual */
+                        if (dateBirth.compareTo(Format.currentDate()) > -1) {
+                            request.setAttribute("msgErrorDateBirth", "Error: La fecha de nacimiento no puede ser mayor que la fecha actual.");
+                            error = true;
+                        }
+                    }
+
+                    /* comprobar id university */
+                    if (sidUniversity == null || sidUniversity.trim().equals("")) {
+                        error = true;
+                    } else {
+                        try {
+                            userCardReg.setIdUniversity(Integer.parseInt(sidUniversity));
+                        } catch (NumberFormatException n) {
+                            error = true;
+                        }
+                    }
+                    
+                    System.out.println("id uni " + userCardReg.getIdUniversity() );
+
                     /////////////////////////////////////////
                     // ACTUALIZAR REGISTRO 
                     ////////////////////////////////////////
@@ -234,6 +276,13 @@ public class UserCardUpdateServlet extends HttpServlet {
                     /* retornar list city */
                     Collection<City> listCity = cityDAO.getAll();
                     request.setAttribute("listCity", listCity);
+
+                    /* obtener lista de universidades */
+                    try {
+                        Collection<University> listUniversity = universityDAO.getAll();
+                        request.setAttribute("listUniversity", listUniversity);
+                    } catch (Exception ex) {
+                    }
 
                     /* retornar registro */
                     request.setAttribute("reg", userCardReg);
