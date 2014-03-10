@@ -85,10 +85,11 @@ public class CardBrowserServlet extends HttpServlet {
                     boolean error = false;
 
                     /* comprobar rut */
-                    if (rut == null || rut.trim().equals("") || rut.length() < 3) {
+                    if (rut == null || rut.trim().equals("")) {
                         request.setAttribute("msgErrorRut", "Error: Debe ingresar RUT.");
                         error = true;
                     } else {
+                        /* establecer rut para mostrar en la vista */
                         request.setAttribute("rut", rut);
                         try {
                             if (!Rut.validateRut(rut)) {
