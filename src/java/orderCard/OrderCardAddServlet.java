@@ -5,6 +5,7 @@
 package orderCard;
 
 import Helpers.Format;
+import Helpers.Rut;
 import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
@@ -126,9 +127,12 @@ public class OrderCardAddServlet extends HttpServlet {
                         } else {
                             request.setAttribute("rut", srut);
                             try {
-                                if (ValidationRut.validateRut(srut)) {
-                                    orderCard.setRut(Format.getRut(srut));
-                                    orderCard.setDv(Format.getDv(srut));
+                                if (!Rut.validateRut(srut)) {
+                                    request.setAttribute("msgErrorRut", "Error: RUT inválido.");
+                                    error = true;
+                                } else {
+                                    orderCard.setRut(Rut.getRut(srut));
+                                    orderCard.setDv(Rut.getDv(srut));
 
                                     /* buscar usuario */
                                     UserCard auxUC = userCardDAO.findByRut(orderCard.getRut());
@@ -136,9 +140,6 @@ public class OrderCardAddServlet extends HttpServlet {
                                         request.setAttribute("msgErrorExist", "Error: No existe cliente.");
                                         error = true;
                                     }
-                                } else {
-                                    request.setAttribute("msgErrorRut", "Error: RUT inválido.");
-                                    error = true;
                                 }
                             } catch (Exception ex) {
                                 request.setAttribute("msgErrorRut", "Error: RUT inválido.");

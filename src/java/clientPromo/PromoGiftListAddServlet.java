@@ -5,6 +5,7 @@
 package clientPromo;
 
 import Helpers.Format;
+import Helpers.Rut;
 import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
@@ -140,12 +141,12 @@ public class PromoGiftListAddServlet extends HttpServlet {
                             } else {
                                 request.setAttribute("rut", srut);
                                 try {
-                                    if (!ValidationRut.validateRut(srut)) {
+                                    if (!Rut.validateRut(srut)) {
                                         error = true;
                                         request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                                     } else {
-                                        pglReg.setRut(Format.getRut(srut));
-                                        pglReg.setDv(Format.getDv(srut));
+                                        pglReg.setRut(Rut.getRut(srut));
+                                        pglReg.setDv(Rut.getDv(srut));
                                     }
                                 } catch (Exception ex) {
                                     request.setAttribute("msgErrorRut", "Error: Rut inválido. ");

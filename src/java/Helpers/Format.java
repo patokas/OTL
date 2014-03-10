@@ -62,33 +62,5 @@ public class Format {
 
         return textFormatted.toString();
     }
-
-    public static int getRut(String rut) {
-
-        /* quitar los puntos */
-        String srut = rut.replace(".", "");
-        /* quitar los guiones */
-        srut = srut.replace("-", "");
-        /* quitar espacios */
-        srut = srut.trim();
-
-        /* obtener parte numerica */
-        srut = srut.substring(0, srut.length() - 1);
-
-        /* parsear a int */
-        int nrut = Integer.parseInt(srut);
-
-        return nrut;
-    }
-
-    public static String getDv(String rut) {
-
-        /* quitar los guiones */
-        String srut = rut.replace("-", "");
-
-        /* obtener dv */
-        String dv = srut.substring(srut.length() - 1, srut.length());
-
-        return dv;
-    }
+    
 }

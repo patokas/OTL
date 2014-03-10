@@ -5,6 +5,7 @@
 package card;
 
 import Helpers.Format;
+import Helpers.Rut;
 import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
@@ -92,12 +93,12 @@ public class CardBrowserServlet extends HttpServlet {
                     } else {
                         request.setAttribute("rut", rut);
                         try {
-                            if (!ValidationRut.validateRut(rut)) {
+                            if (!Rut.validateRut(rut)) {
                                 request.setAttribute("msgErrorRut", "Error: RUT inválido.");
                                 error = true;
                             } else {
-                                card.setRut(Format.getRut(rut));
-                                card.setDv(Format.getDv(rut));
+                                card.setRut(Rut.getRut(rut));
+                                card.setDv(Rut.getDv(rut));
                             }
                         } catch (Exception ex) {
                             request.setAttribute("msgErrorRut", "Error: RUT inválido.");

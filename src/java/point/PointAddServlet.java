@@ -5,6 +5,7 @@
 package point;
 
 import Helpers.Format;
+import Helpers.Rut;
 import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
@@ -112,12 +113,12 @@ public class PointAddServlet extends HttpServlet {
                             } else {
                                 request.setAttribute("rut", rut);
                                 try {
-                                    if (!ValidationRut.validateRut(rut)) {
+                                    if (!Rut.validateRut(rut)) {
                                         request.setAttribute("msgErrorRut", "Error: RUT inválido.");
                                         error = true;
                                     } else {
-                                        point.setRut(Format.getRut(rut));
-                                        point.setDv(Format.getDv(rut));
+                                        point.setRut(Rut.getRut(rut));
+                                        point.setDv(Rut.getDv(rut));
                                     }
                                 } catch (Exception ex) {
                                     request.setAttribute("msgErrorRut", "Error: RUT inválido.");
