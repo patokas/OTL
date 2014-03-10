@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import javax.servlet.http.HttpSession;

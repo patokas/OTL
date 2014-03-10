@@ -7,7 +7,6 @@ package userCard;
 import Helpers.Format;
 import Helpers.Rut;
 import Helpers.StringMD;
-import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import java.io.IOException;

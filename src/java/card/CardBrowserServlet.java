@@ -4,9 +4,7 @@
  */
 package card;
 
-import Helpers.Format;
 import Helpers.Rut;
-import Helpers.ValidationRut;
 import city.City;
 import city.CityDAO;
 import java.io.IOException;

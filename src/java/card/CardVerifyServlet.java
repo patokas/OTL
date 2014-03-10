@@ -4,14 +4,8 @@
  */
 package card;
 
-import Helpers.Format;
-import Helpers.ValidationRut;
-import city.City;
-import city.CityDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

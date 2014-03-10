@@ -4,12 +4,8 @@
  */
 package placeCategory;
 
-import Helpers.Format;
-import Helpers.ValidationRut;
 import category.Category;
 import category.CategoryDAO;
-import clientPromo.ClientPromo;
-import clientPromo.ClientPromoDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
@@ -23,10 +19,6 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import place.Place;
 import place.PlaceDAO;
-import promo.Promo;
-import promo.PromoDAO;
-import userCard.UserCard;
-import userCard.UserCardDAO;
 
 /**
  *

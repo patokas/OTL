@@ -62,5 +62,4 @@ public class Format {
 
         return textFormatted.toString();
     }
-    
 }

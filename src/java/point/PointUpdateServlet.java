@@ -4,14 +4,8 @@
  */
 package point;
 
-import Helpers.Format;
-import Helpers.ValidationRut;
-import event.Event;
-import event.EventDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import place.Place;
-import place.PlaceDAO;
 
 /**
  *

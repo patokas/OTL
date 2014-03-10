@@ -4,9 +4,7 @@
  */
 package orderCard;
 
-import Helpers.Format;
 import Helpers.Rut;
-import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
 import javax.annotation.Resource;

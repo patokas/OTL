@@ -4,8 +4,6 @@
  */
 package point;
 
-import Helpers.Format;
-import Helpers.ValidationRut;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Collection;
