@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Patricio Alberto
+ * @author Pato
  */
 public class Format {
 
