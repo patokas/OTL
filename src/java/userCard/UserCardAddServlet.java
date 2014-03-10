@@ -5,6 +5,7 @@
 package userCard;
 
 import Helpers.Format;
+import Helpers.Rut;
 import Helpers.StringMD;
 import java.io.IOException;
 import java.sql.Connection;
@@ -112,12 +113,12 @@ public class UserCardAddServlet extends HttpServlet {
                         } else {
                             request.setAttribute("rut", srut);
                             try {
-                                if (!ValidationRut.validateRut(srut)) {
+                                if (!Rut.validateRut(srut)) {
                                     request.setAttribute("msgErrorRut", "Error: Rut inválido. ");
                                     error = true;
                                 } else {
-                                    reg.setRut(Format.getRut(srut));
-                                    reg.setDv(Format.getDv(srut));
+                                    reg.setRut(Rut.getRut(srut));
+                                    reg.setDv(Rut.getDv(srut));
 
                                     /* buscar cliente */
                                     UserCard aux = userCardDAO.findByRut(reg.getRut());
