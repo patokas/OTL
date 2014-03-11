@@ -96,7 +96,6 @@
                 </div><!-- /.row -->
                 <div class="row">                                      
 
-
                     <div class="col-lg-12">                            
                         <div class="bs-example">
                             <ul class="nav nav-tabs" style="margin-bottom: 15px;">
