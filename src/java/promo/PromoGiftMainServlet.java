@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import place.Place;
-import place.PlaceDAO;
 
 /**
  *
@@ -55,9 +53,6 @@ public class PromoGiftMainServlet extends HttpServlet {
             PromoDAO promoDAO = new PromoDAO();
             promoDAO.setConexion(conexion);
 
-            PlaceDAO placeDAO = new PlaceDAO();
-            placeDAO.setConexion(conexion);
-
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
@@ -86,13 +81,11 @@ public class PromoGiftMainServlet extends HttpServlet {
                         String btnDelRow = request.getParameter("btnDelRow");
                         String btnDelCol = request.getParameter("btnDelCol");
 
-                        Promo promo = new Promo();
-
                         //////////////////////////////////////////
                         // ELIMINAR POR REGISTRO
                         //////////////////////////////////////////
                         if (btnDelRow != null) {
-                            /* recibir parametros*/                                                        
+                            /* recibir parametros*/
                             int id = Integer.parseInt(request.getParameter("idPromo"));
                             try {
                                 promoDAO.delete(id);
@@ -110,7 +103,7 @@ public class PromoGiftMainServlet extends HttpServlet {
                                 String[] outerArray = request.getParameterValues("chk");
                                 int cont = 0;
                                 int i = 0;
-                                while (outerArray[i] != null) {                                  
+                                while (outerArray[i] != null) {
                                     try {
                                         promoDAO.delete(Integer.parseInt(outerArray[i]));
                                         cont++;
@@ -136,10 +129,6 @@ public class PromoGiftMainServlet extends HttpServlet {
                         } else if (list.isEmpty()) {
                             request.setAttribute("msg", "No hay registros encontrado en la base de datos.");
                         }
-
-                        /* obtener todas las plazas */
-                        Collection<Place> listPlace = placeDAO.getAll();
-                        request.setAttribute("listPlace", listPlace);
 
                     } catch (Exception parameterException) {
                     } finally {

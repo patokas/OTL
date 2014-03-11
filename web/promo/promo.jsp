@@ -82,7 +82,7 @@
                         </c:if>
                     </div>
                 </div><!-- /.row -->
-                
+
                 <div class="row">                                      
                     <div class="col-lg-12">                            
                         <div class="table-responsive">
@@ -108,9 +108,7 @@
                                                             <th>Fecha Inicio <i class="fa fa-sort"></i></th>
                                                             <th>Fecha Término <i class="fa fa-sort"></i></th>
                                                             <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
+                                                            <th></th>                                                         
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -127,16 +125,7 @@
                                                                     <c:if test="${list.request == 2}">Rechazada</c:if>
                                                                     </td>
                                                                     <td class="center"><c:out value="${list.dateBegin}" /></td>
-                                                                <td class="center"><c:out value="${list.dateEnd}" /></td>
-                                                                <td class="center">
-                                                                    <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACEPTAR</font></strong></button></a>
-                                                                </td>
-                                                                <td class="center">
-                                                                    <form action="PromoGiftMainServlet" method="post">
-                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">RECHAZAR</font></strong></button></a>                                                                        
-                                                                        <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
-                                                                    </form>
-                                                                </td>
+                                                                <td class="center"><c:out value="${list.dateEnd}" /></td>                                                               
                                                                 <td class="center">
                                                                     <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                                 </td>
@@ -160,9 +149,7 @@
                                                             <th>Fecha Inicio </th>
                                                             <th>Fecha Término </th>
                                                             <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
+                                                            <th></th>                                                            
                                                         </tr>
                                                     </tfoot>
                                                 </table>
