@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>OTL - Promocioness</title>
+        <title>OTL - Promociones</title>
 
         <!-- imperio css -->
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -37,19 +37,7 @@
         <script src="js/tablesorter/jquery.tablesorter.js"></script>
         <script src="js/tablesorter/tables.js"></script>
 
-
-        <script language="JavaScript" type="text/javascript">
-
-            var pagina = "#myTabContent/solicitud"
-            function redireccionar()
-            {
-                location.href = pagina
-            }
-            setTimeout("redireccionar()", 20000);
-
-        </script>
     </head>
-
 
     <body>
 
@@ -94,179 +82,98 @@
                         </c:if>
                     </div>
                 </div><!-- /.row -->
+                
                 <div class="row">                                      
-
                     <div class="col-lg-12">                            
-                        <div class="bs-example">
-                            <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-                                <li class="active"><a href="#principal" data-toggle="tab">Principal</a></li>
-                                <li><a href="#solicitud" data-toggle="tab">Solicitud</a></li>                                                                        
-                            </ul>
-                            <div id="myTabContent" class="tab-content">
-                                <div class="tab-pane fade active in" id="principal">
-                                    <div class="table-responsive">
-
-                                        <form action="PromoGiftMainServlet" method="POST" name="form">
-                                            <div class="row-fluid">
-                                                <div class="span12">                            
-                                                    <div class="box">                                
-                                                        <div class="box-title">
-                                                            Datatable
-                                                            <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PromoAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
-                                                            </br>DB
-                                                        </div>
-                                                        <div class="box-content nopadding">
-                                                            <table id="datatable" class="table table-striped table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th><input class="check_all" type="checkbox" /></th>
-                                                                        <th>Lugar <i class="fa fa-sort"></i></th>
-                                                                        <th>ID <i class="fa fa-sort"></i></th>
-                                                                        <th>Título Promoción <i class="fa fa-sort"></i></th>
-                                                                        <th>Puntos <i class="fa fa-sort"></i></th>
-                                                                        <th>Solicitud <i class="fa fa-sort"></i></th>
-                                                                        <th>Fecha Inicio <i class="fa fa-sort"></i></th>
-                                                                        <th>Fecha Término <i class="fa fa-sort"></i></th>
-                                                                        <th></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach var="list" items="${list}">  
-                                                                        <tr>
-                                                                            <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPromo}" />"/></td>
-                                                                            <td class="center"><c:out value="${list.namePlace}" /></td>
-                                                                            <td class="center"><c:out value="${list.idPromo}" /></td>
-                                                                            <td class="center"><c:out value="${list.tittle}" /></td>
-                                                                            <td class="center"><c:out value="${list.points}" /></td>
-                                                                            <td class="center">
-                                                                                <c:if test="${list.request == 0}">Pendiente</c:if>
-                                                                                <c:if test="${list.request == 1}">Aceptada</c:if>
-                                                                                <c:if test="${list.request == 2}">Rechazada</c:if>
-                                                                                </td>
-                                                                                <td class="center"><c:out value="${list.dateBegin}" /></td>
-                                                                            <td class="center"><c:out value="${list.dateEnd}" /></td>
-                                                                            <td class="center">
-                                                                                <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
-                                                                            </td>
-                                                                            <td class="center">
-                                                                                <form action="PromoGiftMainServlet" method="post">
-                                                                                    <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>                                                                        
-                                                                                    <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
-                                                                                </form>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button> </th>
-                                                                        <th>Plaza </th>
-                                                                        <th>ID</th>
-                                                                        <th>Título Promoción </th>
-                                                                        <th>Puntos </th>
-                                                                        <th>Solicitud </th>
-                                                                        <th>Fecha Inicio </th>
-                                                                        <th>Fecha Término </th>
-                                                                        <th></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                        <div class="table-responsive">
+                            <form action="PromoGiftMainServlet" method="POST" name="form">
+                                <div class="row-fluid">
+                                    <div class="span12">                            
+                                        <div class="box">                                
+                                            <div class="box-title">
+                                                Datatable
+                                                <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PromoAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
+                                                </br>DB
                                             </div>
-                                        </form>
+                                            <div class="box-content nopadding">
+                                                <table id="datatable" class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><input class="check_all" type="checkbox" /></th>
+                                                            <th>Lugar <i class="fa fa-sort"></i></th>
+                                                            <th>ID <i class="fa fa-sort"></i></th>
+                                                            <th>Título Promoción <i class="fa fa-sort"></i></th>
+                                                            <th>Puntos <i class="fa fa-sort"></i></th>
+                                                            <th>Solicitud <i class="fa fa-sort"></i></th>
+                                                            <th>Fecha Inicio <i class="fa fa-sort"></i></th>
+                                                            <th>Fecha Término <i class="fa fa-sort"></i></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="list" items="${list}">  
+                                                            <tr>
+                                                                <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPromo}" />"/></td>
+                                                                <td class="center"><c:out value="${list.namePlace}" /></td>
+                                                                <td class="center"><c:out value="${list.idPromo}" /></td>
+                                                                <td class="center"><c:out value="${list.tittle}" /></td>
+                                                                <td class="center"><c:out value="${list.points}" /></td>
+                                                                <td class="center">
+                                                                    <c:if test="${list.request == 0}">Pendiente</c:if>
+                                                                    <c:if test="${list.request == 1}">Aceptada</c:if>
+                                                                    <c:if test="${list.request == 2}">Rechazada</c:if>
+                                                                    </td>
+                                                                    <td class="center"><c:out value="${list.dateBegin}" /></td>
+                                                                <td class="center"><c:out value="${list.dateEnd}" /></td>
+                                                                <td class="center">
+                                                                    <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACEPTAR</font></strong></button></a>
+                                                                </td>
+                                                                <td class="center">
+                                                                    <form action="PromoGiftMainServlet" method="post">
+                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">RECHAZAR</font></strong></button></a>                                                                        
+                                                                        <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
+                                                                    </form>
+                                                                </td>
+                                                                <td class="center">
+                                                                    <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
+                                                                </td>
+                                                                <td class="center">
+                                                                    <form action="PromoGiftMainServlet" method="post">
+                                                                        <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>                                                                        
+                                                                        <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button> </th>
+                                                            <th>Plaza </th>
+                                                            <th>ID</th>
+                                                            <th>Título Promoción </th>
+                                                            <th>Puntos </th>
+                                                            <th>Solicitud </th>
+                                                            <th>Fecha Inicio </th>
+                                                            <th>Fecha Término </th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="solicitud">
-                                    <div class="table-responsive">
-
-                                        <form action="PromoGiftMainServlet" method="POST" name="formx">
-                                            <div class="row-fluid">
-                                                <div class="span12">                            
-                                                    <div class="box">                                
-                                                        <div class="box-title">
-                                                            Datatable
-                                                            <object align="right"> <button class="btn btn-primary btn-mini" name="btnAdd" type="button" onclick="location.href = 'PromoAddServlet';" ><font size="1"><strong>AGREGAR</strong></font></button></object>
-                                                            </br>DB
-                                                        </div>
-                                                        <div class="box-content nopadding">
-                                                            <table id="datatable" class="table table-striped table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th><input class="check_all" type="checkbox" /></th>
-                                                                        <th>Lugar <i class="fa fa-sort"></i></th>
-                                                                        <th>ID <i class="fa fa-sort"></i></th>
-                                                                        <th>Título Promoción <i class="fa fa-sort"></i></th>
-                                                                        <th>Puntos <i class="fa fa-sort"></i></th>
-                                                                        <th>Solicitud <i class="fa fa-sort"></i></th>
-                                                                        <th>Fecha Inicio <i class="fa fa-sort"></i></th>
-                                                                        <th>Fecha Término <i class="fa fa-sort"></i></th>
-                                                                        <th></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <c:forEach var="list" items="${list}">  
-                                                                        <tr>
-                                                                            <td class="center"><input type="checkbox" name="chk" value="<c:out value="${list.idPromo}" />"/></td>
-                                                                            <td class="center"><c:out value="${list.namePlace}" /></td>
-                                                                            <td class="center"><c:out value="${list.idPromo}" /></td>
-                                                                            <td class="center"><c:out value="${list.tittle}" /></td>
-                                                                            <td class="center"><c:out value="${list.points}" /></td>
-                                                                            <td class="center">
-                                                                                <c:if test="${list.request == 0}">Pendiente</c:if>
-                                                                                <c:if test="${list.request == 1}">Aceptada</c:if>
-                                                                                <c:if test="${list.request == 2}">Rechazada</c:if>
-                                                                                </td>
-                                                                                <td class="center"><c:out value="${list.dateBegin}" /></td>
-                                                                            <td class="center"><c:out value="${list.dateEnd}" /></td>
-                                                                            <td class="center">
-                                                                                <a href="PromoGetServlet?idPlace=<c:out value="${list.idPlace}" />&idPromo=<c:out value="${list.idPromo}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
-                                                                            </td>
-                                                                            <td class="center">
-                                                                                <form action="PromoGiftMainServlet" method="post">
-                                                                                    <button class="btn btn-danger btn-mini delete" name="btnDelRow" type="submit"><strong><font size="1">ELIMINAR</font></strong></button></a>                                                                        
-                                                                                    <input type="hidden" name="idPromo" value="<c:out value="${list.idPromo}" />" />    
-                                                                                </form>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th><button class="btn btn-danger btn-mini delete" name="btnDelCol" type="submit"><font size="1">ELIMINAR</font></button> </th>
-                                                                        <th>Plaza </th>
-                                                                        <th>ID</th>
-                                                                        <th>Título Promoción </th>
-                                                                        <th>Puntos </th>
-                                                                        <th>Solicitud </th>
-                                                                        <th>Fecha Inicio </th>
-                                                                        <th>Fecha Término </th>
-                                                                        <th></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>                                   
-                            </div>
+                            </form>
                         </div>
                     </div>
-
-
-
-
                 </div><!-- /.row -->
-
-
 
             </div><!-- /#page-wrapper -->
 
