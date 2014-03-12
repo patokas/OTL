@@ -20,8 +20,17 @@ public class Promo implements java.io.Serializable {
     public String dateEnd;
     public int points;
     public int request;
+    public String reason;
 
     public Promo() {
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public int getRequest() {

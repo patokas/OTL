@@ -105,6 +105,7 @@ public class OrderCardDAO {
                 reg.setOrderDate(result.getString("order_date"));
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
+                reg.setReason(result.getString("reason"));
             }
 
         } catch (MySQLSyntaxErrorException ex) {
@@ -169,13 +170,14 @@ public class OrderCardDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update order_card set card_type = ?, request = ? where id_order = ? ";
+            String sql = "update order_card set card_type = ?, request = ?, reason = ? where id_order = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, reg.getCardType());
             sentence.setInt(2, reg.getRequest());
-            sentence.setInt(3, reg.getIdOrder());
+            sentence.setString(3, reg.getReason());
+            sentence.setInt(4, reg.getIdOrder());
 
             sentence.executeUpdate();
 

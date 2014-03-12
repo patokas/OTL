@@ -149,6 +149,7 @@ public class PromoDAO {
                 reg.setUrlImage(result.getString("pr.url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setReason(result.getString("reason"));
             }
 
         } catch (MySQLSyntaxErrorException ex) {
@@ -271,7 +272,7 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "insert into promo (id_place, tittle, details, date_begin, date_end, url_image, points, request) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into promo (id_place, tittle, details, date_begin, date_end, url_image, points) values (?, ?, ?, ?, ?, ?, ?)";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, promo.getIdPlace());
@@ -280,8 +281,7 @@ public class PromoDAO {
             sentence.setString(4, promo.getDateBegin());
             sentence.setString(5, promo.getDateEnd());
             sentence.setString(6, promo.getUrlImage());
-            sentence.setInt(7, promo.getPoints());
-            sentence.setInt(8, promo.getRequest());
+            sentence.setInt(7, promo.getPoints());            
 
             sentence.executeUpdate();
 
@@ -308,7 +308,7 @@ public class PromoDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update promo set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ? where id_promo = ? ";
+            String sql = "update promo set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ?, reason = ? where id_promo = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
@@ -319,7 +319,8 @@ public class PromoDAO {
             sentence.setString(5, promo.getUrlImage());
             sentence.setInt(6, promo.getPoints());
             sentence.setInt(7, promo.getRequest());
-            sentence.setInt(8, promo.getIdPromo());
+            sentence.setString(8, promo.getReason());
+            sentence.setInt(9, promo.getIdPromo());
 
             sentence.executeUpdate();
 
