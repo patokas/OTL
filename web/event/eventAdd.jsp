@@ -224,15 +224,7 @@
                                     <input class="form-control" type="datetime-local" required="true" name="dateEnd" value="<c:out value="${event.dateEnd}" />">
                                 </div>
                             </c:otherwise>
-                        </c:choose>
-                        <div class="form-group">
-                            <label>Solicitud: </label>
-                            <select class="form-control" name="eventRequest">                                
-                                <option value="0" <c:if test="${event.request == 0}">selected</c:if>>Pendiente</option>
-                                <option value="1" <c:if test="${event.request == 1}">selected</c:if>>Aceptada</option>
-                                <option value="2" <c:if test="${event.request == 2}">selected</c:if>>Rechazada</option>
-                            </select>                                
-                        </div>
+                        </c:choose>                       
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>

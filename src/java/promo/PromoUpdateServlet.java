@@ -86,7 +86,7 @@ public class PromoUpdateServlet extends HttpServlet {
                         String date2 = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
-                        String srequest = request.getParameter("promoRequest");
+                        String srequest = request.getParameter("request");
                         String reason = request.getParameter("reason");
 
                         Promo promo = new Promo();

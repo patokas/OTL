@@ -33,7 +33,7 @@
 
         <script type="text/javascript">
             function changeDisplay() {
-                if (document.formUpdate.promoRequest.value == 2) {
+                if (document.formUpdate.request.value == 2) {
                     document.formUpdate.reason.style.display = 'block';
                 } else {
                     document.formUpdate.reason.style.display = 'none';
@@ -239,16 +239,16 @@
                             </c:choose>
                             <div class="form-group">
                                 <label>Solicitud: </label>
-                                <select class="form-control" id="promoRequest" name="promoRequest" onchange="changeDisplay()">                                
+                                <select class="form-control" id="request" name="request" onchange="changeDisplay()">                                
                                     <option value="0" <c:if test="${promo.request == 0}">selected</c:if>>Pendiente</option>
                                     <option value="1" <c:if test="${promo.request == 1}">selected</c:if>>Aceptada</option>
                                     <option value="2" <c:if test="${promo.request == 2}">selected</c:if>>Rechazada</option>
-                                </select> 
-                            </div>
+                                    </select> 
+                                </div>
                                 <div class="form-group" id="reason">
                                     <label>Razón de rechazo</label>
                                     <textarea class="form-control" name="reason" maxlength="255" rows="4"><c:out value="${promo.reason}"/></textarea>
-                                </div>
+                            </div>
                             <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
                         </form>
 

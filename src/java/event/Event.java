@@ -22,8 +22,17 @@ public class Event implements java.io.Serializable {
     public int request;
     public int idDressCode;
     public String nameDressCode;
+    public String reason;
 
     public Event() {
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public int getIdDressCode() {
