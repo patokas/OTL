@@ -57,6 +57,7 @@ public class PointDAO {
                 reg.setFirstName(result.getString("first_name"));
                 reg.setLastName(result.getString("last_name"));
                 reg.setPoints(result.getInt("points"));
+                reg.setTotalPoint(result.getInt("total_point"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -105,6 +106,7 @@ public class PointDAO {
                 reg.setRut(result.getInt("rut"));
                 reg.setDv(result.getString("dv"));
                 reg.setPoints(result.getInt("points"));
+                reg.setTotalPoint(result.getInt("total_point"));
             }
 
         } catch (MySQLSyntaxErrorException ex) {

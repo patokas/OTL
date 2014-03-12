@@ -114,6 +114,7 @@
                                                             <th>Nombres <i class="fa fa-sort"></i></th>
                                                             <th>Apellidos <i class="fa fa-sort"></i></th>
                                                             <th>Puntos <i class="fa fa-sort"></i></th>
+                                                            <th>Total Pts <i class="fa fa-sort"></i></th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>
@@ -128,6 +129,7 @@
                                                                 <td class="center"><c:out value="${list.firstName}" /></td>
                                                                 <td class="center"><c:out value="${list.lastName}" /></td>
                                                                 <td class="center"><c:out value="${list.points}" /></td>
+                                                                <td class="center"><c:out value="${list.totalPoint}" /></td>
                                                                 <td class="center">
                                                                     <a href="PointGetServlet?idPlace=<c:out value="${list.idPlace}" />&rut=<c:out value="${list.rut}" />"><button class="btn btn-primary btn-mini" name="btnUpOne" type="button"><strong><font size="1">ACTUALIZAR</font></strong></button></a>
                                                                 </td>
@@ -150,6 +152,7 @@
                                                             <th>Nombres </th>
                                                             <th>Apellidos </th>
                                                             <th>Puntos </th>
+                                                            <th>Total Pts </th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>

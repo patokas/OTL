@@ -19,9 +19,19 @@ public class Point implements java.io.Serializable {
     public String namePlace;
     public String nameCity;
     public int points;
+    public int totalPoint;
 
     public Point() {
     }
+
+    public int getTotalPoint() {
+        return totalPoint;
+    }
+
+    public void setTotalPoint(int totalPoint) {
+        this.totalPoint = totalPoint;
+    }
+        
 
     public String getNameCity() {
         return nameCity;
