@@ -191,7 +191,7 @@ public class PromoAddServlet extends HttpServlet {
                             }
 
                             //////////////////////////////////
-                            // lOGICA DE NEGOCIO
+                            //EJECUTAR lOGICA DE NEGOCIO
                             //////////////////////////////////
 
                             if (!error) {

@@ -84,10 +84,10 @@ public class LoginServlet extends HttpServlet {
 
                 /* encriptar password */
                 String pwdCrypted = StringMD.getStringMessageDigest(password, StringMD.MD5);
-
+              
                 /* comprobar si existe */
                 try {
-                    Admin admin = adminDAO.findByUserPass(username, pwdCrypted);
+                    Admin admin = adminDAO.findByUserPass(username,pwdCrypted);
 
                     if (admin != null) {
                         System.out.println("iniciar sesion de admin");
