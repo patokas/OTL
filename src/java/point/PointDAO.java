@@ -263,13 +263,14 @@ public class PointDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update point set points = points + ? where id_place = ? and rut = ? ";
+            String sql = "update point set points = points + ?, total_point = total_point + ? where id_place = ? and rut = ? ";
 
             sentence = conexion.prepareStatement(sql);
 
             sentence.setInt(1, points);
-            sentence.setInt(2, reg.getIdPlace());
-            sentence.setInt(3, reg.getRut());
+            sentence.setInt(2, points);
+            sentence.setInt(3, reg.getIdPlace());            
+            sentence.setInt(4, reg.getRut());
 
             sentence.executeUpdate();
 
