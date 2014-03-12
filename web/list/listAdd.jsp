@@ -74,13 +74,7 @@
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                             <strong><c:out value="${msgErroridPlace}" /></strong></br>
                         </div>
-                    </c:if>
-                    <c:if test="${msgErrorIdEvent != null }" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgErrorIdEvent}" /></strong></br>
-                        </div>
-                    </c:if>
+                    </c:if>                    
                     <c:if test="${msgErrorBarCode != null }" >
                         <div class="alert alert-dismissable alert-danger">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>

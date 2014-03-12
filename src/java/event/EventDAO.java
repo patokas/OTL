@@ -94,7 +94,7 @@ public class EventDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event where id_place = " + reg.getIdPlace() + " and id_event <> " + reg.getIdEvent() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
+            String sql = "select * from event where id_place = " + reg.getIdPlace() + " and id_event <> " + reg.getIdEvent() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "' and request <> 2";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -185,7 +185,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = pl.id_place and e.id_event = " + idEvent + " ";
+            String sql = "select * from event e, place pl, dress_code dc where e.id_dress_code = dc.id_dress_code and e.id_place = pl.id_place and e.id_event = " + idEvent + " and e.request = 1";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {
@@ -240,7 +240,7 @@ public class EventDAO {
         Collection<Event> list = new ArrayList<Event>();
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place ";
+            String sql = "select * from event e, place p, dress_code dc where e.id_dress_code = dc.id_dress_code and e.date_begin <= '" + date1 + "' and e.date_end >= '" + date1 + "' and e.id_place = " + idPlace + " and e.id_place = p.id_place and e.request = 1 ";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {

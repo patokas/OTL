@@ -138,7 +138,7 @@ public class ExchangeableDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from exchangeable ex, place pl where ex.id_exchangeable <> " + exchange.getIdExchangeable() + " and ex.tittle = '" + exchange.getTittle() + "'";
+            String sql = "select * from exchangeable ex, place pl where ex.id_exchangeable <> " + exchange.getIdExchangeable() + " and ex.tittle = '" + exchange.getTittle() + "' and request <> 2";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {

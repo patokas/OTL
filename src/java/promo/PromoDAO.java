@@ -92,7 +92,7 @@ public class PromoDAO {
 
         try {
             sentence = conexion.createStatement();
-            String sql = "select * from promo where id_place = " + reg.getIdPlace() + " and id_promo <> " + reg.getIdPromo() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "'";
+            String sql = "select * from promo where id_place = " + reg.getIdPlace() + " and id_promo <> " + reg.getIdPromo() + " and tittle = '" + reg.getTittle() + "' and date_end > '" + reg.getDateBegin() + "' and request <> 2";
             result = sentence.executeQuery(sql);
 
             while (result.next()) {

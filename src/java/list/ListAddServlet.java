@@ -163,9 +163,18 @@ public class ListAddServlet extends HttpServlet {
 
                             /* buscar el evento por fecha actual */
                             if (optionEvent == 1) {
-                                listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
-                                for (Event aux : listEvent) {
-                                    entry.setIdEvent(aux.getIdEvent());
+                                try {
+                                    listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
+                                    if (listEvent.isEmpty()) {
+                                        request.setAttribute("msgErrorIdEvent", "Error: El evento ingresado posee solicitud pendiente, rechazada o no existe.");
+                                        error = true;
+                                    } else {
+                                        for (Event aux : listEvent) {
+                                            entry.setIdEvent(aux.getIdEvent());
+                                        }
+                                    }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
                                 }
                             }
 
@@ -179,7 +188,15 @@ public class ListAddServlet extends HttpServlet {
                                     try {
                                         entry.setIdEvent(Integer.parseInt(sidEvent));
                                         /* buscar el evento */
-                                        listEvent = eventDAO.findByEvent(entry.getIdEvent());
+                                        try {
+                                            listEvent = eventDAO.findByEvent(entry.getIdEvent());
+                                            if (listEvent.isEmpty()) {
+                                                request.setAttribute("msgErrorIdEvent", "Error: El evento ingresado posee solicitud pendiente, rechazada o no existe.");
+                                                error = true;
+                                            }
+                                        } catch (Exception ex) {
+                                            ex.printStackTrace();
+                                        }
                                     } catch (NumberFormatException n) {
                                         request.setAttribute("msgErrorIdEvent", "Error: El ID Evento debe ser numérico.");
                                         error = true;
