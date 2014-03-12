@@ -18,8 +18,17 @@ public class Exchangeable implements java.io.Serializable {
     public String urlImage;
     public int points;
     public int request;
+    public String reason;
 
     public Exchangeable() {
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public int getRequest() {

@@ -100,7 +100,7 @@ public class EventUpdateServlet extends HttpServlet {
                         String dateEnd = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
-                        String srequest = request.getParameter("eventRequest");
+                        String srequest = request.getParameter("request");
                         String sidDressCode = request.getParameter("idDressCode");
 
                         boolean error = false;

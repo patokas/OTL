@@ -30,9 +30,19 @@
         <!-- Page Specific Plugins -->
         <script src="js/tablesorter/jquery.tablesorter.js"></script>
         <script src="js/tablesorter/tables.js"></script>
+
+        <script type="text/javascript">
+            function changeDisplay() {
+                if (document.formUpdate.request.value == 2) {
+                    document.formUpdate.reason.style.display = 'block';
+                } else {
+                    document.formUpdate.reason.style.display = 'none';
+                }
+            }
+        </script>
     </head>
 
-    <body>
+    <body onload="changeDisplay()">
 
         <div id="wrapper">
 
@@ -138,13 +148,13 @@
                     <div class="col-lg-4">
                         <form role="form" action="EventUpdateServlet" method="POST" name="formUpdate">
                             <div class="form-group">
-                                <label for="disabledSelect">Plaza</label>
+                                <label for="disabledSelect">Lugar</label>
                                 <input class="form-control" id="disabledInput" type="text" placeholder="<c:out value="${event.namePlace}" />" disabled>
                                 <input type="hidden" name="namePlace" value="<c:out value="${event.namePlace}" />"/>
                                 <input type="hidden" name="idPlace" value="<c:out value="${event.idPlace}" />"/>
                             </div>
                             <div class="form-group">
-                                <label for="disabledSelect">id Evento</label>
+                                <label for="disabledSelect">ID Evento</label>
                                 <input class="form-control" id="disabledInput" type="text" placeholder="<c:out value="${event.idEvent}" />" disabled>
                                 <input type="hidden" name="idEvent" value="<c:out value="${event.idEvent}" />"/>
                             </div>
@@ -262,11 +272,15 @@
                             </c:choose>
                             <div class="form-group">
                                 <label>Solicitud: </label>
-                                <select class="form-control" name="eventRequest">                                
+                                <select class="form-control" id="request" name="request" onchange="changeDisplay()">                                
                                     <option value="0" <c:if test="${event.request == 0}">selected</c:if>>Pendiente</option>
                                     <option value="1" <c:if test="${event.request == 1}">selected</c:if>>Aceptada</option>
                                     <option value="2" <c:if test="${event.request == 2}">selected</c:if>>Rechazada</option>
-                                </select>                                
+                                    </select>                                
+                                </div>
+                                <div class="form-group" id="reason">
+                                    <label>Razón de rechazo</label>
+                                    <textarea class="form-control" name="reason" maxlength="255" rows="4"><c:out value="${event.reason}"/></textarea>
                             </div>
                             <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
                         </form>

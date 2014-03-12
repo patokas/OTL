@@ -102,8 +102,7 @@ public class EventAddServlet extends HttpServlet {
                         String dateBegin = request.getParameter("dateBegin");
                         String dateEnd = request.getParameter("dateEnd");
                         String urlImage = request.getParameter("url");
-                        String spoints = request.getParameter("points");
-                        String srequest = request.getParameter("eventRequest");
+                        String spoints = request.getParameter("points");                        
                         String sidDressCode = request.getParameter("idDressCode");
 
                         boolean error = false;
@@ -182,19 +181,6 @@ public class EventAddServlet extends HttpServlet {
                                             error = true;
                                         }
                                     }
-                                }
-                            }
-
-                            /* comprobar request */
-                            if (srequest == null || srequest.trim().equals("")) {
-                                request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
-                                error = true;
-                            } else {
-                                try {
-                                    event.setRequest(Integer.parseInt(srequest));
-                                } catch (NumberFormatException n) {
-                                    request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
-                                    error = true;
                                 }
                             }
 

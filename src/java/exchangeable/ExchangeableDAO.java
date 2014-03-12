@@ -103,6 +103,7 @@ public class ExchangeableDAO {
                 reg.setPoints(result.getInt("points"));
                 reg.setUrlImage(result.getString("ex.url_image"));
                 reg.setRequest(result.getInt("request"));
+                reg.setReason(result.getString("reason"));
             }
 
         } catch (MySQLSyntaxErrorException ex) {
@@ -238,14 +239,15 @@ public class ExchangeableDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update exchangeable set tittle = ?, url_image = ?, points = ?, request = ? where id_exchangeable = ? ";
+            String sql = "update exchangeable set tittle = ?, url_image = ?, points = ?, request = ?, reason = ? where id_exchangeable = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, exchange.getTittle());
             sentence.setString(2, exchange.getUrlImage());
             sentence.setInt(3, exchange.getPoints());
             sentence.setInt(4, exchange.getRequest());
-            sentence.setInt(5, exchange.getIdExchangeable());
+            sentence.setString(5, exchange.getReason());
+            sentence.setInt(6, exchange.getIdExchangeable());
 
             sentence.executeUpdate();
 

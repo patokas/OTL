@@ -125,58 +125,6 @@ public class EventDAO {
         return find;
     }
 
-    public Collection<Event> findByTittle(Event event) {
-
-        Statement sentence = null;
-        ResultSet result = null;
-
-        Collection<Event> list = new ArrayList<Event>();
-
-        try {
-            sentence = conexion.createStatement();
-            String sql = "select * from event e, place pl where tittle like '" + event.getTittle() + "%' and e.id_place = pl.id_place ";
-            result = sentence.executeQuery(sql);
-
-            while (result.next()) {
-                /* instanciar objeto */
-                Event reg = new Event();
-                /* obtener resultset */
-                reg.setIdEvent(result.getInt("id_event"));
-                reg.setIdPlace(result.getInt("id_place"));
-                reg.setNamePlace(result.getString("name_place"));
-                reg.setTittle(result.getString("tittle"));
-                reg.setDetails(result.getString("details"));
-                reg.setDateBegin(result.getString("date_begin"));
-                reg.setDateEnd(result.getString("date_end"));
-                reg.setPoints(result.getInt("points"));
-                reg.setRequest(result.getInt("request"));
-                /* agregar a la lista */
-                list.add(reg);
-            }
-
-        } catch (MySQLSyntaxErrorException ex) {
-            System.out.println("Error de sintaxis en EventDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Syntax Exception en EventDAO, findByTittle() : " + ex);
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            System.out.println("MySQL Excepción de integridad en EventDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción de integridad en EventDAO, findByTittle() : " + ex);
-        } catch (SQLException ex) {
-            System.out.println("MySQL Excepción inesperada en EventDAO, findByTittle() : " + ex);
-            throw new RuntimeException("MySQL Excepción inesperada en EventDAO, findByTittle() : " + ex);
-        } finally {
-            /* liberar recursos */
-            try {
-                result.close();
-            } catch (Exception noGestionar) {
-            }
-            try {
-                sentence.close();
-            } catch (Exception noGestionar) {
-            }
-        }
-        return list;
-    }
-
     public Event findByPlaceEvent(Event event) {
 
         Statement sentence = null;
@@ -203,6 +151,7 @@ public class EventDAO {
                 reg.setUrlImage(result.getString("e.url_image"));
                 reg.setPoints(result.getInt("points"));
                 reg.setRequest(result.getInt("request"));
+                reg.setReason(result.getString("reason"));
             }
 
         } catch (MySQLSyntaxErrorException ex) {
@@ -228,7 +177,6 @@ public class EventDAO {
         return reg;
     }
 
-    
     public Collection<Event> findByEvent(int idEvent) {
 
         Statement sentence = null;
@@ -256,6 +204,7 @@ public class EventDAO {
                 reg.setRequest(result.getInt("request"));
                 reg.setNameDressCode(result.getString("name_dress_code"));
                 reg.setIdDressCode(result.getInt("id_dress_code"));
+                reg.setReason(result.getString("reason"));
                 /* agregar a la lista */
                 list.add(reg);
             }
@@ -382,7 +331,7 @@ public class EventDAO {
         PreparedStatement sentence = null;
 
         try {
-            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ?, id_dress_code = ? where id_place = ? and id_event = ? ";
+            String sql = "update event set tittle = ?, details = ?, date_begin = ?, date_end = ?, url_image = ?, points = ?, request = ?, id_dress_code = ?, reason = ? where id_place = ? and id_event = ? ";
             sentence = conexion.prepareStatement(sql);
 
             sentence.setString(1, event.getTittle());
@@ -393,8 +342,9 @@ public class EventDAO {
             sentence.setInt(6, event.getPoints());
             sentence.setInt(7, event.getRequest());
             sentence.setInt(8, event.getIdDressCode());
-            sentence.setInt(9, event.getIdPlace());
-            sentence.setInt(10, event.getIdEvent());
+            sentence.setString(9, event.getReason());
+            sentence.setInt(10, event.getIdPlace());
+            sentence.setInt(11, event.getIdEvent());
 
             sentence.executeUpdate();
 

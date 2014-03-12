@@ -6,7 +6,6 @@ package exchangeable;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Collection;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -85,6 +84,7 @@ public class ExchangeableUpdateServlet extends HttpServlet {
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("exchangeRequest");
+                        String reason = request.getParameter("reason");
 
                         Exchangeable exchange = new Exchangeable();
 
@@ -164,6 +164,12 @@ public class ExchangeableUpdateServlet extends HttpServlet {
                                 request.setAttribute("msgErrorRequest", "Error al recibir la solicitud.");
                                 error = true;
                             }
+                        }
+
+                        /* comprobar reason */
+                        if (reason == null || reason.trim().equals("")) {
+                        } else {
+                            exchange.setReason(reason);
                         }
 
                         /////////////////////////////////////////
