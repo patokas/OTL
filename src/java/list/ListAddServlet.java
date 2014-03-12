@@ -246,8 +246,6 @@ public class ListAddServlet extends HttpServlet {
                                                 request.setAttribute("msgErrorGuestNotFound", "Acceso Restringido: El cliente no posee invitaciones en este recinto.");
                                                 System.out.println("no existe invitaciones vigentes");
                                             }
-                                        } else {
-                                            request.setAttribute("msgErrorEvent", "Error: No existe un evento para el día.");
                                         }
                                     }
                                 }
