@@ -63,7 +63,6 @@ public class PromoAddServlet extends HttpServlet {
             //////////////////////////////////////////
             // COMPROBAR SESSION
             /////////////////////////////////////////
-
             try {
                 /* recuperar sesion */
                 HttpSession session = request.getSession(false);
