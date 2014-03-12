@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "PromoUpdateServlet", urlPatterns = {"/PromoUpdateServlet"})
 public class PromoUpdateServlet extends HttpServlet {
-
+    
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -38,18 +38,18 @@ public class PromoUpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         request.setCharacterEncoding("UTF-8");
-
+        
         Connection conexion = null;
-
+        
         try {
             //////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
 
             conexion = ds.getConnection();
-
+            
             PromoDAO promoDAO = new PromoDAO();
             promoDAO.setConexion(conexion);
 
@@ -72,7 +72,7 @@ public class PromoUpdateServlet extends HttpServlet {
                     /* obtener los valores de session y asignar valores a la jsp */
                     request.setAttribute("userJsp", username);
                     request.setAttribute("access", access);
-
+                    
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
@@ -87,10 +87,11 @@ public class PromoUpdateServlet extends HttpServlet {
                         String urlImage = request.getParameter("urlImage");
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("promoRequest");
-
+                        String reason = request.getParameter("reason");
+                        
                         Promo promo = new Promo();
-
-                        boolean error = false;                    
+                        
+                        boolean error = false;
 
                         /* comprobar id promo */
                         if (sidPromo == null || sidPromo.trim().equals("")) {
@@ -101,6 +102,19 @@ public class PromoUpdateServlet extends HttpServlet {
                                 promo.setIdPromo(Integer.parseInt(sidPromo));
                             } catch (NumberFormatException n) {
                                 request.setAttribute("msgErrorIdPromo", "Error al recibir id promo.");
+                                error = true;
+                            }
+                        }
+
+                        /* comprobar id place */
+                        if (sidPlace == null || sidPlace.trim().equals("")) {
+                            request.setAttribute("msgErrorIdPlace", "Error al recibir id Place");
+                            error = true;
+                        } else {
+                            try {
+                                promo.setIdPlace(Integer.parseInt(sidPlace));
+                            } catch (NumberFormatException n) {
+                                request.setAttribute("msgErrorIdPlace", "Error al recibir id Place");
                                 error = true;
                             }
                         }
@@ -184,7 +198,15 @@ public class PromoUpdateServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-
+                        
+                        /* comprobar reason */
+                        if(reason == null || reason.trim().equals("")) {
+                            request.setAttribute("msgErrorReason", "Error: Debe ingresar razón de rechazon.");
+                            error = true;
+                        } else {
+                            promo.setReason(reason);
+                        }
+                        
                         if (!error) {
                             /* comprobar registros duplicados */
                             boolean find = promoDAO.validateDuplicate(promo);
@@ -192,7 +214,7 @@ public class PromoUpdateServlet extends HttpServlet {
                                 request.setAttribute("msgErrorDup", "Error: ya existe esta promoción. Compruebe utilizando otro título u otro rango de fechas.");
                             } else {
                                 Promo aux = promoDAO.findbyPromo(promo);
-                                if (aux.getIdPlace() > 0) {
+                                if (aux != null) {
                                     promoDAO.update(promo);
                                     request.setAttribute("msgOk", "Registro actualizado exitosamente! ");
                                 } else {

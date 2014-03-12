@@ -31,8 +31,6 @@
         <script src="js/tablesorter/jquery.tablesorter.js"></script>
         <script src="js/tablesorter/tables.js"></script>  
 
-
-
         <script type="text/javascript">
             function changeDisplay() {
                 if (document.formUpdate.promoRequest.value == 2) {
@@ -248,9 +246,9 @@
                                 </select> 
                             </div>
                                 <div class="form-group" id="reason">
-                                <label>Razón de rechazo</label>
-                                <textarea class="form-control" name="reason" maxlength="255" rows="4"></textarea>
-                            </div>
+                                    <label>Razón de rechazo</label>
+                                    <textarea class="form-control" name="reason" maxlength="255" rows="4"><c:out value="${promo.reason}"/></textarea>
+                                </div>
                             <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
                         </form>
 

@@ -30,71 +30,84 @@
         <!-- Page Specific Plugins -->
         <script src="js/tablesorter/jquery.tablesorter.js"></script>
         <script src="js/tablesorter/tables.js"></script>
+
+        <script type="text/javascript">
+            function changeDisplay() {
+                if (document.formUpdate.request.value == 2) {
+                    document.formUpdate.reason.style.display = 'block';
+                } else {
+                    document.formUpdate.reason.style.display = 'none';
+                }
+            }
+        </script>
     </head>
-</head>
 
-<body>
+    <body onload="changeDisplay()">
 
-    <div id="wrapper">
+        <div id="wrapper">
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <c:import var="menu" url="/mainMenu.jsp" />
-        <c:out value="${menu}" escapeXml="false" />
-        <!-- /.navbar-collapse -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <c:import var="menu" url="/mainMenu.jsp" />
+            <c:out value="${menu}" escapeXml="false" />
+            <!-- /.navbar-collapse -->
 
-        <div id="page-wrapper">
+            <div id="page-wrapper">
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Mantenedor <small> Solicitud Tarjeta</small></h1>
-                    <ol class="breadcrumb">
-                        <li><a href="OrderCardMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
-                        <li class="active"><i class="fa fa-edit"></i> Actualizar</li>
-                    </ol>
-                    <c:if test="${msgOk != null}" >
-                        <div class="alert alert-dismissable alert-success">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgOk}" /></strong>
-                        </div>
-                    </c:if>
-                    <c:if test="${msgErrorFound != null}" >
-                        <div class="alert alert-dismissable alert-danger">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <strong><c:out value="${msgErrorFound}" /></strong></br>
-                        </div>
-                    </c:if>                                                                                                   
-                </div>
-                <div class="col-lg-4">
-                    <form role="form" action="OrderCardUpdateServlet" method="POST" name="formUpdate">
-                        <div class="form-group">
-                            <label for="disabledSelect">ID</label>
-                            <input class="form-control" id="disabledInput" type="text" placeholder="<c:out value="${orderCard.idOrder}" />" disabled>
-                            <input type="hidden" name="idOrder" value="<c:out value="${orderCard.idOrder}" />"/>
-                        </div>                                                                        
-                        <div class="form-group">
-                            <label>Tipo Tarjeta</label>
-                            <select class="form-control" name="cardType">
-                                <option value="1" <c:if test="${orderCard.cardType == 1 || orderCard.cardType == null}" >checked</c:if> >BASIC</option>
-                                <option value="2" <c:if test="${orderCard.cardType == 2}" >checked</c:if>>SILVER</option>
-                                <option value="3" <c:if test="${orderCard.cardType == 3}" >checked</c:if>>GOLDEN</option>                              
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Mantenedor <small> Solicitud Tarjeta</small></h1>
+                        <ol class="breadcrumb">
+                            <li><a href="OrderCardMainServlet"><i class="fa fa-table"></i> DataTable</a></li>
+                            <li class="active"><i class="fa fa-edit"></i> Actualizar</li>
+                        </ol>
+                        <c:if test="${msgOk != null}" >
+                            <div class="alert alert-dismissable alert-success">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong><c:out value="${msgOk}" /></strong>
+                            </div>
+                        </c:if>
+                        <c:if test="${msgErrorFound != null}" >
+                            <div class="alert alert-dismissable alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong><c:out value="${msgErrorFound}" /></strong></br>
+                            </div>
+                        </c:if>                                                                                                   
+                    </div>
+                    <div class="col-lg-4">
+                        <form role="form" action="OrderCardUpdateServlet" method="POST" name="formUpdate">
+                            <div class="form-group">
+                                <label for="disabledSelect">ID</label>
+                                <input class="form-control" id="disabledInput" type="text" placeholder="<c:out value="${orderCard.idOrder}" />" disabled>
+                                <input type="hidden" name="idOrder" value="<c:out value="${orderCard.idOrder}" />"/>
+                            </div>                                                                        
+                            <div class="form-group">
+                                <label>Tipo Tarjeta</label>
+                                <select class="form-control" name="cardType">
+                                    <option value="1" <c:if test="${orderCard.cardType == 1 || orderCard.cardType == null}" >checked</c:if> >BASIC</option>
+                                    <option value="2" <c:if test="${orderCard.cardType == 2}" >checked</c:if>>SILVER</option>
+                                    <option value="3" <c:if test="${orderCard.cardType == 3}" >checked</c:if>>GOLDEN</option>                              
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Solicitud de Tarjeta</label>
+                                    <select class="form-control" id="request" name="request" onchange="changeDisplay()">
+                                        <option value="0" <c:if test="${orderCard.request == 0 || orderCard.request == null}" >selected</c:if>>Pendiente</option>
+                                    <option value="1" <c:if test="${orderCard.request == 1}" >selected</c:if>>Aceptada</option>
+                                    <option value="2" <c:if test="${orderCard.request == 2}" >selected</c:if>>Rechazada</option>                                                                                             
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Solicitud de Tarjeta</label>
-                                <select class="form-control" name="request">
-                                    <option value="0" <c:if test="${orderCard.request == 0 || orderCard.request == null}" >selected</c:if>>Pendiente</option>
-                                <option value="1" <c:if test="${orderCard.request == 1}" >selected</c:if>>Aceptada</option>
-                                <option value="2" <c:if test="${orderCard.request == 2}" >selected</c:if>>Rechazada</option>                                                                                             
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
-                    </form>
+                            <div class="form-group" id="reason">
+                                <label>Razón de rechazo</label>
+                                <textarea class="form-control" name="reason" maxlength="255" rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
+                        </form>
 
-                </div>
-            </div><!-- /.row -->           
+                    </div>
+                </div><!-- /.row -->           
 
-        </div><!-- /#page-wrapper -->
+            </div><!-- /#page-wrapper -->
 
-    </div><!-- /#wrapper -->
-</body>
+        </div><!-- /#wrapper -->
+    </body>
 </html>

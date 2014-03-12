@@ -110,7 +110,11 @@ public class EventUpdateServlet extends HttpServlet {
                             request.setAttribute("msgErrorIdPlace", "Error al recibir id de plaza.");
                             error = true;
                         } else {
-                            event.setIdPlace(Integer.parseInt(sidPlace));
+                            try {
+                                event.setIdPlace(Integer.parseInt(sidPlace));
+                            } catch (NumberFormatException n) {
+                                error = true;
+                            }
                         }
 
                         /* comprobar id event */
@@ -118,7 +122,11 @@ public class EventUpdateServlet extends HttpServlet {
                             request.setAttribute("msgErrorIdEvent", "Error al recibir id de evento.");
                             error = true;
                         } else {
-                            event.setIdEvent(Integer.parseInt(sidEvent));
+                            try {
+                                event.setIdEvent(Integer.parseInt(sidEvent));
+                            } catch (NumberFormatException n) {
+                                error = true;
+                            }
                         }
 
                         /* comprobar namePlace */
