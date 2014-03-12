@@ -94,11 +94,11 @@
                                         <option value="0" <c:if test="${orderCard.request == 0 || orderCard.request == null}" >selected</c:if>>Pendiente</option>
                                     <option value="1" <c:if test="${orderCard.request == 1}" >selected</c:if>>Aceptada</option>
                                     <option value="2" <c:if test="${orderCard.request == 2}" >selected</c:if>>Rechazada</option>                                                                                             
-                                </select>
-                            </div>
-                            <div class="form-group" id="reason">
-                                <label>Razón de rechazo</label>
-                                <textarea class="form-control" name="reason" maxlength="255" rows="4"></textarea>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="reason">
+                                    <label>Razón de rechazo</label>
+                                    <textarea class="form-control" name="reason" maxlength="255" rows="4"><c:out value="${orderCard.reason}" /></textarea>
                             </div>
                             <button type="submit" class="btn btn-default"><strong><font size="1">ACTUALIZAR</font></strong></button>
                         </form>

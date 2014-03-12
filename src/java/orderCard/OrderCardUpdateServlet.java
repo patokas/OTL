@@ -21,7 +21,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "OrderCardUpdateServlet", urlPatterns = {"/OrderCardUpdateServlet"})
 public class OrderCardUpdateServlet extends HttpServlet {
-
+    
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -37,18 +37,18 @@ public class OrderCardUpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         request.setCharacterEncoding("UTF-8");
-
+        
         Connection conexion = null;
-
+        
         try {
             /////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
 
             conexion = ds.getConnection();
-
+            
             OrderCardDAO orderCardDAO = new OrderCardDAO();
             orderCardDAO.setConexion(conexion);
 
@@ -71,7 +71,7 @@ public class OrderCardUpdateServlet extends HttpServlet {
                 /* obtener los valores de session y asignar valores a la jsp */
                 request.setAttribute("userJsp", username);
                 request.setAttribute("access", access);
-
+                
                 try {
                     /////////////////////////////////////////
                     // RECIBIR Y COMPROBAR PARAMETROS
@@ -80,9 +80,10 @@ public class OrderCardUpdateServlet extends HttpServlet {
                     String sidOrderCard = request.getParameter("idOrder");
                     String sCardType = request.getParameter("cardType");
                     String srequest = request.getParameter("request");
-
+                    String reason = request.getParameter("reason");
+                    
                     OrderCard orderCard = new OrderCard();
-
+                    
                     boolean error = false;
 
                     /* comprobar idOrder */
@@ -118,6 +119,12 @@ public class OrderCardUpdateServlet extends HttpServlet {
                         }
                     }
 
+                    /* comprobar reason */
+                    if (reason == null || reason.trim().equals("")) {
+                    } else {
+                        orderCard.setReason(reason);
+                    }
+                    
                     if (!error) {
                         /* actualizar datos */
                         try {

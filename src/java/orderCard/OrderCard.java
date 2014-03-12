@@ -18,8 +18,17 @@ public class OrderCard implements java.io.Serializable {
     public String orderDate;
     public String firstName;
     public String lastName;
+    public String reason;
 
     public OrderCard() {
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public int getIdOrder() {

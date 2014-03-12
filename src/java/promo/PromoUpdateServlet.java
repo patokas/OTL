@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  */
 @WebServlet(name = "PromoUpdateServlet", urlPatterns = {"/PromoUpdateServlet"})
 public class PromoUpdateServlet extends HttpServlet {
-    
+
     @Resource(name = "jdbc/OTL")
     private DataSource ds;
 
@@ -38,18 +38,18 @@ public class PromoUpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
-        
+
         Connection conexion = null;
-        
+
         try {
             //////////////////////////////////////////
             // ESTABLECER CONEXION
             /////////////////////////////////////////
 
             conexion = ds.getConnection();
-            
+
             PromoDAO promoDAO = new PromoDAO();
             promoDAO.setConexion(conexion);
 
@@ -72,7 +72,7 @@ public class PromoUpdateServlet extends HttpServlet {
                     /* obtener los valores de session y asignar valores a la jsp */
                     request.setAttribute("userJsp", username);
                     request.setAttribute("access", access);
-                    
+
                     try {
                         /////////////////////////////////////////
                         // RECIBIR Y COMPROBAR PARAMETROS
@@ -88,9 +88,9 @@ public class PromoUpdateServlet extends HttpServlet {
                         String spoints = request.getParameter("points");
                         String srequest = request.getParameter("promoRequest");
                         String reason = request.getParameter("reason");
-                        
+
                         Promo promo = new Promo();
-                        
+
                         boolean error = false;
 
                         /* comprobar id promo */
@@ -198,15 +198,13 @@ public class PromoUpdateServlet extends HttpServlet {
                                 error = true;
                             }
                         }
-                        
+
                         /* comprobar reason */
-                        if(reason == null || reason.trim().equals("")) {
-                            request.setAttribute("msgErrorReason", "Error: Debe ingresar razón de rechazon.");
-                            error = true;
+                        if (reason == null || reason.trim().equals("")) {
                         } else {
                             promo.setReason(reason);
                         }
-                        
+
                         if (!error) {
                             /* comprobar registros duplicados */
                             boolean find = promoDAO.validateDuplicate(promo);

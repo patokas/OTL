@@ -102,16 +102,8 @@
                                 <option value="1" <c:if test="${orderCard.cardType == 1 || orderCard.cardType == null}" >checked</c:if> >BASIC</option>
                                 <option value="2" <c:if test="${orderCard.cardType == 2}" >checked</c:if>>SILVER</option>
                                 <option value="3" <c:if test="${orderCard.cardType == 3}" >checked</c:if>>GOLDEN</option>                              
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Estado Solicitud</label>
-                                <select class="form-control" name="request">
-                                    <option value="0" <c:if test="${orderCard.request == 0 || orderCard.request == null}" >checked</c:if> >Pendiente</option>
-                                <option value="1" <c:if test="${orderCard.request == 1}" >checked</c:if>>Aceptada</option>
-                                <option value="2" <c:if test="${orderCard.request == 2}" >checked</c:if>>Rechazada</option>                              
                             </select>
-                        </div>
+                        </div>                           
                         <button type="submit" name="add" class="btn btn-default"><strong><font size="1">AGREGAR</font></strong></button>
                         <button type="reset" class="btn btn-default"><strong><font size="1">RESET</font></strong></button> 
                     </form>
