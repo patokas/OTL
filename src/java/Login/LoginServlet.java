@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
                 }
 
 
-                /* encriptar passwordd */
+                /* encriptar password */
                 String pwdCrypted = StringMD.getStringMessageDigest(password, StringMD.MD5);
               
                 /* comprobar si existe */
