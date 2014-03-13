@@ -9,13 +9,13 @@ package point;
  * @author patricio alberto
  */
 public class Point implements java.io.Serializable {
-    
+
     /* atributos */
     public int rut;
     public String dv;
     public String firstName;
     public String lastName;
-    public int idPlace;    
+    public int idPlace;
     public String namePlace;
     public String nameCity;
     public int points;
@@ -31,7 +31,6 @@ public class Point implements java.io.Serializable {
     public void setTotalPoint(int totalPoint) {
         this.totalPoint = totalPoint;
     }
-        
 
     public String getNameCity() {
         return nameCity;
@@ -39,8 +38,8 @@ public class Point implements java.io.Serializable {
 
     public void setNameCity(String nameCity) {
         this.nameCity = nameCity;
-    }    
-    
+    }
+
     public int getRut() {
         return rut;
     }
@@ -95,6 +94,5 @@ public class Point implements java.io.Serializable {
 
     public void setPoints(int points) {
         this.points = points;
-    }            
-    
+    }
 }

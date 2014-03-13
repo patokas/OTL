@@ -163,18 +163,9 @@ public class ListAddServlet extends HttpServlet {
 
                             /* buscar el evento por fecha actual */
                             if (optionEvent == 1) {
-                                try {
-                                    listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
-                                    if (listEvent.isEmpty()) {
-                                        request.setAttribute("msgErrorIdEvent", "Error: El evento ingresado posee solicitud pendiente, rechazada o no existe.");
-                                        error = true;
-                                    } else {
-                                        for (Event aux : listEvent) {
-                                            entry.setIdEvent(aux.getIdEvent());
-                                        }
-                                    }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
+                                listEvent = eventDAO.findbyRangeDatePlace(Format.currentDate(), entry.getIdPlace());
+                                for (Event aux : listEvent) {
+                                    entry.setIdEvent(aux.getIdEvent());
                                 }
                             }
 
@@ -188,15 +179,7 @@ public class ListAddServlet extends HttpServlet {
                                     try {
                                         entry.setIdEvent(Integer.parseInt(sidEvent));
                                         /* buscar el evento */
-                                        try {
-                                            listEvent = eventDAO.findByEvent(entry.getIdEvent());
-                                            if (listEvent.isEmpty()) {
-                                                request.setAttribute("msgErrorIdEvent", "Error: El evento ingresado posee solicitud pendiente, rechazada o no existe.");
-                                                error = true;
-                                            }
-                                        } catch (Exception ex) {
-                                            ex.printStackTrace();
-                                        }
+                                        listEvent = eventDAO.findByEvent(entry.getIdEvent());
                                     } catch (NumberFormatException n) {
                                         request.setAttribute("msgErrorIdEvent", "Error: El ID Evento debe ser numérico.");
                                         error = true;
@@ -246,6 +229,8 @@ public class ListAddServlet extends HttpServlet {
                                                 request.setAttribute("msgErrorGuestNotFound", "Acceso Restringido: El cliente no posee invitaciones en este recinto.");
                                                 System.out.println("no existe invitaciones vigentes");
                                             }
+                                        } else {
+                                            request.setAttribute("msgErrorEvent", "Error: No existe un evento para el día.");
                                         }
                                     }
                                 }
